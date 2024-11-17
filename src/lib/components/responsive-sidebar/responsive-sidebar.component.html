@@ -1,0 +1,12 @@
+<p-sidebar
+  [(visible)]="visible"
+  [modal]="true"
+  [position]="position"
+  [fullScreen]="full"
+  [style]="{ width: isMobile ? '100%' : '60%' }"
+  (onHide)="hide()"
+  [blockScroll]="true"
+  appendTo="body"
+>
+  <ng-content></ng-content>
+</p-sidebar>

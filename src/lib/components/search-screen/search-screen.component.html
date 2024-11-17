@@ -1,0 +1,157 @@
+<p-fieldset
+  [legend]="labelFilter"
+  [toggleable]="true"
+  [collapsed]="true"
+  styleClass="p-1 m-0"
+>
+  <div class="field" *ngFor="let filter of filters">
+
+    <p-iconField iconPosition="right" >
+      <p-inputIcon styleClass="pi pi-search" />
+      <input
+      type="text"
+      pInputText
+      class="w-full"
+      [(ngModel)]="filter.value"
+      [placeholder]="filter.label"
+      (ngModelChange)="onFilterChange()"
+      />
+    </p-iconField>
+  </div>
+</p-fieldset>
+<p-table
+  [(columns)]="columnsGrid"
+  [(value)]="listSearch"
+  [(selection)]="value"
+  responsiveLayout="stack"
+  [tableStyle]="{ 'table-layout': 'auto' }"
+  dataKey="id"
+  (onRowSelect)="select($event.data)"
+  (onRowUnselect)="unSelect($event.data)"
+  [selectionMode]="mode === 'search' ? 'single' : mode"
+  styleClass="mt-2 p-datatable-lg p-datatable-gridlines p-datatable-striped"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr *ngIf="!hasCustomBody;">
+      <th *ngFor="let col of columns"  >
+        {{ col.label }}
+      </th>
+    </tr>
+    <tr *ngIf="hasCustomBody;">
+      <th>
+        {{ title }}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-object let-rowIndex="rowIndex">
+    <tr
+      style="border-bottom: 2px solid #ccc"
+      [pSelectableRow]="object"
+      [pSelectableRowIndex]="rowIndex"
+    >
+      <ng-container *ngIf="!hasCustomBody; else customBody">
+        <td *ngFor="let col of columnsGrid">
+          <span class="p-column-title">{{ col.label }}</span>
+          <span *ngIf="isDate(col.type)">
+            {{ object[col.field] | date : "dd/MM/yyyy" }}
+          </span>
+          <span *ngIf="isCurrency(col.type)">
+            {{ object[col.field] | currency : "BRL" : "symbol" : "1.2-2" : "pt" }}
+          </span>
+          <span *ngIf="isSimpleType(col.type)">
+            {{ object[col.field] }}
+          </span>
+          <span *ngIf="col.type === 'split'">
+            <ul>
+              <li *ngFor="let item of getListValuesSplit(object[col.field])">
+                {{ item }}
+              </li>
+            </ul>
+          </span>
+          <span *ngIf="col.type === 'entity'">
+            {{ object[col.field][col.subfield] }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-template #customBody>
+        <ng-container *ngTemplateOutlet="contentGridTemplate; context: { $implicit: object }"></ng-container>
+      </ng-template>
+    </tr>
+  </ng-template>
+</p-table>
+
+<ng-content select="[panel]"></ng-content>
+
+<p-toolbar>
+  <div class="p-toolbar-group-left inline">
+    <label>{{ pageNumber + 1 }} / {{ getTotalPages() }}</label>
+  </div>
+
+  <div class="p-toolbar-group-right">
+    <ng-content select="[bottom-bar]"></ng-content>
+
+    <button
+      pButton
+      type="button"
+      icon="fas fa-angle-left"
+      (click)="previosPage()"
+      [disabled]="isPreviosPage()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      icon="fas fa-angle-right"
+      (click)="nextPage()"
+      [disabled]="isNextPage()"
+      style="margin-left: 5px"
+    ></button>
+  </div>
+</p-toolbar>
+
+<div class="col-12 flex justify-content-between">
+  <button
+    *ngIf="framework.utils.isDesktop()"
+    pButton
+    pRipple
+    label="Voltar"
+    class="w-auto mt-3"
+    (click)="back()"
+  ></button>
+
+  <div class="flex align-items-center gap-1 flex-wrap" *ngIf="mode == 'multiple'">
+    <p-chip
+      *ngFor="let item of value"
+      [label]="item[fieldDescription]"
+      [removable]="true"
+      (onRemove)="removeValue(item)"
+    />
+  </div>
+
+  <div
+    class="flex align-items-center gap-1 flex-wrap"
+    *ngIf="mode === 'single'"
+  >
+    <p-tag severity="info" [value]="getDescriptionObject()" />
+  </div>
+
+  <button
+    pButton
+    pRipple
+    [label]="labelConfirm"
+    *ngIf="mode != 'search'"
+    class="w-auto mt-3"
+    type="submit"
+    [disabled]="!isValid()"
+    (click)="ok()"
+  ></button>
+
+  <button
+    pButton
+    pRipple
+    [label]="labelNew"
+    *ngIf="mode == 'search'"
+    class="w-auto mt-3"
+    type="submit"
+    (click)="onNewClick.emit()"
+  ></button>
+</div>

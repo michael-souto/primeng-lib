@@ -1,0 +1,35 @@
+<label for="profiles" class="font-medium text-900" translate>{{ label }}</label
+>{{ required ? "*" : "" }}
+<div class="p-inputgroup">
+  <span class="p-inputgroup-addon">
+    <i class="fas fa-keyboard"></i>
+  </span>
+  <p-autoComplete
+    [(ngModel)]="value"
+    [suggestions]="listSearch"
+    (completeMethod)="search($event)"
+    [disabled]="disabled"
+    [forceSelection]="true"
+    [field]="fieldDescription"
+    [placeholder]="title"
+    [dropdown]="dropdown"
+    [completeOnFocus]="dropdown"
+    (onSelect)="selectEntity($event)"
+    (onUnselect)="clearValue()"
+    [multiple]="multiple"
+    appendTo="body"
+    class="{{ invalidCondition ? 'ng-invalid ng-dirty' : '' }}"
+  >
+  </p-autoComplete>
+  <button
+    type="button"
+    pButton
+    label="Buscar"
+    icon="pi pi-search"
+    class="p-button-warning"
+    (click)="goToSearchScreen()"
+  ></button>
+</div>
+<small class="ng-invalid ng-dirty" *ngIf="invalidCondition">
+  {{ invalidMessage }}
+</small>
