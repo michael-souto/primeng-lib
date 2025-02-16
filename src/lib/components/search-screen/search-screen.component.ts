@@ -27,7 +27,7 @@ import { environment } from 'src/environments/environment';
 export class SearchScreenComponent implements OnInit, OnDestroy {
 
   constructor(
-    private service: SearchService,
+    protected service: SearchService,
     public framework: FrameworkService
   ) {
     this.searchSubject
@@ -124,7 +124,7 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
     this.searchSubject.next();
   }
   searchScreen() {
-    this.search(this.getFieldsSearch(), 0, this.rows);
+    this.search(this.getFieldsSearch(), this.pageNumber, this.rows);
   }
 
   getFieldsSearch(): Array<SearchFilter> {

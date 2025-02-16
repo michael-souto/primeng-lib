@@ -1,20 +1,19 @@
 <label [for]="id" class="font-medium text-900 font-semibold text-0" translate>{{ label }}</label
 >{{ required ? "*" : "" }}
-<input
+<textarea
   [id]="id"
-  type="text"
-  pInputText
+  pInputTextarea
   [required]="required"
-  autofocus
+  rows="5"
+  cols="30"
   [(ngModel)]="value"
   (ngModelChange)="onValueChange($event)"
-  pSize="large"
-  style="height:3.5rem"
-  [placeholder]="placeholder ?? ''"
   [ngClass]="{
     'ng-invalid ng-dirty': invalidCondition
   }"
-/>
+>
+</textarea>
+
 <small class="ng-invalid ng-dirty" *ngIf="invalidCondition">
   {{ invalidMessage }}
 </small>

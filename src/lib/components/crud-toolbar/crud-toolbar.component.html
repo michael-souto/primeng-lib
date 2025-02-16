@@ -1,23 +1,23 @@
 <div class="flex justify-content-between w-full">
   <div>
     <button
-      *ngIf="framework.utils.isDesktop()"
+      *ngIf="framework.utils.isDesktop()&& hasBackEvent()"
       pButton
       pRipple
       icon="fas fa-chevron-left"
       [raised]="true"
       label="Voltar"
-      class="w-auto mr-3 mt-3"
+      class="w-auto mr-4 mt-4"
       (click)="clickBack()"
     ></button>
 
     <button
-      *ngIf="updateMode"
+      *ngIf="updateMode && hasDeleteEvent()"
       pButton
       pRipple
       [raised]="true"
       [label]="'DELETE' | translate"
-      class="w-auto mt-3"
+      class="w-auto mt-4"
       type="submit"
       icon="fas fa-trash"
       severity="danger"
@@ -26,12 +26,13 @@
   </div>
 
   <button
+    *ngIf="hasSaveEvent()"
     pButton
     pRipple
     icon="fas fa-floppy-disk"
     [raised]="true"
     [label]="'SAVE' | translate"
-    class="w-auto mt-3"
+    class="w-auto mt-4"
     type="submit"
     severity="success"
     [disabled]="disabledSave"

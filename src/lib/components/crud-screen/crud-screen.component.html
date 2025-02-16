@@ -1,0 +1,38 @@
+<div class="card">
+  <span class="text-900 text-xl font-bold mb-6 block"
+    >{{ ('NEW' | translate) + ' ' + (entityName | translate).toLowerCase()}}</span
+  >
+  <div class="grid">
+
+    <div class="col-12 lg:col-3" *ngIf="title && description">
+      <div class="text-900 font-medium text-xl mb-4">
+        {{ ('MANAGEMENT_OF' | translate) + ' ' + (title | translate)}}
+      </div>
+      <p class="m-0 p-0 text-600 text-200 leading-normal mr-4" translate>
+        {{ description }}
+      </p>
+    </div>
+
+    <div class="col-12 {{ title && description ? 'lg:col-9' : 'lg:col-12'}}">
+      <div class="grid formgrid p-fluid" *ngIf="controller.object">
+        <ng-container
+          *ngTemplateOutlet="
+            contentTemplate;
+            context: { $implicit: controller.object, submitted: submitted}
+          "
+        ></ng-container>
+
+        <d-crud-toolbar
+          class="col-12"
+          (onClickDelete)="confirmDelete()"
+          (onClickSave)="save()"
+          (onClickBack)="goList()"
+          [updateMode]="isUpdateMode()"
+          [disabledSave]="submitted && !validator.valid"
+        ></d-crud-toolbar>
+      </div>
+    </div>
+  </div>
+</div>
+<d-message-window #messageWindow></d-message-window>
+<d-confirm-box #confirmBox></d-confirm-box>

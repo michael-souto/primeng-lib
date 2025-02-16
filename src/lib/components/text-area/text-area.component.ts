@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'd-input-text',
-  templateUrl: './input-text.component.html',
-  styleUrls: ['./input-text.component.scss'],
+  selector: 'd-text-area',
+  templateUrl: './text-area.component.html',
+  styleUrls: ['./text-area.component.scss'],
 })
-export class InputTextComponent {
+export class TextAreaComponent {
 
   constructor() { }
 
-  @Input() value: any;
+@Input() value: any;
   @Output() valueChange = new EventEmitter<any>();
   @Input() label: string;
   @Input() id: string;
@@ -17,10 +17,11 @@ export class InputTextComponent {
   @Input() required: boolean;
   @Input() invalidCondition: boolean;
   @Input() invalidMessage: string;
-  @Input() placeholder: string;
+
 
   onValueChange(newValue: any) {
     this.value = newValue;
     this.valueChange.emit(newValue);
   }
+
 }

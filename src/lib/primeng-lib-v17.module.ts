@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DesignLibModule } from 'projects/design-lib/src/lib/design-lib.module';
 
 // Importação dos módulos do PrimeNG versão 17 (sem componentes depreciados)
 import { AccordionModule } from 'primeng/accordion';
@@ -100,6 +101,9 @@ import { SearchFieldComponent } from './components/search-field/search-field.com
 import { CrudToolbarComponent } from './components/crud-toolbar/crud-toolbar.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { InputTextComponent } from './components/input-text/input-text.component';
+import { ToastComponent } from './components/toast/toast.component';
+import { TextAreaComponent } from './components/text-area/text-area.component';
+import { CrudScreenComponent } from './components/crud-screen/crud-screen.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +112,10 @@ import { InputTextComponent } from './components/input-text/input-text.component
     SearchScreenComponent,
     SearchFieldComponent,
     CrudToolbarComponent,
+    CrudScreenComponent,
     InputTextComponent,
+    ToastComponent,
+    TextAreaComponent
   ],
   imports: [
     CommonModule,
@@ -200,6 +207,7 @@ import { InputTextComponent } from './components/input-text/input-text.component
     TreeSelectModule,
     TreeTableModule,
     VirtualScrollerModule,
+    DesignLibModule
   ],
   exports: [
     ResponsiveButtonComponent,
@@ -207,7 +215,10 @@ import { InputTextComponent } from './components/input-text/input-text.component
     SearchScreenComponent,
     SearchFieldComponent,
     CrudToolbarComponent,
+    CrudScreenComponent,
     InputTextComponent,
+    ToastComponent,
+    TextAreaComponent,
     // Módulos do PrimeNG
     CommonModule,
     InputGroupModule,

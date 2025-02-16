@@ -5,16 +5,15 @@
   styleClass="p-1 m-0"
 >
   <div class="field" *ngFor="let filter of filters">
-
-    <p-iconField iconPosition="right" >
+    <p-iconField iconPosition="right">
       <p-inputIcon styleClass="pi pi-search" />
       <input
-      type="text"
-      pInputText
-      class="w-full"
-      [(ngModel)]="filter.value"
-      [placeholder]="filter.label"
-      (ngModelChange)="onFilterChange()"
+        type="text"
+        pInputText
+        class="w-full"
+        [(ngModel)]="filter.value"
+        [placeholder]="filter.label"
+        (ngModelChange)="onFilterChange()"
       />
     </p-iconField>
   </div>
@@ -32,12 +31,12 @@
   styleClass="mt-2 p-datatable-lg p-datatable-gridlines p-datatable-striped"
 >
   <ng-template pTemplate="header" let-columns>
-    <tr *ngIf="!hasCustomBody;">
-      <th *ngFor="let col of columns"  >
+    <tr *ngIf="!hasCustomBody">
+      <th *ngFor="let col of columns">
         {{ col.label }}
       </th>
     </tr>
-    <tr *ngIf="hasCustomBody;">
+    <tr *ngIf="hasCustomBody">
       <th>
         {{ title }}
       </th>
@@ -56,7 +55,9 @@
             {{ object[col.field] | date : "dd/MM/yyyy" }}
           </span>
           <span *ngIf="isCurrency(col.type)">
-            {{ object[col.field] | currency : "BRL" : "symbol" : "1.2-2" : "pt" }}
+            {{
+              object[col.field] | currency : "BRL" : "symbol" : "1.2-2" : "pt"
+            }}
           </span>
           <span *ngIf="isSimpleType(col.type)">
             {{ object[col.field] }}
@@ -74,7 +75,12 @@
         </td>
       </ng-container>
       <ng-template #customBody>
-        <ng-container *ngTemplateOutlet="contentGridTemplate; context: { $implicit: object }"></ng-container>
+        <ng-container
+          *ngTemplateOutlet="
+            contentGridTemplate;
+            context: { $implicit: object }
+          "
+        ></ng-container>
       </ng-template>
     </tr>
   </ng-template>
@@ -118,7 +124,10 @@
     (click)="back()"
   ></button>
 
-  <div class="flex align-items-center gap-1 flex-wrap" *ngIf="mode == 'multiple'">
+  <div
+    class="flex align-items-center gap-1 flex-wrap"
+    *ngIf="mode == 'multiple'"
+  >
     <p-chip
       *ngFor="let item of value"
       [label]="item[fieldDescription]"

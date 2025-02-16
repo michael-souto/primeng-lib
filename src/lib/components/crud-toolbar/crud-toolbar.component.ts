@@ -19,10 +19,19 @@ export class CrudToolbarComponent {
   clickBack() {
     this.onClickBack.emit();
   }
+  hasBackEvent() : boolean{
+    return this.onClickBack.observed;
+  }
   clickDelete() {
     this.onClickDelete.emit();
   }
+  hasDeleteEvent() : boolean{
+    return this.onClickDelete.observed;
+  }
   clickSave() {
     this.onClickSave.emit();
+  }
+  hasSaveEvent() : boolean{
+    return this.onClickSave.observed;
   }
 }

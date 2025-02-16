@@ -60,7 +60,7 @@ export class SearchFieldComponent implements OnInit {
       });
   }
 
-  clearValue() {
+  updateValue() {
     this.valueChange.emit(this.value);
   }
 
@@ -72,6 +72,7 @@ export class SearchFieldComponent implements OnInit {
   }
 
   goToSearchScreen() {
+    this.valueChange.emit(this.value);
     this.framework.router.navigate([this.searchRoute], {
       relativeTo: this.activateRoute,
     });
