@@ -1,5 +1,7 @@
-<label [for]="id" class="font-medium text-900 font-semibold text-0" translate>{{ label }}</label
->{{ required ? "*" : "" }}
+<label [for]="id" class="font-medium text-900 font-semibold text-0" translate>{{
+  label
+}}</label
+>{{ required || invalidMessage ? "*" : "" }}
 <input
   [id]="id"
   type="text"
@@ -9,12 +11,27 @@
   [(ngModel)]="value"
   (ngModelChange)="onValueChange($event)"
   pSize="large"
-  style="height:3.5rem"
+  style="height: 3.5rem"
   [placeholder]="placeholder ?? ''"
-  [ngClass]="{
-    'ng-invalid ng-dirty': invalidCondition
-  }"
+  class="{{
+    (isNullRequired() && invalidCondition) ||
+    (isRequired() && (isSubmitted() || isNullSubmitted()) && isEmpty())
+      ? 'ng-invalid ng-dirty'
+      : ''
+  }}"
 />
-<small class="ng-invalid ng-dirty" *ngIf="invalidCondition">
-  {{ invalidMessage }}
+
+<small
+  class="ng-invalid ng-dirty"
+  *ngIf="
+    (isNullRequired() && invalidCondition) ||
+    (isRequired() && (isSubmitted() || isNullSubmitted()) && isEmpty())
+  "
+>
+  {{
+    invalidMessage ||
+      (isRequired() && (isSubmitted() || isNullSubmitted()) && isEmpty()
+        ? messageRequired
+        : "")
+  }}
 </small>

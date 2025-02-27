@@ -7,6 +7,7 @@ import {
   HostListener,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { SearchField } from 'projects/design-lib/src/lib/models/search-field';
 import { SearchFilter } from 'projects/design-lib/src/lib/models/search-filter';
 import { SearchResponseApi } from 'projects/design-lib/src/lib/models/search-response-api';
 import { FrameworkService } from 'projects/design-lib/src/lib/services/framework.service';
@@ -47,6 +48,8 @@ export class SearchFieldComponent implements OnInit {
   @Input() apiName: string;
   @Input() serverUrl: string = environment.apiURLGateway;
 
+  @Input() columnsGrid: SearchField[];
+
   search(event) {
     let fields: Array<SearchFilter> = new Array<SearchFilter>();
     let searchFieldComplete = new SearchFilter();
@@ -57,6 +60,7 @@ export class SearchFieldComponent implements OnInit {
       .search(this.serverUrl + '/' + this.apiName, this.searchId, fields)
       .subscribe((searchResponseApi: SearchResponseApi) => {
         this.listSearch = searchResponseApi['data']['content'];
+        this.columnsGrid = searchResponseApi['columns'];
       });
   }
 
@@ -65,6 +69,12 @@ export class SearchFieldComponent implements OnInit {
   }
 
   selectEntity(event) {
+    this.columnsGrid.forEach(column => {
+      if (column.type == 'list') {
+        this.value[column.field] = [];
+      }
+    });
+
     this.valueChange.emit(this.value);
     if (this.onSelectEntity.observers.length > 0) {
       this.onSelectEntity.emit(event.value);

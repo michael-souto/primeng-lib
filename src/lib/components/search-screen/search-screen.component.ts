@@ -191,7 +191,12 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
 
   select(object: any) {
     if (this.mode == 'single') {
-      this.value = object;
+      this.columnsGrid.forEach(column => {
+        if (column.type == 'list') {
+          this.value[column.field] = [];
+        }
+        this.value = object;
+      });
     } else if (this.mode == 'search') {
       this.onConfirm.emit(this.value);
     }

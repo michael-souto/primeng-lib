@@ -1,3 +1,7 @@
 .search > div > ul {
   width: calc(100% - 45px);
 }
+
+::ng-deep .search > div > ul {
+  width: calc(100% - 45px);
+}
