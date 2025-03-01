@@ -1,0 +1,111 @@
+<div class="card">
+  <div class="grid formgrid p-fluid p-2">
+    <d-input-text
+      class="field col-12"
+      label="REPORT_SESSIONS.TITLE_SESSION"
+      [(value)]="controller.sessionDetail.currentItem.title"
+      [required]="true"
+    ></d-input-text>
+
+    <d-input-text
+      class="field col-12"
+      label="REPORT_SESSIONS.DESCRIPTION_SESSION"
+      [(value)]="controller.sessionDetail.currentItem.description"
+    ></d-input-text>
+
+    <div class="field col-12 md:col-6">
+      <label class="font-medium text-900 font-semibold text-0" >Tipo</label>
+      <p-dropdown
+        [options]="[
+          { label: 'Tabela - Coluna', value: 'TABLE_COLUMN' },
+          { label: 'Gráfico - Donut', value: 'CHART_DONUT' },
+          {
+            label: 'Gráfico - Barra Horizontal',
+            value: 'CHART_HORIZONTAL_BAR'
+          },
+          { label: 'Gráfico - Barra Vertical', value: 'CHART_VERTICAL_BAR' },
+          { label: 'Gráfico - Treemap', value: 'CHART_TREEMAP' }
+        ]"
+        [(ngModel)]="controller.sessionDetail.currentItem.type"
+        placeholder="Selecione o tipo"
+        [showClear]="true"
+        appendTo="body"
+      ></p-dropdown>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <label class="font-medium text-900 font-semibold text-0" >Tamanho de exibição</label>
+      <p-inputNumber
+        [(ngModel)]="controller.sessionDetail.currentItem.displaySize"
+        [showButtons]="true"
+        [step]="10"
+        buttonLayout="horizontal"
+        spinnerMode="horizontal"
+        decrementButtonClass="p-button-danger"
+        incrementButtonClass="p-button-success"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        [min]="0"
+        [max]="100"
+        suffix="%"
+      >
+      </p-inputNumber>
+    </div>
+
+    <div class="col-12 field">
+      <label  class="font-medium text-900 font-semibold text-0" >Selecione o(s) campo(s)</label>
+
+      <p-tree
+        *ngIf="controller.sessionDetail.currentItem.type === 'TABLE_COLUMN'"
+        [(value)]="controller.fields"
+        selectionMode="checkbox"
+        [(selection)]="controller.selectedFields"
+      ></p-tree>
+
+      <p-autoComplete
+        *ngIf="controller.sessionDetail.currentItem.type !== 'TABLE_COLUMN'"
+        [(ngModel)]="controller.chartFieldSelected"
+        [suggestions]="controller.filteredChartFields"
+        [group]="true"
+        optionLabel="fieldHeader.pt"
+        (completeMethod)="controller.filterChartFields($event)"
+        dropdown="true"
+        forceSelection="true"
+        placeholder="Digite para buscar..."
+      >
+        <!-- Template para exibir os nomes dos TableViews como grupos -->
+        <ng-template let-group pTemplate="group">
+          <div class="flex align-items-center">
+            <span>{{ group.label }}</span>
+          </div>
+        </ng-template>
+        <ng-template let-field pTemplate="item">
+          <div class="flex align-items-center gap-2">
+              <div> <i class="fa-solid fa-ellipsis"></i> {{ field.fieldHeader.pt }}</div>
+          </div>
+      </ng-template>
+
+      </p-autoComplete>
+    </div>
+
+    <div footer class="col-12 flex justify-content-between">
+      <button
+        *ngIf="framework.utils.isDesktop()"
+        pButton
+        type="button"
+        icon="fas fa-chevron-left"
+        [label]="'BACK' | translate"
+        class="w-auto p-button-rounded p-button-info"
+        (click)="framework.utils.backMyBaseRoute()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        [label]="'SAVE' | translate"
+        class="w-auto p-button-success"
+        (click)="controller.sessionDetail.addItem()"
+        icon="pi pi-plus"
+      ></button>
+    </div>
+  </div>
+</div>

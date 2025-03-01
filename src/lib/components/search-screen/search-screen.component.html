@@ -5,8 +5,10 @@
   styleClass="p-1 m-0"
 >
   <div class="field" *ngFor="let filter of filters">
-    <p-iconField iconPosition="right">
-      <p-inputIcon styleClass="pi pi-search" />
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">
+        <i class="pi pi-search"></i>
+      </span>
       <input
         type="text"
         pInputText
@@ -15,7 +17,7 @@
         [placeholder]="filter.label"
         (ngModelChange)="onFilterChange()"
       />
-    </p-iconField>
+    </div>
   </div>
 </p-fieldset>
 <p-table
@@ -147,7 +149,7 @@
     pButton
     pRipple
     [label]="labelConfirm"
-    *ngIf="mode != 'search'"
+    *ngIf="mode != 'search' && mode != null"
     class="w-auto mt-3"
     type="submit"
     [disabled]="!isValid()"
@@ -158,7 +160,7 @@
     pButton
     pRipple
     [label]="labelNew"
-    *ngIf="mode == 'search'"
+    *ngIf="mode == 'search' || mode == null"
     class="w-auto mt-3"
     type="submit"
     (click)="onNewClick.emit()"

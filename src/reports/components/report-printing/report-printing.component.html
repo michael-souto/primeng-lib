@@ -1,0 +1,195 @@
+<div class="card">
+  <div class="mb-3">
+    <p-panel [toggleable]="true">
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2">
+          <i class="fa-solid fa-chart-pie text-6xl"></i>
+
+          <span class="font-bold">
+            {{ relatorioCustomizado?.name }}
+          </span>
+        </div>
+      </ng-template>
+
+      <div class="p-fluid formgrid grid">
+        <div
+          class="field col-12"
+          *ngFor="let filtroRelatorio of relatorioCustomizado?.filters"
+        >
+          <label>{{ filtroRelatorio.filter?.filterDescription.pt }}</label>
+          <div class="w-full" *ngIf="filtroRelatorio.filter?.type === 'TEXT'">
+            <input
+              class="w-full"
+              pInputText
+              type="text"
+              [(ngModel)]="filtroRelatorio.value"
+            />
+          </div>
+          <div class="flex justify-content-between align-items-center">
+            <div class="w-full">
+              <p-calendar
+                *ngIf="filtroRelatorio.filter?.type === 'DATE'"
+                [(ngModel)]="filtroRelatorio.valueFrom"
+                [showIcon]="true"
+                [showButtonBar]="true"
+                dateFormat="dd/mm/yy"
+                appendTo="body"
+              ></p-calendar>
+              <p-inputNumber
+                *ngIf="filtroRelatorio.filter?.type === 'INTEGER'"
+                [(ngModel)]="filtroRelatorio.valueFrom"
+              >
+              </p-inputNumber>
+            </div>
+            <span
+              *ngIf="['INTEGER', 'DATE'].includes(filtroRelatorio.filter?.type)"
+              class="ml-3 mr-3"
+            >
+              Até
+            </span>
+            <div class="w-full">
+              <p-calendar
+                *ngIf="filtroRelatorio.filter?.type === 'DATE'"
+                [(ngModel)]="filtroRelatorio.valueTo"
+                [showIcon]="true"
+                [showButtonBar]="true"
+                dateFormat="dd/mm/yy"
+                appendTo="body"
+              ></p-calendar>
+              <p-inputNumber
+                *ngIf="filtroRelatorio.filter?.type === 'INTEGER'"
+                [(ngModel)]="filtroRelatorio.valueTo"
+              >
+              </p-inputNumber>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template pTemplate="footer">
+        <div
+          class="flex flex-wrap align-items-center justify-content-between gap-3"
+        >
+          <div class="flex align-items-center gap-2">
+            <button
+              *ngIf="framework.utils.isDesktop()"
+              pButton
+              pRipple
+              icon="fas fa-chevron-left"
+              [raised]="true"
+              label="Voltar"
+              class="w-auto mr-4 mt-4"
+              (click)="goList()"
+            ></button>
+          </div>
+          <span class="p-text-secondary">
+            <p-button
+              label="Emitir relatório"
+              styleClass="p-button-success"
+              (onClick)="emit()"
+              icon="fas fa-print"
+              iconPos="left"
+            >
+            </p-button>
+          </span>
+        </div>
+      </ng-template>
+    </p-panel>
+  </div>
+
+  <div class="grid" #pdfContent id="">
+    <div
+      *ngFor="let session of report?.sessions"
+      class="{{ getNumberCols(session) }}"
+    >
+      <p-table
+        *ngIf="session.type === 'TABLE_COLUMN'"
+        [columns]="session?.headers"
+        [resizableColumns]="true"
+        [value]="session?.data"
+        styleClass="p-datatable-gridlines"
+        columnResizeMode="expand"
+        [tableStyle]="{ width: '100%' }"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex justify-content-between align-content-center">
+            <h4 class="m-0">{{ session.title }}</h4>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{ col.header }}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              <span *ngIf="col.type === 'DATE'">{{
+                rowData[col.field] | date : "dd/MM/yyyy"
+              }}</span>
+              <span *ngIf="col.type !== 'DATE'">{{ rowData[col.field] }}</span>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          Total de {{ session.data.length }} registros
+        </ng-template>
+      </p-table>
+
+      <d-chart-radial-bar
+        *ngIf="session.type === 'CHART_DONUT'"
+        [title]="session.title"
+        [data]="getItemDashboardBySession(session.data)"
+      ></d-chart-radial-bar>
+
+      <d-chart-column
+        *ngIf="session.type === 'CHART_VERTICAL_BAR'"
+        [title]="session.title"
+        [data]="getItemDashboardBySession(session.data)"
+      >
+      </d-chart-column>
+
+      <d-chart-bar
+        *ngIf="session.type === 'CHART_HORIZONTAL_BAR'"
+        [title]="session.title"
+        [data]="getItemDashboardBySession(session.data)"
+      >
+      </d-chart-bar>
+
+      <d-chart-treemap
+        *ngIf="session.type === 'CHART_TREEMAP'"
+        [title]="session.title"
+        [data]="getItemDashboardBySession(session.data)"
+      >
+      </d-chart-treemap>
+    </div>
+  </div>
+
+  <p-toolbar *ngIf="report?.sessions.length > 0">
+    <div class="p-toolbar-group-start">
+      <button
+        *ngIf="framework.utils.isDesktop()"
+        pButton
+        pRipple
+        icon="fas fa-chevron-left"
+        [raised]="true"
+        label="Voltar"
+        class="w-auto mr-4 mt-4"
+        (click)="goList()"
+      ></button>
+    </div>
+    <div class="p-toolbar-group-center"></div>
+    <div class="p-toolbar-group-end">
+      <p-button
+        type="button"
+        icon="fa-solid fa-file-arrow-down"
+        label="PDF"
+        styleClass="p-button-success"
+        (click)="downloadPDF()"
+      ></p-button>
+    </div>
+  </p-toolbar>
+</div>

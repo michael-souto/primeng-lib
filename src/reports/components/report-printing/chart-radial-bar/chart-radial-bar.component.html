@@ -1,0 +1,22 @@
+<div class="card">
+  <div class="card-header border-0">
+    <div class="separator"></div>
+    <div class="mr-auto">
+      <h4 class="text-black fs-20 mb-1">{{ title }}</h4>
+      <p class="fs-14 mb-0">Total de <b>{{ total }} {{ title }}</b> no perído</p>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [dataLabels]="chartOptions.dataLabels"
+      [plotOptions]="chartOptions.plotOptions"
+      [labels]="chartOptions.labels"
+      [tooltip]="chartOptions.tooltip"
+      [responsive]="chartOptions.responsive"
+      [legend]="chartOptions.legend"
+    ></apx-chart>
+  </div>
+</div>

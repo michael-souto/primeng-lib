@@ -1,0 +1,185 @@
+<d-crud-screen
+  [title]="'CUSTOM_REPORTS.TITLE'"
+  [description]="'CUSTOM_REPORTS.DESCRIPTION'"
+  [entityName]="'CUSTOM_REPORTS.CUSTOM_REPORT'"
+  baseRouterLink="/reports"
+  [(service)]="service"
+  [(validator)]="validator"
+  [(controller)]="controller"
+  [(framework)]="framework"
+  [(activateRoute)]="activateRoute"
+  (onBeforeSave)="beforeSave()"
+  (onAfterSave)="afterSave($event)"
+  (onAfterInitRegister)="onAfterInitRegister()"
+>
+  <ng-template #contentTemplate let-entity let-submitted="submitted">
+    <d-input-text
+      class="field col-12"
+      id="email"
+      label="CUSTOM_REPORTS.NAME"
+      [(value)]="entity.name"
+      [invalidCondition]="submitted && !validator.fields.name.isValid"
+      [invalidMessage]="validator.fields.name.invalidMessage"
+    ></d-input-text>
+
+    <d-search-field
+      class="field col-12"
+      label="CUSTOM_REPORTS.VIEW"
+      searchId="view"
+      apiName="report-core-api"
+      fieldDescription="name"
+      searchRoute="views"
+      [activateRoute]="activateRoute"
+      [required]="true"
+      [(value)]="controller.viewSelected"
+      [dropdown]="true"
+      (onSelectEntity)="onSelectView($event)"
+    ></d-search-field>
+
+    <div class="field col-12">
+      <label>Tipo</label>
+      <p-dropdown
+        [options]="[
+          { label: 'Tabelado', value: 'TABULAR' },
+          { label: 'Dinâmico', value: 'DYNAMIC' }
+        ]"
+        [(ngModel)]="entity.reportType"
+        placeholder="Selecione o tipo"
+        [showClear]="true"
+      ></p-dropdown>
+    </div>
+
+    <div class="col-12 field-checkbox">
+      <p-checkbox
+        [(ngModel)]="entity.restricted"
+        binary="true"
+        inputId="restricted"
+      ></p-checkbox>
+      <label for="restricted" translate>CUSTOM_REPORTS.RESTRICTED</label>
+    </div>
+
+    <d-search-field
+      *ngIf="entity.restricted"
+      class="field col-12"
+      label="USERS.PROFILES"
+      searchId="profile"
+      apiName="authorization-server"
+      multiple="true"
+      fieldDescription="name"
+      [(value)]="entity.restrictedAccessProfiles"
+      [invalidCondition]="submitted && !validator.fields.restrictedAccessProfiles.isValid"
+      [invalidMessage]="validator.fields.restrictedAccessProfiles.invalidMessage"
+      [dropdown]="true"
+    >
+    </d-search-field>
+
+    <div class="field col-12">
+      <p-table
+        [value]="entity.sessions"
+        (onRowReorder)="onReorderSessions($event)"
+        [metaKeySelection]="false"
+        dataKey="ordering"
+        [reorderableRow]="true"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex justify-content-between align-items-center">
+            <div translate>CUSTOM_REPORTS.SESSIONS</div>
+            <button
+              pButton
+              pRipple
+              type="button"
+              style="width: 120px"
+              label="Adicionar"
+              class="p-button-outlined p-button-rounded"
+              icon="fas fa-plus"
+              (click)="controller.newSession()"
+            ></button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="body" let-e let-index="rowIndex">
+          <tr [pSelectableRow]="rowData" [pReorderableRow]="index">
+            <td>
+              <span pReorderableRowHandle *ngIf="e.title" class="block"
+                ><b>Title:</b> {{ e.title }} # {{ e.ordering }}</span
+              >
+              <span pReorderableRowHandle *ngIf="e.description" class="block"
+                ><b>Description:</b> {{ e.description }}</span
+              >
+            </td>
+            <td style="width: 55px">
+              <button
+                pButton
+                type="button"
+                (click)="controller.deleteSession(e)"
+                class="ui-button-rounded"
+                icon="fa fa-trash"
+              ></button>
+            </td>
+            <td style="width: 55px">
+              <button
+                pButton
+                type="button"
+                (click)="controller.editSession(e)"
+                class="ui-button-rounded"
+                icon="fas fa-cog"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="field col-12">
+      <p-table [value]="entity.filters">
+        <ng-template pTemplate="caption">
+          <div class="flex p-2 align-items-center gap-3 w-full">
+            <span class="text-900 font-semibold block">
+              {{ "CUSTOM_REPORTS.FILTERS" | translate }}
+            </span>
+
+            <div class="flex w-full">
+              <p-dropdown
+                [options]="entity.view?.filters"
+                [(ngModel)]="controller.filterSelected"
+                optionLabel="filterDescription.pt"
+                [filter]="true"
+                filterBy="filterDescription.pt"
+                [showClear]="true"
+                placeholder="Selecione o filtro"
+                appendTo="body"
+                class="w-full ml-3"
+              ></p-dropdown>
+
+              <button
+                type="button"
+                pButton
+                icon="fa-solid fa-arrow-turn-down"
+                class="p-button-warning"
+                (click)="controller.addFilter()"
+              ></button>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-e>
+          <tr>
+            <td>
+              <span class="block"
+                >{{ e.filter?.filterDescription[framework.language] }}</span
+              >
+            </td>
+            <td style="width: 55px">
+              <button
+                pButton
+                type="button"
+                (click)="controller.deleteFilter(e)"
+                class="ui-button-rounded"
+                icon="fa fa-trash"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+</d-crud-screen>

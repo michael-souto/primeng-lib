@@ -1,0 +1,45 @@
+<d-search-screen
+  searchId="custom-report"
+  (onConfirm)="edit($event)"
+  apiName="report-core-api"
+  mode="search"
+  (onNewClick)="new()"
+  [mode]="null"
+>
+  <ng-template #contentGridTemplate let-object>
+    <td>
+      <div class="flex align-items-center justify-content-between w-full">
+        <div class="text-center mr-4 border-circle">
+          <i class="fa-solid fa-chart-pie text-6xl"></i>
+        </div>
+
+        <div class="text-left w-full">
+          <span class="block font-medium text-900 mb-2">
+            {{ object.name }}
+          </span>
+        </div>
+
+        <div
+          class="flex align-items-center justify-content-between"
+          style="width: 170px"
+        >
+          <button
+            pButton
+            type="button"
+            icon="fa-solid fa-screwdriver-wrench"
+            class="p-button-primary"
+            (click)="edit(object)"
+          ></button>
+          <button
+            pButton
+            type="button"
+            icon="fa-solid fa-print"
+            [label]="'PRINT' | translate"
+            class="ml-3 p-button-success"
+            (click)="print(object.id)"
+          ></button>
+        </div>
+      </div>
+    </td>
+  </ng-template>
+</d-search-screen>
