@@ -68,6 +68,11 @@ export class SearchFieldComponent implements OnInit {
     this.valueChange.emit(this.value);
   }
 
+  clearValue() {
+    this.valueChange.emit(null);
+    this.onSelectEntity.emit(null);
+  }
+
   selectEntity(event) {
     this.columnsGrid.forEach(column => {
       if (column.type == 'list') {

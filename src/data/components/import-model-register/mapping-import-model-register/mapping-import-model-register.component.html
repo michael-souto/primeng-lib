@@ -1,0 +1,91 @@
+<div class="card">
+  <div class="grid formgrid p-fluid p-2">
+    <div class="field col-12 lg:col-6">
+      <label for="columnIndex" class="font-medium text-900 font-semibold text-0" translate>MAPPING.COLUMN_INDEX</label>
+      <p-autoComplete
+        id="columnIndex"
+        [(ngModel)]="controller.mappingDetail.currentItem.columnIndex"
+        [dropdown]="true"
+        [suggestions]="filteredLetters"
+        (completeMethod)="filterLetter($event)"
+      />
+    </div>
+
+    <div class="field col-12 lg:col-6">
+      <label for="property" class="font-medium text-900 font-semibold text-0" translate>MAPPING.PROPERTY</label>
+      <p-autoComplete
+        id="property"
+        [dropdown]="true"
+        [required]="true"
+        appendTo="body"
+        [(ngModel)]="controller.mappingDetail.currentItem.property"
+        [suggestions]="controller.filteredPropertiesOfEntitySelected"
+        (completeMethod)="controller.searchProperty($event)"
+        optionLabel="propertyName.pt"
+      >
+        <ng-template pTemplate="selectedItem" let-propriedade>
+          <div>
+            <div>
+              {{ propriedade.propertyName.pt }} ({{
+                propriedade.entityName.pt
+              }})
+            </div>
+          </div>
+        </ng-template>
+        <ng-template let-propriedade pTemplate="item">
+          <div>
+            <div>
+              {{ propriedade.propertyName.pt }} ({{
+                propriedade.entityName.pt
+              }})
+            </div>
+          </div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+
+    <div class="field col-12">
+      <label for="tipo" class="font-medium text-900 font-semibold text-0" translate>MAPPING.FUNCTIONS</label>
+      <p-multiSelect
+        [options]="functionsOptions"
+        [(ngModel)]="controller.mappingDetail.currentItem.functions"
+        placeholder="Marque as opções desejadas"
+        display="chip"
+        [showClear]="true"
+        appendTo="body"
+      ></p-multiSelect>
+    </div>
+
+    <d-input-text
+      class="field col-12"
+      label="MAPPING.CONFIGURATION"
+      [(ngModel)]="controller.mappingDetail.currentItem.configuration"
+      *ngIf="
+        controller.mappingDetail.currentItem.functions?.indexOf(
+          'APPLY_FORMATTING'
+        ) >= 0 &&
+        controller.mappingDetail.currentItem.property?.type != 'RELATED_ENTITY'
+      "
+    />
+
+    <div footer class="col-12 mt-3 flex justify-content-between">
+      <button
+        *ngIf="framework.utils.isDesktop()"
+        pButton
+        type="button"
+        icon="fas fa-chevron-left"
+        [label]="'BACK' | translate"
+        class="w-auto p-button-rounded p-button-info"
+        (click)="framework.utils.backMyBaseRoute()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        [label]="'SAVE' | translate"
+        class="w-auto p-button-success"
+        (click)="controller.mappingDetail.saveItem()"
+        icon="pi pi-plus"
+      ></button>
+    </div>
+  </div>
+</div>

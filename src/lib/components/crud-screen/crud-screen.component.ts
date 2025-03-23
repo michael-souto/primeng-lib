@@ -29,7 +29,7 @@ export class CrudScreenComponent<T> extends RegisterComponent<T> implements OnIn
   @Output() onAfterSaveError = new EventEmitter<ResponseNotification<any>>();
   @Output() onAfterDeleteSucess = new EventEmitter<ResponseNotification<any>>();
   @Output() onAfterDeleteError = new EventEmitter<ResponseNotification<any>>();
-
+  @Output() onBeforeInitializeEntity = new EventEmitter<T>();
   @ContentChild('contentTemplate') contentTemplate: TemplateRef<any>;
 
   override ngOnInit(): void {
@@ -43,6 +43,12 @@ export class CrudScreenComponent<T> extends RegisterComponent<T> implements OnIn
   override beforeInitRegister() {
     if (this.onBeforeInitRegister) {
       this.onBeforeInitRegister.emit();
+    }
+  }
+
+  override beforeInitializeEntity(entity: T) {
+    if (this.onBeforeInitializeEntity) {
+      this.onBeforeInitializeEntity.emit(entity);
     }
   }
 

@@ -38,7 +38,7 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
         this.activateRoute
       );
       this.filterDetail.currentItem.filter = this.filterSelected;
-      this.filterDetail.addItem();
+      this.filterDetail.saveItem();
     }
   }
 
@@ -54,7 +54,9 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
 
   afterAddSession(session: ReportSession) {
     console.log("afterAddSession", this.selectedFields);
-    session.ordering = this.object.sessions.length + 1;
+    if (!session.ordering) {
+      session.ordering = this.object.sessions.length + 1;
+    }
     if (session.type === "TABLE_COLUMN") {
     session.fields = this.selectedFields
       .filter((selectedField) => selectedField.data?.id)
@@ -62,9 +64,11 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
         id: null,
         field: selectedField.data,
         tableView: selectedField.data.tableView,
-        columnNumber: 0,
+        columnNumber: selectedField.data.columnNumber,
       }));
-      session.ordering = this.object.sessions.length + 1;
+      if (!session.ordering) {
+        session.ordering = this.object.sessions.length + 1;
+      }
     } else {
       if (this.chartFieldSelected) {
         session.fields = [
@@ -72,7 +76,7 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
             id: null,
             field: { ...this.chartFieldSelected }, // Garante que pegamos os dados corretamente
             tableView: this.chartFieldSelected.tableView, // Mantém a referência ao TableView
-            columnNumber: 0,
+            columnNumber: this.selectedFields.findIndex((f) => f.data.id === this.chartFieldSelected.id) + 1,
           }
         ];
       } else {
@@ -154,7 +158,7 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
           .map((f) => {
             const treeNodeField: TreeNode<any> = {
               label: f.fieldHeader[this.framework.language],
-              data: f,
+              data: { ...f, columnNumber: 0 },
               icon: "",
               selectable: true,
               key: f.id.toString(),
@@ -176,7 +180,7 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
     this.selectedFields = session.fields.map((f) => {
       const treeNodeField: TreeNode<any> = {
         label: f.field?.fieldHeader[this.framework.language],
-        data: f.field,
+        data: { ...f.field, columnNumber: f.columnNumber },
         icon: "",
         selectable: true,
         key: f.field.id.toString(),
@@ -184,6 +188,7 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
       treeNodeField.data.tableView = f.tableView;
       return treeNodeField;
     });
+    this.selectedFields.sort((a, b) => a.data.columnNumber - b.data.columnNumber);
   }
 
   filterChartFields(event: any) {
@@ -205,5 +210,21 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
     }
 
     this.filteredChartFields = filteredGroups;
+  }
+
+  orderingSelecterFields() {
+    this.selectedFields.forEach((f, index) => {
+      f.data.columnNumber = index + 1;
+    });
+  }
+
+  onNodeSelect(event: any) {
+    this.selectedFields = this.selectedFields.filter((f) => f.data);
+    this.orderingSelecterFields();
+  }
+
+  onNodeUnselect(event: any) {
+    this.selectedFields = this.selectedFields.filter((f) => f.data);
+    this.orderingSelecterFields();
   }
 }

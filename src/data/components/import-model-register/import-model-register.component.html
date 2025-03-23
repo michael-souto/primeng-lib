@@ -1,0 +1,128 @@
+<d-crud-screen
+  #crudScreen
+  [title]="'IMPORT_MODELS.TITLE'"
+  [description]="'IMPORT_MODELS.DESCRIPTION'"
+  [entityName]="'IMPORT_MODELS.IMPORT_MODEL'"
+  baseRouterLink="/import-models"
+  [(service)]="service"
+  [(validator)]="validator"
+  [(controller)]="controller"
+  [(framework)]="framework"
+  [(activateRoute)]="activateRoute"
+  (onBeforeSave)="beforeSave()"
+  (onAfterSave)="afterSave($event)"
+  (onAfterInitRegister)="onAfterInitRegister()"
+  (onBeforeInitializeEntity)="onBeforeInitializeEntity($event)"
+>
+  <ng-template #contentTemplate let-entity let-submitted="submitted">
+    <d-input-text
+      class="field col-12"
+      id="email"
+      label="IMPORT_MODELS.NAME"
+      [(value)]="entity.name"
+      [invalidCondition]="submitted && !validator.fields.name.isValid"
+      [invalidMessage]="validator.fields.name.invalidMessage"
+    ></d-input-text>
+
+    <d-input-text
+      class="field col-12"
+      id="email"
+      label="IMPORT_MODELS.DESCRIPTION_MODEL"
+      [(value)]="entity.description"
+      [invalidCondition]="submitted && !validator.fields.description.isValid"
+      [invalidMessage]="validator.fields.description.invalidMessage"
+    ></d-input-text>
+
+    <d-search-field
+      class="field col-12"
+      label="IMPORT_MODELS.ENTITY"
+      [(value)]="controller.entitySelected"
+      [invalidCondition]="submitted && !validator.fields.entity.isValid"
+      [invalidMessage]="validator.fields.entity.invalidMessage"
+      searchId="entity"
+      apiName="data-core-api"
+      fieldDescription="name"
+      [activateRoute]="activateRoute"
+      [dropdown]="true"
+      (onSelectEntity)="onSelectEntity($event)"
+    ></d-search-field>
+
+    <div class="field col-12">
+      <label class="font-medium text-900 font-semibold text-0" translate
+        >IMPORT_MODELS.OPERATION</label
+      >
+      <p-dropdown
+        appendTo="body"
+        [options]="operations"
+        [(ngModel)]="entity.operation"
+        [showClear]="true"
+      ></p-dropdown>
+    </div>
+
+    <div class="field col-12">
+      <p-table
+        [value]="entity.mappings"
+
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex justify-content-between align-items-center">
+            <div translate>IMPORT_MODELS.MAPPINGS</div>
+            <button
+              pButton
+              pRipple
+              type="button"
+              style="width: 120px"
+              label="Adicionar"
+              class="p-button-outlined p-button-rounded"
+              icon="fas fa-plus"
+              (click)="controller.newMapping()"
+            ></button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="body" let-e let-index="rowIndex">
+          <tr>
+            <td>
+              <span *ngIf="e.property" class="block"
+                > {{'MAPPING.PROPERTY' | translate}}: <b>{{ e.property.propertyName[framework.language] }} ({{e.property.entityName ? e.property.entityName[framework.language] : ''}})</b>
+              </span>
+              <span *ngIf="e.columnIndex" class="block mt-2"> {{'MAPPING.COLUMN_INDEX' | translate}}:  <b> {{
+               e.columnIndex
+              }}</b></span>
+              <span *ngIf="e.functions" class="block mt-2">
+                <p-tag
+                  *ngFor="let function of e.functions.toString().split(',')"
+                  [rounded]="true"
+                  severity="warning"
+                  class="px-1"
+                >
+                  <div class="flex align-items-center gap-2">
+                    <i class="fa-solid fa-wrench"></i>
+                    {{ 'FUNCTIONS.' + function | translate }}
+                  </div>
+                </p-tag>
+              </span>
+            </td>
+            <td style="width: 55px">
+              <button
+                pButton
+                type="button"
+                (click)="controller.deleteMapping(e)"
+                class="ui-button-rounded"
+                icon="fa fa-trash"
+              ></button>
+            </td>
+            <td style="width: 55px">
+              <button
+                pButton
+                type="button"
+                (click)="controller.editMapping(e)"
+                class="ui-button-rounded"
+                icon="fas fa-cog"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+</d-crud-screen>

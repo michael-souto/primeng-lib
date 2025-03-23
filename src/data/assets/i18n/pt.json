@@ -1,0 +1,55 @@
+{
+  "IMPORT": "Importar",
+  "IMPORT_MODELS": {
+    "IMPORT_MODEL": "Modelo de importação",
+    "TITLE": "Modelo de importação",
+    "DESCRIPTION": "Modelo de importação de dados de arquivos externos para o sistema",
+    "NAME": "Nome",
+    "DESCRIPTION_MODEL": "Descrição",
+    "ENTITY": "Alvo de importação",
+    "MAPPINGS": "Mapeamentos",
+    "OPERATION": "Operação"
+  },
+
+  "MAPPING": {
+    "TITLE": "Mapeamento",
+    "DESCRIPTION": "Mapeamento",
+    "COLUMN_INDEX": "Coluna Excel",
+    "PROPERTY": "Propriedade alvo",
+    "FUNCTIONS": "Funções",
+    "FORMATTING_EXPRESSION": "Expressão de formatação",
+    "CONFIGURATION": "Configuração",
+    "ENTITY_RELATIONSHIPS": "Relacionamentos de entidade"
+  },
+
+  "ENTITY_RELATIONSHIPS": {
+    "TITLE": "Relacionamento de entidade",
+    "DESCRIPTION": "Relacionamento de entidade",
+    "IMPORTED_INFORMATION": "Informação importada",
+    "CORRESPONDING_ENTITY_ID": "ID da entidade correspondente",
+    "CORRESPONDING_ENTITY_CODE": "Código da entidade correspondente",
+    "CORRESPONDING_ENTITY_DESCRIPTION": "Descrição da entidade correspondente"
+  },
+
+  "OPERATIONS": {
+    "CREATE": "Criar",
+    "UPDATE": "Atualizar",
+    "CREATE_OR_UPDATE": "Criar ou atualizar"
+  },
+
+  "FUNCTIONS": {
+    "REMOVE_FORMATTING": "Remover formatação",
+    "REMOVE_LEFT_CHARACTERS": "Remover caracteres à esquerda",
+    "REMOVE_RIGHT_CHARACTERS": "Remover caracteres à direita",
+    "TRIM_SIDE_WHITESPACE": "Remover espaços em branco à esquerda e à direita",
+    "REMOVE_ALL_WHITESPACE": "Remover todos os espaços em branco",
+    "TO_UPPERCASE": "Converter para maiúsculas",
+    "TO_LOWERCASE": "Converter para minúsculas",
+    "CAPITALIZE_EACH_WORD": "Capitalizar cada palavra",
+    "APPLY_FORMATTING": "Aplicar formatação",
+    "DYNAMIC_INFORMATION": "Informação dinâmica",
+    "FETCH_INFORMATION_FROM_ANOTHER_COLUMN_IF_EMPTY": "Buscar informação de outra coluna se estiver vazia",
+    "COPY_PART_OF_TEXT": "Copiar parte do texto",
+    "COPY_PART_OF_TEXT_FROM_MULTIPLE_COLUMNS": "Copiar parte do texto de múltiplas colunas"
+  }
+}

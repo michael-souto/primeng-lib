@@ -14,7 +14,7 @@
     ></d-input-text>
 
     <div class="field col-12 md:col-6">
-      <label class="font-medium text-900 font-semibold text-0" >Tipo</label>
+      <label class="font-medium text-900 font-semibold text-0">Tipo</label>
       <p-dropdown
         [options]="[
           { label: 'Tabela - Coluna', value: 'TABLE_COLUMN' },
@@ -34,7 +34,9 @@
     </div>
 
     <div class="field col-12 md:col-6">
-      <label class="font-medium text-900 font-semibold text-0" >Tamanho de exibição</label>
+      <label class="font-medium text-900 font-semibold text-0"
+        >Tamanho de exibição</label
+      >
       <p-inputNumber
         [(ngModel)]="controller.sessionDetail.currentItem.displaySize"
         [showButtons]="true"
@@ -52,14 +54,19 @@
       </p-inputNumber>
     </div>
 
-    <div class="col-12 field">
-      <label  class="font-medium text-900 font-semibold text-0" >Selecione o(s) campo(s)</label>
+    <div class="col-12 md:col-6 field">
+      <label class="font-medium text-900 font-semibold text-0"
+        >Selecione o(s) campo(s)</label
+      >
 
       <p-tree
         *ngIf="controller.sessionDetail.currentItem.type === 'TABLE_COLUMN'"
         [(value)]="controller.fields"
         selectionMode="checkbox"
         [(selection)]="controller.selectedFields"
+        [filter]="true"
+        (onNodeSelect)="controller.onNodeSelect($event)"
+        (onNodeUnselect)="controller.onNodeUnselect($event)"
       ></p-tree>
 
       <p-autoComplete
@@ -81,11 +88,45 @@
         </ng-template>
         <ng-template let-field pTemplate="item">
           <div class="flex align-items-center gap-2">
-              <div> <i class="fa-solid fa-ellipsis"></i> {{ field.fieldHeader.pt }}</div>
+            <div>
+              <i class="fa-solid fa-ellipsis"></i> {{ field.fieldHeader.pt }}
+            </div>
           </div>
-      </ng-template>
-
+        </ng-template>
       </p-autoComplete>
+    </div>
+
+    <div
+      class="col-12 md:col-6 field"
+      *ngIf="controller.sessionDetail.currentItem.type === 'TABLE_COLUMN'"
+    >
+      <label class="font-medium text-900 font-semibold text-0">Ordenação</label>
+      <p-orderList
+        [value]="controller.selectedFields"
+        [header]="'REPORT_SESSIONS.ORDERING' | translate"
+        filterBy="fieldHeader.pt"
+        filterPlaceholder="Digite para buscar..."
+        (onReorder)="controller.orderingSelecterFields()"
+        dragdrop="true"
+      >
+        <ng-template let-field pTemplate="item">
+          <div class="flex flex-wrap p-2 align-items-center gap-3">
+            <i
+              class="fa-solid fa-ticket text-4xl"
+            ></i>
+
+            <div class="flex-1 flex flex-column gap-2">
+              <span class="font-bold">{{ field.data?.fieldHeader?.pt }}</span>
+              <div class="flex align-items-center gap-2">
+                <span>{{ field.data?.tableView?.additionalDescription?.pt }}</span>
+              </div>
+            </div>
+            <span class="font-bold text-900">
+              #{{ field.data?.columnNumber ?? 0 }}
+            </span>
+          </div>
+        </ng-template>
+      </p-orderList>
     </div>
 
     <div footer class="col-12 flex justify-content-between">
@@ -103,7 +144,7 @@
         type="button"
         [label]="'SAVE' | translate"
         class="w-auto p-button-success"
-        (click)="controller.sessionDetail.addItem()"
+        (click)="controller.sessionDetail.saveItem()"
         icon="pi pi-plus"
       ></button>
     </div>

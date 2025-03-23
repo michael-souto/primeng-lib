@@ -1,0 +1,31 @@
+.p-treenode-label {
+  width: 100% !important;
+}
+
+.p-tree {
+  padding: 0.25rem;
+}
+
+.p-dropdown {
+  height: 3.5rem;
+  padding: 0.3rem;
+}
+
+.p-inputgroup > p-autocomplete > span{
+  width: 100% !important;
+}
+.p-inputgroup > p-autocomplete > div {
+  width: 100% !important;
+}
+.p-inputgroup > p-autocomplete > div > input {
+  width: calc(100% - 45px);
+}
+
+.p-autocomplete-input {
+  height: 3.5rem;
+}
+
+.p-multiselect .p-multiselect-label-container {
+  height: 3.5rem;
+  padding: 0.3rem;
+}

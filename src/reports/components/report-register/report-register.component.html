@@ -99,12 +99,10 @@
         <ng-template pTemplate="body" let-e let-index="rowIndex">
           <tr [pSelectableRow]="rowData" [pReorderableRow]="index">
             <td>
-              <span pReorderableRowHandle *ngIf="e.title" class="block"
-                ><b>Title:</b> {{ e.title }} # {{ e.ordering }}</span
-              >
+              <b pReorderableRowHandle *ngIf="e.title" class="block"
+                >#{{ e.ordering }} - {{ e.title }} </b>
               <span pReorderableRowHandle *ngIf="e.description" class="block"
-                ><b>Description:</b> {{ e.description }}</span
-              >
+                >{{ e.description }}</span>
             </td>
             <td style="width: 55px">
               <button
