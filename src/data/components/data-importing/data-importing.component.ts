@@ -33,10 +33,7 @@ export class DataImportingComponent implements OnInit {
 
   private _properties: Property[] = [];
 
-  ngOnInit(): void {
-    if (!environment.production) {
-      console.log("KKK");
-    }
+  async ngOnInit() {
     const id: number = this.route.snapshot.params["id"];
     if (id != null) {
       this.service.findById(id.toString()).subscribe((x: ImportModel) => {
@@ -45,11 +42,13 @@ export class DataImportingComponent implements OnInit {
         this._properties = x.mappings.map((x) => x.property);
       });
     }
+    this.titleImport = this.frameworkService.utils.findTextTranslated("TITLE_IMPORT");
   }
+
   private file: any;
-  processedDataTreeNode!: TreeNode[];
   processedData: any[];
   progressImport: number = 0;
+  titleImport: string = "Importação de dados";
 
   processData() {
     this.service
@@ -57,11 +56,11 @@ export class DataImportingComponent implements OnInit {
       .subscribe((responseAPI: ResponseNotification<any>) => {
         this.messageWindow.showTitle(
           responseAPI.messages,
-          null,
-          "Importação de dados"
+          '',
+          this.titleImport
         );
         this.processedData = responseAPI.data;
-        this.processedDataTreeNode = this.buildTreeNodes(responseAPI.data);
+        this.cdRef.detectChanges();
       });
   }
 
@@ -74,11 +73,12 @@ export class DataImportingComponent implements OnInit {
       );
 
     const totalItems = this.processedData.length;
-    const batchSize = 100; // ajuste este valor conforme desejado
+    const batchSize = 100;
     const totalBatches = Math.ceil(totalItems / batchSize);
 
     let completedBatches = 0;
     this.progressImport = 0;
+    let messages: Message[] = [];
 
     const sendBatch = (batchIndex: number) => {
       const start = batchIndex * batchSize;
@@ -97,32 +97,40 @@ export class DataImportingComponent implements OnInit {
           this.progressImport = Math.round(
             (completedBatches / totalBatches) * 100
           );
+
+          // Acumula mensagens a cada resposta
+          messages.push(
+            ...this.removeDuplicatesAndModifyDescription(responseAPI.messages)
+          );
+
           this.cdRef.detectChanges();
+
           if (completedBatches === totalBatches) {
+            // Todas as requisições concluídas
             this.messageWindow.showTitle(
-              this.removeDuplicatesAndModifyDescription(responseAPI.messages),
-              !FunctionsService.hasErrors(responseAPI.messages)
-                ? "/import-models"
-                : null,
-              "Importação de dados"
+              messages,
+              FunctionsService.hasErrors(messages) ? "" : "/import-models",
+              this.titleImport
             );
           } else {
             sendBatch(batchIndex + 1);
           }
         },
         (error) => {
-          this.messageWindow.showTitle(
-            [
-              {
-                code: "error",
-                description: "Erro durante a importação.",
-                type: MessageType.Error,
-              },
-            ],
-            null,
-            error
-          );
+          completedBatches++;
+          messages.push({
+            code: "error",
+            description: "Erro durante a importação: " + error.message,
+            type: MessageType.Error,
+          });
+
           this.cdRef.detectChanges();
+
+          if (completedBatches === totalBatches) {
+            this.messageWindow.showTitle(messages, null, this.titleImport);
+          } else {
+            sendBatch(batchIndex + 1);
+          }
         }
       );
     };
@@ -141,83 +149,6 @@ export class DataImportingComponent implements OnInit {
 
   cancel() {
     this.processedData = [];
-    this.processedDataTreeNode = [];
-  }
-
-  buildTreeNodes(data: any[]): TreeNode[] {
-    return data.map((item) => {
-      const node: TreeNode = {
-        label: "",
-        children: [],
-      };
-
-      for (const key in item) {
-        if (item.hasOwnProperty(key)) {
-          const value = item[key];
-
-          if (Array.isArray(value)) {
-            const childNode: TreeNode = {
-              label:
-                this._properties.find((x) => x.internalName == key)
-                  ?.propertyName[this.frameworkService.language] || key,
-              children: this.buildArrayNodes(value),
-            };
-            node.children.push(childNode);
-          } else if (typeof value === "object" && value !== null) {
-            const childNode: TreeNode = {
-              label: this.extractLabel(key, value),
-              children: this.buildTreeNodes([value]),
-            };
-            node.children.push(childNode);
-          } else if (value !== null) {
-            node.label += `${
-              this._properties.find((x) => x.internalName == key)?.propertyName[
-                this.frameworkService.language
-              ] || key
-            }: ${this.formatValue(value)}  |  `;
-          }
-        }
-      }
-
-      return node;
-    });
-  }
-
-  buildArrayNodes(array: any[]): TreeNode[] {
-    return array.map((item, index) => {
-      const node: TreeNode = {
-        label: `Item ${index + 1}`,
-        children: this.buildTreeNodes([item]),
-      };
-      return node;
-    });
-  }
-
-  extractLabel(key: string, obj: any): string {
-    let label = "";
-    for (const prop in obj) {
-      if (
-        obj.hasOwnProperty(prop) &&
-        obj[prop] !== null &&
-        !Array.isArray(obj[prop])
-      ) {
-        label += `${this.frameworkService.utils.getTextTranslated(
-          prop
-        )}: ${this.formatValue(obj[prop])}  |  `;
-      }
-    }
-    return `${key}: ${label.trim()}  |  `;
-  }
-
-  formatValue(value: any): string {
-    if (
-      typeof value === "string" &&
-      value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
-    ) {
-      const date = new Date(value);
-      return date.toLocaleDateString("en-GB"); // Formato DD/MM/YYYY
-    }
-    return value;
   }
 
   removeDuplicatesAndModifyDescription(messages: Message[]): Message[] {
@@ -230,22 +161,22 @@ export class DataImportingComponent implements OnInit {
 
     messages.forEach((message) => {
       // Incrementando a contagem das mensagens repetidas
-      if (duplicateCounts[message.code]) {
-        duplicateCounts[message.code]++;
+      if (duplicateCounts[message.description]) {
+        duplicateCounts[message.description]++;
       } else {
-        duplicateCounts[message.code] = 1;
+        duplicateCounts[message.description] = 1;
       }
 
       // Adicionando a mensagem única ao mapa
-      if (!uniqueMessagesMap.has(message.code)) {
-        uniqueMessagesMap.set(message.code, uniqueMessages.length);
+      if (!uniqueMessagesMap.has(message.description)) {
+        uniqueMessagesMap.set(message.description, uniqueMessages.length);
         uniqueMessages.push(message);
       }
     });
 
     // Modificando as descrições das mensagens únicas
     uniqueMessages.forEach((message) => {
-      const count = duplicateCounts[message.code];
+      const count = duplicateCounts[message.description];
       if (count > 1) {
         message.description += ` (Total: ${count})`;
       }

@@ -1,65 +1,64 @@
-<div class="card">
-  <p-toolbar>
-    <div class="p-toolbar-group-start">
-      <r-button
-        label="Voltar"
-        icon="pi pi-chevron-left"
-        color="info"
-        rounded="true"
-        (onClick)="goList()"
-        class="mr-1"
-      ></r-button>
-    </div>
-    <div class="p-toolbar-group-center">
-      <h3 class="ml-5 m-0 inline">{{ importModel?.name }}</h3>
-    </div>
-    <div class="flex p-toolbar-group-start">
-      <p-fileUpload
-        *ngIf="processedData == null || processedData?.length == 0"
-        mode="basic"
-        [auto]="true"
-        customUpload="true"
-        (uploadHandler)="onUpload($event)"
-        chooseLabel="Carregar arquivo"
-      ></p-fileUpload>
+<p-toolbar>
+  <div class="p-toolbar-group-start">
+    <r-button
+      label="Voltar"
+      icon="pi pi-chevron-left"
+      color="info"
+      rounded="true"
+      (onClick)="goList()"
+      class="mr-1"
+    ></r-button>
+  </div>
+  <div class="p-toolbar-group-center">
+    <h3 class="ml-5 m-0 inline">{{ importModel?.name }}</h3>
+  </div>
+  <div class="flex p-toolbar-group-start">
+    <p-fileUpload
+      *ngIf="processedData == null || processedData?.length == 0"
+      mode="basic"
+      [auto]="true"
+      customUpload="true"
+      (uploadHandler)="onUpload($event)"
+      chooseLabel="Carregar arquivo"
+    ></p-fileUpload>
 
-      <button
-        pButton
-        pRipple
-        type="button"
-        icon="fas fa-eraser"
-        class="p-button-link p-button-danger m-1"
-        label="Limpar arquivo"
-        *ngIf="processedData?.length > 0"
-        (click)="cancel()"
-      ></button>
+    <button
+      pButton
+      pRipple
+      type="button"
+      icon="fas fa-eraser"
+      class="p-button-link p-button-danger m-1"
+      label="Limpar arquivo"
+      *ngIf="processedData?.length > 0"
+      (click)="cancel()"
+    ></button>
 
-      <r-button
-        label="Processar ({{processedData.length}})"
-        icon="fas fa-cogs"
-        rounded="true"
-        *ngIf="processedData?.length > 0"
-        (onClick)="import()"
-      ></r-button>
-    </div>
-  </p-toolbar>
+    <r-button
+      label="Processar ({{ processedData.length }})"
+      icon="fas fa-cogs"
+      rounded="true"
+      *ngIf="processedData?.length > 0"
+      (onClick)="import()"
+    ></r-button>
+  </div>
+</p-toolbar>
 
-  <div class="p-fluid formgrid grid mt-3"></div>
-  <p-divider align="left" type="dashed"> </p-divider>
-  <div class="p-fluid formgrid grid">
-    <div class="field col-12" *ngIf="progressImport == 0">
-      <p-tree
-        #tree
-        [filter]="true"
-        filterMode="strict"
-        filterPlaceholder="Pesquisar"
-        class="w-full md:w-30rem"
-        [value]="processedDataTreeNode"
-      ></p-tree>
-    </div>
-    <div class="field col-12" *ngIf="progressImport > 0">
-      <p-progressBar [value]="progressImport"></p-progressBar>
-    </div>
+<div class="p-fluid formgrid grid">
+  <div
+    class="field col-12 mt-3"
+    *ngIf="progressImport > 0 && progressImport < 100"
+  >
+    <p-progressBar [value]="progressImport"></p-progressBar>
+  </div>
+
+  <div
+    class="field col-12 mt-3"
+    *ngIf="processedData?.length > 0"
+  >
+    <lib-data-viewer
+      [data]="processedData"
+      [panelTitle]="importModel?.name"
+    ></lib-data-viewer>
   </div>
 </div>
 

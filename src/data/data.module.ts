@@ -9,13 +9,14 @@ import { MappingImportModelRegisterComponent } from './components/import-model-r
 import { DesignLibModule } from 'projects/design-lib/src/public-api';
 import { PrimengLibV17Module } from '../public-api';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { DataViewerComponent } from './components/data-importing/data-viewer/data-viewer.component';
 @NgModule({
   declarations: [
     ImportModelListingComponent,
     ImportModelRegisterComponent,
     MappingImportModelRegisterComponent,
-    DataImportingComponent
+    DataImportingComponent,
+    DataViewerComponent
   ],
   imports: [
     CommonModule,

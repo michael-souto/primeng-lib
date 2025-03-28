@@ -1,0 +1,33 @@
+<p-panel [toggleable]="true" [header]="panelTitle" styleClass="mb-3">
+  <ng-container *ngFor="let key of sortedKeys">
+    <ng-container *ngIf="isPrimitive(data?.[key]) && data?.[key]; else nestedBlock">
+      <div class="mb-2">
+        <strong>{{ frameworkService.utils.findTextTranslated(key.toUpperCase()) }}:</strong> {{ data[key] }}
+      </div>
+    </ng-container>
+
+    <ng-template #nestedBlock>
+      <ng-container *ngIf="data?.[key] && isArray(data[key]); else objectBlock">
+        <div class="mb-2">
+          <strong>{{ frameworkService.utils.findTextTranslated(key.toUpperCase()) }}:</strong>
+          <div class="ml-3">
+            <lib-data-viewer
+              *ngFor="let item of data[key]; let i = index"
+              [data]="item"
+              [panelTitle]="(frameworkService.utils.findTextTranslated(key.toUpperCase())) + ' [' + i + ']'"
+            ></lib-data-viewer>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #objectBlock>
+        <div class="mb-2" *ngIf="data?.[key]">
+          <lib-data-viewer
+            [data]="data[key]"
+            [panelTitle]="generatePanelTitle(data[key]) + (frameworkService.utils.findTextTranslated(key.toUpperCase()))"
+          ></lib-data-viewer>
+        </div>
+      </ng-template>
+    </ng-template>
+  </ng-container>
+</p-panel>

@@ -1,5 +1,6 @@
 {
   "IMPORT": "Importar",
+  "TITLE_IMPORT": "Importação de dados",
   "IMPORT_MODELS": {
     "IMPORT_MODEL": "Modelo de importação",
     "TITLE": "Modelo de importação",
