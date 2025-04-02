@@ -40,10 +40,12 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
       this.filterDetail.currentItem.filter = this.filterSelected;
       this.filterDetail.saveItem();
     }
+    this.orderingFilters();
   }
 
   deleteFilter(filter: ReportFilter) {
     this.filterDetail.removeItem(filter, this.object.filters);
+    this.orderingFilters();
   }
 
   public sessionDetail: DetailCrudHelper<ReportSession> =
@@ -217,6 +219,12 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
   orderingSelecterFields() {
     this.selectedFields.forEach((f, index) => {
       f.data.columnNumber = index + 1;
+    });
+  }
+
+  orderingFilters() {
+    this.object.filters.forEach((f, index) => {
+      f.ordering = index + 1;
     });
   }
 

@@ -2,8 +2,7 @@
   for="profiles"
   class="font-medium text-900 font-semibold text-0"
   *ngIf="label != null"
-  translate
-  >{{ label }} {{ required ? "*" : "" }}</label
+  >{{ label | translate }}{{ required ? "*" : "" }}</label
 >
 <div class="p-inputgroup">
   <span class="p-inputgroup-addon">

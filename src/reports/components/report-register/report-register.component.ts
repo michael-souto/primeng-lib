@@ -8,6 +8,8 @@ import { ResponseNotification } from 'projects/design-lib/src/lib/models/respons
 import { ViewCrudApiService } from 'projects/primeng-lib/src/reports/services/view-crud-api.service';
 
 import { View } from 'projects/primeng-lib/src/reports/models/view.mode';
+import { environment } from 'src/environments/environment';
+import { FunctionsService } from 'projects/design-lib/src/lib/services/functions.service';
 
 @Component({
   selector: 'd-custom-report-register',
@@ -38,6 +40,13 @@ export class ReportRegisterComponent {
   beforeSave() {
     this.controller.filterDetail.beforeSave();
     this.controller.sessionDetail.beforeSave();
+    this.controller.object.filters.forEach((filter) => {
+      if (!FunctionsService.isEmpty(filter.filter.externalSearchId)) {
+        filter.multipleValues = true;
+      } else {
+        filter.multipleValues = false;
+      }
+    });
   }
 
   afterSave(response: ResponseNotification<any>) {
