@@ -25,6 +25,6 @@ export class ReportListingComponent extends ListRegisterComponent<CustomReport> 
   }
 
   print(id: string) {
-    this.framework.router.navigate(['/reports', id, 'print']);
+    this.framework.router.navigate(['/reports', id, 'print'], { queryParams: { load: 'true' } });
   }
 }

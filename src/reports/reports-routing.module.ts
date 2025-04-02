@@ -4,6 +4,7 @@ import { ReportRegisterComponent } from './components/report-register/report-reg
 import { ReportListingComponent } from './components/report-listing/report-listing.component';
 import { ReportPrintingComponent } from './components/report-printing/report-printing.component';
 import { SessionReportRegisterComponent } from './components/report-register/session-report-register/session-report-register.component';
+import { ReportPrintingSearchComponent } from './components/report-printing/report-printing-search/report-printing-search.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,11 @@ const routes: Routes = [
     path: ':id/print',
     data: { breadcrumb: 'Imprimir' },
     component: ReportPrintingComponent
+  },
+  {
+    path: ':id/print/:searchId',
+    data: { breadcrumb: 'Buscar' },
+    component: ReportPrintingSearchComponent
   }
 ];
 

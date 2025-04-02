@@ -128,7 +128,13 @@
     </div>
 
     <div class="field col-12">
-      <p-table [value]="entity.filters">
+      <p-table
+        [value]="entity.filters"
+        (onRowReorder)="onReorderFilters($event)"
+        [metaKeySelection]="false"
+        dataKey="ordering"
+        [reorderableRow]="true"
+      >
         <ng-template pTemplate="caption">
           <div class="flex p-2 align-items-center gap-3 w-full">
             <span class="text-900 font-semibold block">
@@ -159,11 +165,11 @@
           </div>
         </ng-template>
 
-        <ng-template pTemplate="body" let-e>
-          <tr>
+        <ng-template pTemplate="body" let-e let-index="rowIndex">
+          <tr [pSelectableRow]="rowData" [pReorderableRow]="index">
             <td>
-              <span class="block"
-                >{{ e.filter?.filterDescription[framework.language] }}</span
+              <span class="block" pReorderableRowHandle
+                >#{{ e.ordering }} - {{ e.filter?.filterDescription[framework.language] }}</span
               >
             </td>
             <td style="width: 55px">

@@ -14,6 +14,9 @@ export class Filter extends GenericEntity {
   ]);
   type: DataType;
   conditionalExpression: string;
-  externalSearchId?: string;
-  searchReturnField?: string;
+
+  externalSearchApiName: string;
+  externalSearchId: string;
+  externalSearchReturnField: string;
+  externalSearchDescriptionField: string;
 }

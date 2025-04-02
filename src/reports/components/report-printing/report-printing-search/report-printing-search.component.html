@@ -1,0 +1,9 @@
+<d-search-screen
+  [searchId]="controller.getSearchId(controller.filterSelected.filter)"
+  [apiName]="controller.getApiName(controller.filterSelected.filter)"
+  [mode]="controller.filterSelected.multipleValues ? 'multiple' : 'single'"
+  (onConfirm)="onSelect($event)"
+  [(value)]="controller.filterSelected['value']"
+  [fieldDescription]="controller.getSearchReturnField(controller.filterSelected.filter)"
+  >
+</d-search-screen>

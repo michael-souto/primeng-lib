@@ -6,7 +6,7 @@
           <i class="fa-solid fa-chart-pie text-6xl"></i>
 
           <span class="font-bold">
-            {{ relatorioCustomizado?.name }}
+            {{ controller.customReport?.name }}
           </span>
         </div>
       </ng-template>
@@ -14,10 +14,11 @@
       <div class="p-fluid formgrid grid">
         <div
           class="field col-12"
-          *ngFor="let filtroRelatorio of relatorioCustomizado?.filters"
+          *ngFor="let filtroRelatorio of controller.customReport?.filters"
         >
           <label>{{ filtroRelatorio.filter?.filterDescription.pt }}</label>
-          <div class="w-full" *ngIf="filtroRelatorio.filter?.type === 'TEXT'">
+
+          <div class="w-full" *ngIf="filtroRelatorio.filter?.type === 'TEXT' && filtroRelatorio.filter?.externalSearchId == ''">
             <input
               class="w-full"
               pInputText
@@ -25,7 +26,8 @@
               [(ngModel)]="filtroRelatorio.value"
             />
           </div>
-          <div class="flex justify-content-between align-items-center">
+
+          <div class="flex justify-content-between align-items-center" *ngIf="filtroRelatorio.filter?.externalSearchId == ''">
             <div class="w-full">
               <p-calendar
                 *ngIf="filtroRelatorio.filter?.type === 'DATE'"
@@ -63,7 +65,21 @@
               </p-inputNumber>
             </div>
           </div>
+
+          <d-search-field *ngIf="controller.getSearchId(filtroRelatorio.filter) != ''"
+            class="col-12"
+            [searchId]="controller.getSearchId(filtroRelatorio.filter)"
+            [apiName]="controller.getApiName(filtroRelatorio.filter)"
+            [fieldDescription]="controller.getSearchDescriptionField(filtroRelatorio.filter)"
+            [searchRoute]="controller.getSearchId(filtroRelatorio.filter)"
+            [activateRoute]="activatedRoute"
+            [(value)]="filtroRelatorio.value"
+            [multiple]="true"
+            (onBeforeGoToSearchScreen)="controller.setFilterSelected(filtroRelatorio)"
+          ></d-search-field>
         </div>
+
+
       </div>
 
       <ng-template pTemplate="footer">

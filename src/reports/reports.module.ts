@@ -13,6 +13,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { ChartColumnComponent } from './components/report-printing/chart-column/chart-column.component';
 import { ChartTreemapComponent } from './components/report-printing/chart-treemap/chart-treemap.component';
 import { ChartRadialBarComponent } from './components/report-printing/chart-radial-bar/chart-radial-bar.component';
+import { ReportPrintingSearchComponent } from './components/report-printing/report-printing-search/report-printing-search.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { ChartRadialBarComponent } from './components/report-printing/chart-radi
     ReportListingComponent,
     ReportPrintingComponent,
     SessionReportRegisterComponent,
-
+    ReportPrintingSearchComponent,
     ChartBarComponent,
     ChartColumnComponent,
     ChartRadialBarComponent,

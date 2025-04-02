@@ -121,6 +121,7 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
   }
 
   onFilterChange() {
+    this.pageNumber = 0;
     this.searchSubject.next();
   }
   searchScreen() {
@@ -197,6 +198,8 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
         }
         this.value = object;
       });
+    } else if (this.mode == 'multiple') {
+      //
     } else if (this.mode == 'search') {
       this.onConfirm.emit(this.value);
     }

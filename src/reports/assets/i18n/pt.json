@@ -35,8 +35,10 @@
     "NAME_IT": "Nome(Italiano)",
     "TYPE": "Tipo",
     "CONDITIONAL_EXPRESSION": "Expressão condicional",
+    "EXTERNAL_SEARCH_API_NAME": "Nome da API de busca externa",
     "EXTERNAL_SEARCH_ID": "ID da busca externa",
-    "SEARCH_RETURN_FIELD": "Campo de retorno da busca"
+    "EXTERNAL_SEARCH_RETURN_FIELD": "Campo de retorno da busca externa",
+    "EXTERNAL_SEARCH_DESCRIPTION_FIELD": "Campo de descrição da busca externa"
   },
   "TABLE_VIEWS": {
     "TITLE": "Tabelas da visão",

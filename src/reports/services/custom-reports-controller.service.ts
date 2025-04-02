@@ -177,6 +177,8 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
   loaadSelectedFields(session: ReportSession) {
     console.log("session", this.chartFields);
     this.chartFieldSelected = session.fields[0].field;
+    this.chartFieldSelected['tableView'] = session.fields[0].tableView;
+
     this.selectedFields = session.fields.map((f) => {
       const treeNodeField: TreeNode<any> = {
         label: f.field?.fieldHeader[this.framework.language],

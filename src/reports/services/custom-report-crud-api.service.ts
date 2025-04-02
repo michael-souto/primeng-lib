@@ -20,16 +20,21 @@ export class CustomReportCrudApiService  extends CrudApiService<CustomReport> {
   printReport(identificadorRelatorio: string, filtros: ReportFilter []): Observable<any> {
     let params = new HttpParams();
     filtros.forEach(f => {
-      if (['INTEGER', 'DATE'].includes(f.filter?.type)) {
-        if (f['valueFrom']) {
-          params = params.append(f.filter?.identifierName+'-from', (f.filter?.type as string) === 'DATE' ? f['valueFrom'].toISOString() : f['valueFrom']);
-        }
-        if (f['valueTo']) {
-          params = params.append(f.filter?.identifierName+'-to', (f.filter?.type as string) === 'DATE' ? f['valueTo'].toISOString() : f['valueFrom']);
-        }
+
+      if (Array.isArray(f['value'])) {
+        params = params.append(f.filter?.externalSearchId, f['value'].map(x => '\'' + x[f.filter?.externalSearchReturnField] + '\'').join(','));
       } else {
-        if (f['value']) {
-          params = params.append(f.filter?.identifierName, f['value']);
+        if (['INTEGER', 'DATE'].includes(f.filter?.type)) {
+          if (f['valueFrom']) {
+            params = params.append(f.filter?.identifierName+'-from', (f.filter?.type as string) === 'DATE' ? f['valueFrom'].toISOString() : f['valueFrom']);
+          }
+          if (f['valueTo']) {
+            params = params.append(f.filter?.identifierName+'-to', (f.filter?.type as string) === 'DATE' ? f['valueTo'].toISOString() : f['valueFrom']);
+          }
+        } else {
+          if (f['value']) {
+            params = params.append(f.filter?.identifierName, f['value']);
+          }
         }
       }
     });

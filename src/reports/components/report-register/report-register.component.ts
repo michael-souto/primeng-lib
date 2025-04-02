@@ -56,4 +56,10 @@ export class ReportRegisterComponent {
       this.controller.object.sessions[index].ordering = index + 1;
     }
   }
+
+  onReorderFilters(event: any) {
+    for (let index = 0; index < this.controller.object.filters.length; index++) {
+      this.controller.object.filters[index].ordering = index + 1;
+    }
+  }
 }

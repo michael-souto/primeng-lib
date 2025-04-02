@@ -36,6 +36,8 @@ export class SearchFieldComponent implements OnInit {
   @Input() multiple: boolean;
   @Input() dropdown: boolean;
   @Output() onSelectEntity = new EventEmitter<any>();
+  @Output() onBeforeGoToSearchScreen = new EventEmitter<any>();
+  @Output() onAfterGoToSearchScreen = new EventEmitter<any>();
   @Input() title: string;
   @Input() invalidCondition: boolean;
   @Input() invalidMessage: string;
@@ -88,8 +90,10 @@ export class SearchFieldComponent implements OnInit {
 
   goToSearchScreen() {
     this.valueChange.emit(this.value);
+    this.onBeforeGoToSearchScreen.emit();
     this.framework.router.navigate([this.searchRoute], {
       relativeTo: this.activateRoute,
     });
+    this.onAfterGoToSearchScreen.emit();
   }
 }
