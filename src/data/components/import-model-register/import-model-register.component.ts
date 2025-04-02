@@ -6,9 +6,7 @@ import { ActivatedRoute } from "@angular/router";
 import { ImportModelValidatiorModelService } from "../../services/import-model-validatior-model.service";
 import { ResponseNotification } from "projects/design-lib/src/lib/models/response-notification";
 import { ImportModel, Operation } from "../../models/import-model.model";
-import { EntityCrudApiService } from "src/app/services/entities/entity-crud-api.service";
-import { Entity } from "../../models/entity.model";
-import { Property } from "../../models/property.model";
+import { EntityCrudApiService } from "projects/primeng-lib/src/data/services/entity-crud-api.service";
 import { CrudScreenComponent } from "projects/primeng-lib/src/lib/components/crud-screen/crud-screen.component";
 
 @Component({

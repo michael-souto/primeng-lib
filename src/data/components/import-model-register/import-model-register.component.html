@@ -88,7 +88,7 @@
               <span *ngIf="e.columnIndex" class="block mt-2"> {{'MAPPING.COLUMN_INDEX' | translate}}:  <b> {{
                e.columnIndex
               }}</b></span>
-              <span *ngIf="e.functions" class="block mt-2">
+              <span *ngIf="e.functions.length > 0" class="block mt-2">
                 <p-tag
                   *ngFor="let function of e.functions.toString().split(',')"
                   [rounded]="true"

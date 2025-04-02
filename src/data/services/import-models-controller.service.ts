@@ -8,7 +8,7 @@ import { Mapping } from '../models/mapping.model';
 import { Entity } from '../models/entity.model';
 import { Property } from '../models/property.model';
 import { environment } from 'src/environments/environment';
-import { EntityCrudApiService } from 'src/app/services/entities/entity-crud-api.service';
+import { EntityCrudApiService } from 'projects/primeng-lib/src/data/services/entity-crud-api.service';
 
 @Injectable({
   providedIn: 'root'
