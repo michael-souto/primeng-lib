@@ -89,6 +89,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { SpeedDialModule } from 'primeng/speeddial';
 
 
 // Serviços do PrimeNG
@@ -207,6 +208,7 @@ import { CrudScreenComponent } from './components/crud-screen/crud-screen.compon
     TreeSelectModule,
     TreeTableModule,
     VirtualScrollerModule,
+    SpeedDialModule,
     DesignLibModule
   ],
   exports: [
@@ -307,6 +309,7 @@ import { CrudScreenComponent } from './components/crud-screen/crud-screen.compon
     TreeSelectModule,
     TreeTableModule,
     VirtualScrollerModule,
+    SpeedDialModule
   ],
   providers: [
     // Serviços do PrimeNG

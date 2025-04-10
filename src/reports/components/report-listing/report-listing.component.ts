@@ -4,7 +4,9 @@ import { FrameworkService } from 'projects/design-lib/src/lib/services/framework
 import { CustomReport } from 'projects/primeng-lib/src/reports/models/custom-report.model';
 import { CustomReportCrudApiService } from 'projects/primeng-lib/src/reports/services/custom-report-crud-api.service';
 import { CustomReportsControllerService } from '../../services/custom-reports-controller.service';
-
+import { FavoriteService } from 'projects/security-lib/src/lib/services/auth/favorite.service';
+import { UserFavorite } from 'projects/security-lib/src/lib/models/user-favorite.model';
+import { EventBusService } from 'projects/design-lib/src/lib/services/event-bus.service';
 @Component({
   selector: 'd-report-listing',
   templateUrl: './report-listing.component.html',
@@ -15,7 +17,9 @@ export class ReportListingComponent extends ListRegisterComponent<CustomReport> 
   constructor(
     protected override service: CustomReportCrudApiService,
     protected override controller: CustomReportsControllerService,
-    public override framework: FrameworkService
+    public override framework: FrameworkService,
+    public favoriteService: FavoriteService,
+    private eventBusService: EventBusService
   ) {
     super(service, controller, framework);
   }
@@ -26,5 +30,21 @@ export class ReportListingComponent extends ListRegisterComponent<CustomReport> 
 
   print(id: string) {
     this.framework.router.navigate(['/reports', id, 'print'], { queryParams: { load: 'true' } });
+  }
+
+  favorite(object: CustomReport) {
+    if (this.favoriteService.existsFavorite(object.id)) {
+      this.favoriteService.removeFavorite(object.id);
+    } else {
+      const favorite = new UserFavorite();
+      favorite.name = object.name;
+      favorite.url = object.id;
+      favorite.route = '/reports/' + object.id + '/print?load=true';
+      favorite.feature = 'reports';
+      favorite.entityId = object.id;
+      favorite.icon = 'fa-solid fa-chart-pie';
+      favorite.system = 'task';
+      this.favoriteService.addFavorite(favorite);
+    }
   }
 }
