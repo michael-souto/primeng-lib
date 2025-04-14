@@ -28,7 +28,7 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
 
   constructor(
     protected service: SearchService,
-    public framework: FrameworkService
+    public framework: FrameworkService,
   ) {
     this.searchSubject
       .pipe(
@@ -64,7 +64,9 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
   @Output() valueChange = new EventEmitter<any>();
   @Input() fieldDescription = 'name';
   labelConfirm = 'Confirmar';
-
+  @Input() showConfirmButton: boolean = true;
+  @Input() showNewButton: boolean = true;
+  @Input() showBackButton: boolean = true;
   // Mode Search
   @Output() onNewClick = new EventEmitter<any>();
   labelNew: string = 'Novo'
@@ -85,6 +87,7 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
     } else if (this.mode == 'single'){
       this.value = this.value ?? {};
     }
+    this.callEventBus();
 
     this.service.getColumns(this.serverUrl + '/' + this.apiName, this.searchId).subscribe(
       (searchResponseApi: SearchResponseApi) => {
@@ -115,6 +118,25 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  callEventBus() {
+    if (this.mode == 'multiple') {
+      this.framework.eventBusService.emit({
+        type: 'search-screen:multiple',
+        payload: this.value,
+        callback: () => this.ok(),
+        valid: () => this.isValid()
+      });
+    } else if (this.mode == 'single'){
+      this.framework.eventBusService.emit({
+        type: 'search-screen:single',
+        payload: this.value,
+        callback: () => this.ok(),
+        valid: () => this.isValid()
+      });
+    }
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
@@ -203,6 +225,8 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
     } else if (this.mode == 'search') {
       this.onConfirm.emit(this.value);
     }
+    console.log("callEventBus");
+    this.callEventBus();
   }
 
   unSelect(object: any) {

@@ -2,7 +2,7 @@
   "IMPORT": "Importar",
   "TITLE_IMPORT": "Importação de dados",
   "IMPORT_MODELS": {
-    "IMPORT_MODEL": "Modelo de importação",
+    "IMPORT_MODEL": "Modelo",
     "TITLE": "Modelo de importação",
     "DESCRIPTION": "Modelo de importação de dados de arquivos externos para o sistema",
     "NAME": "Nome",

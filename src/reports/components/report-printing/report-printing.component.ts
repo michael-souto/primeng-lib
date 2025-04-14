@@ -5,6 +5,7 @@ import { FrameworkService } from 'projects/design-lib/src/lib/services/framework
 import { CustomReport } from 'projects/primeng-lib/src/reports/models/custom-report.model';
 import { CustomReportCrudApiService } from 'projects/primeng-lib/src/reports/services/custom-report-crud-api.service';
 import { ReportPrintingControllerService } from './report-printing-controller.service';
+import { EventBusService } from 'projects/design-lib/src/lib/services/event-bus.service';
 @Component({
   selector: 'd-report-printing',
   templateUrl: './report-printing.component.html',
@@ -17,7 +18,8 @@ export class ReportPrintingComponent  implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected framework: FrameworkService,
-    public controller: ReportPrintingControllerService
+    public controller: ReportPrintingControllerService,
+    private eventBusService: EventBusService
   ) {}
 
   report: any;
@@ -29,8 +31,8 @@ export class ReportPrintingComponent  implements OnInit {
       this.service.findById(id).subscribe((x: any) => {
         this.controller.customReport = x;
       });
+      this.eventBusService.emit({ type: 'report:printing' });
     } else {
-
     }
   }
 

@@ -118,7 +118,7 @@
 
 <div class="col-12 flex justify-content-between">
   <button
-    *ngIf="framework.utils.isDesktop()"
+    *ngIf="framework.utils.isDesktop() && showBackButton"
     pButton
     pRipple
     label="Voltar"
@@ -149,7 +149,8 @@
     pButton
     pRipple
     [label]="labelConfirm"
-    *ngIf="mode != 'search' && mode != null"
+    icon="fa-solid fa-check"
+    *ngIf="(mode != 'search' && mode != null) && showConfirmButton"
     class="w-auto mt-3"
     type="submit"
     [disabled]="!isValid()"
@@ -160,7 +161,7 @@
     pButton
     pRipple
     [label]="labelNew"
-    *ngIf="mode == 'search' || mode == null"
+    *ngIf="(mode == 'search' || mode == null) && showNewButton"
     class="w-auto mt-3"
     type="submit"
     (click)="onNewClick.emit()"

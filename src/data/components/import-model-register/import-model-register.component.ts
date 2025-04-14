@@ -6,8 +6,8 @@ import { ActivatedRoute } from "@angular/router";
 import { ImportModelValidatiorModelService } from "../../services/import-model-validatior-model.service";
 import { ResponseNotification } from "projects/design-lib/src/lib/models/response-notification";
 import { ImportModel, Operation } from "../../models/import-model.model";
-import { EntityCrudApiService } from "projects/primeng-lib/src/data/services/entity-crud-api.service";
 import { CrudScreenComponent } from "projects/primeng-lib/src/lib/components/crud-screen/crud-screen.component";
+import { EventBusService } from "projects/design-lib/src/lib/services/event-bus.service";
 
 @Component({
   selector: "lib-import-model-register",
@@ -21,17 +21,20 @@ export class ImportModelRegisterComponent implements OnInit {
     public controller: ImportModelsControllerService,
     public framework: FrameworkService,
     public activateRoute: ActivatedRoute,
-    private entityCrudService: EntityCrudApiService
+    private eventBusService: EventBusService
   ) {
     this.controller.activateRoute = this.activateRoute;
     if (this.controller.object?.mappings) {
-      this.controller.object.mappings = this.controller.object.mappings.sort((a, b) =>
-        a.columnIndex.localeCompare(b.columnIndex, undefined, { numeric: false })
+      this.controller.object.mappings = this.controller.object.mappings.sort(
+        (a, b) =>
+          a.columnIndex.localeCompare(b.columnIndex, undefined, {
+            numeric: false,
+          })
       );
-          }
+    }
   }
 
-  @ViewChild('crudScreen') crudScreen: CrudScreenComponent<ImportModel>;
+  @ViewChild("crudScreen") crudScreen: CrudScreenComponent<ImportModel>;
 
   operations = [];
 
@@ -40,6 +43,23 @@ export class ImportModelRegisterComponent implements OnInit {
       Operation,
       "OPERATIONS"
     );
+    this.eventBusService.emit({
+      type: "import-model:register",
+      payload: this.controller.object,
+      callback: () => {
+        this.crudScreen.save();
+      },
+    });
+
+    if (this.controller.object.id) {
+      this.eventBusService.emit({
+        type: "import-model:delete",
+        payload: this.controller.object,
+        callback: () => {
+          this.crudScreen.confirmDelete();
+        },
+      });
+    }
   }
 
   onAfterInitRegister() {
@@ -47,8 +67,9 @@ export class ImportModelRegisterComponent implements OnInit {
   }
 
   onBeforeInitializeEntity(importModel: ImportModel) {
-    if (importModel.entity.id) {
-      importModel.entity['name'] = importModel.entity.entityName[this.framework.language];
+    if (importModel.entity?.id) {
+      importModel.entity["name"] =
+        importModel.entity.entityName[this.framework.language];
     }
   }
 
@@ -61,7 +82,11 @@ export class ImportModelRegisterComponent implements OnInit {
   }
 
   onSelectEntity(event: any) {
-    if (this.controller.object.entity == null || (event == null || event.id != this.controller.object.entity.id)) {
+    if (
+      this.controller.object.entity == null ||
+      event == null ||
+      event.id != this.controller.object.entity.id
+    ) {
       this.controller.object.entity = event;
       this.controller.object.mappings = [];
       if (event?.id) {
