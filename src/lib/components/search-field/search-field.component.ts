@@ -33,6 +33,7 @@ export class SearchFieldComponent implements OnInit {
   @Input() returnedField: string;
   @Input() fieldDescription: string = 'nome';
   @Input() disabled: boolean;
+  @Input() readonly: boolean;
   @Input() multiple: boolean;
   @Input() dropdown: boolean;
   @Output() onSelectEntity = new EventEmitter<any>();
@@ -53,6 +54,9 @@ export class SearchFieldComponent implements OnInit {
   @Input() columnsGrid: SearchField[];
 
   search(event) {
+    if (this.readonly || this.disabled) {
+      return;
+    }
     let fields: Array<SearchFilter> = new Array<SearchFilter>();
     let searchFieldComplete = new SearchFilter();
     searchFieldComplete.field = this.fieldDescription;

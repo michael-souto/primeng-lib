@@ -1,23 +1,25 @@
 <label
-  for="profiles"
+  [for]="'auto-complete-' + fieldDescription"
   class="font-medium text-900 font-semibold text-0"
   *ngIf="label != null"
   >{{ label | translate }}{{ required ? "*" : "" }}</label
 >
 <div class="p-inputgroup">
-  <span class="p-inputgroup-addon">
+  <span class="p-inputgroup-addon" *ngIf="!readonly && !disabled">
     <i class="fas fa-keyboard"></i>
   </span>
   <p-autoComplete
+    [id]="'auto-complete-' + fieldDescription"
     [(ngModel)]="value"
     [suggestions]="listSearch"
     (completeMethod)="search($event)"
     [disabled]="disabled"
+    [readonly]="readonly"
     [forceSelection]="true"
     [field]="fieldDescription"
     [placeholder]="title"
     [dropdown]="dropdown"
-    [showClear]="dropdown"
+    [showClear]="dropdown && (!readonly || !disabled)"
     [completeOnFocus]="dropdown"
     (onSelect)="selectEntity($event)"
     (onUnselect)="updateValue()"
@@ -39,6 +41,7 @@
     label="Buscar"
     icon="pi pi-search"
     class="p-button-warning"
+    [disabled]="disabled || readonly"
     (click)="goToSearchScreen()"
   ></button>
 </div>
