@@ -36,6 +36,7 @@ export class SearchFieldComponent implements OnInit {
   @Input() readonly: boolean;
   @Input() multiple: boolean;
   @Input() dropdown: boolean;
+  @Input() itemIcon: string;
   @Output() onSelectEntity = new EventEmitter<any>();
   @Output() onBeforeGoToSearchScreen = new EventEmitter<any>();
   @Output() onAfterGoToSearchScreen = new EventEmitter<any>();
@@ -44,7 +45,9 @@ export class SearchFieldComponent implements OnInit {
   @Input() invalidMessage: string;
   @Input() activateRoute: ActivatedRoute;
   @Input() searchRoute: string;
-
+  @Input() group: boolean;
+  @Input() groupIcon: string = 'fa fa-folder';
+  @Input() groupLabel: string;
   listSearch: any[];
 
   @Input() searchId: string;
@@ -52,6 +55,7 @@ export class SearchFieldComponent implements OnInit {
   @Input() serverUrl: string = environment.apiURLGateway;
 
   @Input() columnsGrid: SearchField[];
+  @Input() paramsSearch: SearchFilter[];
 
   search(event) {
     if (this.readonly || this.disabled) {
@@ -62,10 +66,38 @@ export class SearchFieldComponent implements OnInit {
     searchFieldComplete.field = this.fieldDescription;
     searchFieldComplete.value = event.query;
     fields.push(searchFieldComplete);
+
+    if (this.paramsSearch) {
+      this.paramsSearch.forEach(param => {
+        fields.push(param);
+      });
+    }
+
     this.service
       .search(this.serverUrl + '/' + this.apiName, this.searchId, fields)
       .subscribe((searchResponseApi: SearchResponseApi) => {
-        this.listSearch = searchResponseApi['data']['content'];
+        const dataContent = searchResponseApi['data']['content'];
+
+        if (!this.group) {
+          this.listSearch = dataContent;
+        } else {
+          const groupedData = {};
+          dataContent.forEach(item => {
+            const groupKey = item[this.groupLabel] || 'Sem grupo';
+            if (!groupedData[groupKey]) {
+              groupedData[groupKey] = {
+                label: groupKey,
+                value: groupKey,
+                items: []
+              };
+            }
+            groupedData[groupKey].items.push({
+              label: item[this.fieldDescription],
+              value: item
+            });
+          });
+          this.listSearch = Object.values(groupedData);
+        }
         this.columnsGrid = searchResponseApi['columns'];
       });
   }

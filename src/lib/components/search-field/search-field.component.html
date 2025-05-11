@@ -16,7 +16,7 @@
     [disabled]="disabled"
     [readonly]="readonly"
     [forceSelection]="true"
-    [field]="fieldDescription"
+    [field]="!group ? fieldDescription : null"
     [placeholder]="title"
     [dropdown]="dropdown"
     [showClear]="dropdown && (!readonly || !disabled)"
@@ -26,6 +26,7 @@
     (onClear)="clearValue()"
     (onBlur)="updateValue()"
     [multiple]="multiple"
+    [group]="group"
     appendTo="body"
     [inputStyle]="{
       height: multiple ? '1.9rem' : '3.5rem',
@@ -33,6 +34,14 @@
     }"
     class="{{ invalidCondition ? 'ng-invalid ng-dirty' : '' }} ' search"
   >
+
+
+    <ng-template let-group pTemplate="group" *ngIf="group">
+      <div class="flex align-items-center">
+        <i [class]="groupIcon" style="margin-right: 5px" *ngIf="groupIcon"></i>
+        <span>{{ group.label }}</span>
+      </div>
+    </ng-template>
   </p-autoComplete>
   <button
     type="button"
