@@ -105,6 +105,7 @@ import { InputTextComponent } from './components/input-text/input-text.component
 import { ToastComponent } from './components/toast/toast.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { CrudScreenComponent } from './components/crud-screen/crud-screen.component';
+import { InputCalendarComponent } from './components/input-calendar/input-calendar.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { CrudScreenComponent } from './components/crud-screen/crud-screen.compon
     CrudToolbarComponent,
     CrudScreenComponent,
     InputTextComponent,
+    InputCalendarComponent,
     ToastComponent,
     TextAreaComponent
   ],
@@ -219,6 +221,7 @@ import { CrudScreenComponent } from './components/crud-screen/crud-screen.compon
     CrudToolbarComponent,
     CrudScreenComponent,
     InputTextComponent,
+    InputCalendarComponent,
     ToastComponent,
     TextAreaComponent,
     // Módulos do PrimeNG

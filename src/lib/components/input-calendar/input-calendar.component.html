@@ -1,0 +1,43 @@
+<label [for]="id" class="font-medium text-900 font-semibold text-0" translate>{{
+  label
+}}</label
+>{{ required || invalidMessage ? "*" : "" }}
+<span class="p-input-icon-left w-full" style="height: 3.5rem">
+  <i class="pi pi-clock z-1" style="left: 1.5rem"></i>
+  <p-calendar
+    [name]="id"
+    appendTo="body"
+    [dateFormat]="dateFormat"
+    [showButtonBar]="true"
+    [showIcon]="true"
+    [showOnFocus]="false"
+    [inputId]="id"
+    inputStyleClass="w-full pl-6 text-900 font-semibold"
+    styleClass="w-full"
+    [inputStyle]="{ height: '3.5rem' }"
+    [(ngModel)]="value"
+    [placeholder]="placeholder ?? ''"
+    [required]="required"
+    class="{{
+      (isNullRequired() && invalidCondition) ||
+      (isRequired() && (isSubmitted() || isNullSubmitted()) && isEmpty())
+        ? 'ng-invalid ng-dirty'
+        : ''
+    }}"
+    (ngModelChange)="onValueChange($event)"
+  ></p-calendar>
+</span>
+<small
+  class="ng-invalid ng-dirty"
+  *ngIf="
+    (isNullRequired() && invalidCondition) ||
+    (isRequired() && (isSubmitted() || isNullSubmitted()) && isEmpty())
+  "
+>
+  {{
+    invalidMessage ||
+      (isRequired() && (isSubmitted() || isNullSubmitted()) && isEmpty()
+        ? messageRequired
+        : "")
+  }}
+</small>
