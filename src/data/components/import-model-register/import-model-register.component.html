@@ -13,6 +13,7 @@
   (onAfterSave)="afterSave($event)"
   (onAfterInitRegister)="onAfterInitRegister()"
   (onBeforeInitializeEntity)="onBeforeInitializeEntity($event)"
+  [showCrudToolbar]="false"
 >
   <ng-template #contentTemplate let-entity let-submitted="submitted">
     <d-input-text

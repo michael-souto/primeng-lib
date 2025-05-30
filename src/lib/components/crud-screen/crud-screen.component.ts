@@ -18,6 +18,7 @@ export class CrudScreenComponent<T> extends RegisterComponent<T> implements OnIn
   @Input() description: string;
   @Input() entityName: string;
   @Input() baseRouterLink: string;
+  @Input() showCrudToolbar: boolean = true;
 
   @Output() onBeforeInitRegister = new EventEmitter<void>();
   @Output() onAfterInitRegister = new EventEmitter<any>();

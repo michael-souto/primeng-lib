@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { CustomReportCrudApiService } from "projects/primeng-lib/src/reports/services/custom-report-crud-api.service";
 import { CustomReportValidatorModelService } from "projects/primeng-lib/src/reports/services/custom-report-validator-model.service";
 import { CustomReportsControllerService } from "projects/primeng-lib/src/reports/services/custom-reports-controller.service";
@@ -19,7 +19,7 @@ import { CustomReport } from "../../models/custom-report.model";
   templateUrl: "./report-register.component.html",
   styleUrls: ["./report-register.component.scss"],
 })
-export class ReportRegisterComponent {
+export class ReportRegisterComponent implements AfterViewInit {
   constructor(
     public service: CustomReportCrudApiService,
     public validator: CustomReportValidatorModelService,
@@ -34,30 +34,31 @@ export class ReportRegisterComponent {
 
   @ViewChild("crudScreen") crudScreen: CrudScreenComponent<CustomReport>;
 
+  ngAfterViewInit(): void {
+    this.crudScreen.initialObjectState =
+      this.controller.getInitialObjectState();
+
+      this.eventBusService.emit({
+        type: "report:register:after-view-init",
+        payload: {
+          object: this.controller.object,
+          crudScreen: this.crudScreen,
+          callbackSave: () => {
+            this.crudScreen.save();
+          },
+          callbackDelete: () => {
+            this.crudScreen.confirmDelete();
+          },
+        },
+      });
+  }
+
   onAfterInitRegister() {
     this.controller.viewSelected = {
       id: this.controller.object.view?.id,
       name: this.controller.object.view?.viewName["pt"],
     };
     this.onSelectView(this.controller.object.view);
-
-    this.eventBusService.emit({
-      type: "report:register",
-      payload: this.controller.object,
-      callback: () => {
-        this.crudScreen.save();
-      },
-    });
-
-    if (this.controller.object.id) {
-      this.eventBusService.emit({
-        type: "report:delete",
-        payload: this.controller.object,
-        callback: () => {
-          this.crudScreen.confirmDelete();
-        },
-      });
-    }
   }
 
   beforeSave() {

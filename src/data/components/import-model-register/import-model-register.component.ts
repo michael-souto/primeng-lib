@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { ImportModelCrudApiService } from "../../services/import-model-crud-api.service";
 import { ImportModelsControllerService } from "../../services/import-models-controller.service";
 import { FrameworkService } from "projects/design-lib/src/lib/services/framework.service";
@@ -14,7 +14,7 @@ import { EventBusService } from "projects/design-lib/src/lib/services/event-bus.
   templateUrl: "./import-model-register.component.html",
   styleUrls: ["./import-model-register.component.scss"],
 })
-export class ImportModelRegisterComponent implements OnInit {
+export class ImportModelRegisterComponent implements OnInit, AfterViewInit {
   constructor(
     public service: ImportModelCrudApiService,
     public validator: ImportModelValidatiorModelService,
@@ -38,28 +38,31 @@ export class ImportModelRegisterComponent implements OnInit {
 
   operations = [];
 
+  ngAfterViewInit(): void {
+    this.crudScreen.initialObjectState =
+      this.controller.getInitialObjectState();
+
+      this.eventBusService.emit({
+        type: "report:register:after-view-init",
+        payload: {
+          object: this.controller.object,
+          crudScreen: this.crudScreen,
+          callbackSave: () => {
+            this.crudScreen.save();
+          },
+          callbackDelete: () => {
+            this.crudScreen.confirmDelete();
+          },
+        },
+      });
+  }
+
+
   async ngOnInit() {
     this.operations = await this.framework.utils.getOptionsFromEnum(
       Operation,
       "OPERATIONS"
     );
-    this.eventBusService.emit({
-      type: "import-model:register",
-      payload: this.controller.object,
-      callback: () => {
-        this.crudScreen.save();
-      },
-    });
-
-    if (this.controller.object.id) {
-      this.eventBusService.emit({
-        type: "import-model:delete",
-        payload: this.controller.object,
-        callback: () => {
-          this.crudScreen.confirmDelete();
-        },
-      });
-    }
   }
 
   onAfterInitRegister() {

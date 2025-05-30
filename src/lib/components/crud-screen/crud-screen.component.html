@@ -23,6 +23,7 @@
         ></ng-container>
 
         <d-crud-toolbar
+          *ngIf="showCrudToolbar"
           class="col-12"
           (onClickDelete)="confirmDelete()"
           (onClickSave)="save()"
