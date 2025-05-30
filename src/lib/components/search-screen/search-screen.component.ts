@@ -67,6 +67,7 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
   @Input() showConfirmButton: boolean = true;
   @Input() showNewButton: boolean = true;
   @Input() showBackButton: boolean = true;
+  @Input() rowHeight: number = 50;
   // Mode Search
   @Output() onNewClick = new EventEmitter<any>();
   labelNew: string = 'Novo'
@@ -88,6 +89,8 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
       this.value = this.value ?? {};
     }
     this.callEventBus();
+
+    this.rows = Math.floor(this.framework.utils.SCREEN_HEIGHT / this.rowHeight);
 
     this.service.getColumns(this.serverUrl + '/' + this.apiName, this.searchId).subscribe(
       (searchResponseApi: SearchResponseApi) => {
