@@ -3,7 +3,7 @@
     <div class="flex flex-col items-start" style="flex: 1">
       <div class="flex align-items-center gap-2">
         <p-avatar
-          image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+          [image]="getImage(message.severity)"
           shape="circle"
         />
         <span class="font-bold text-900 text-0"> {{ message.summary }} </span>

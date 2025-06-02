@@ -56,4 +56,19 @@ export class ToastComponent {
       this.closeFunction();
     }
   }
+
+  getImage(type: string) {
+    switch (type) {
+      case "success":
+        return "assets/primeng-lib/checked.png";
+      case "error":
+        return "assets/primeng-lib/error.png";
+      case "info":
+        return "assets/primeng-lib/info.png";
+      case "warn":
+        return "assets/primeng-lib/warn.png";
+      default:
+        return "assets/primeng-lib/info.png";
+    }
+  }
 }
