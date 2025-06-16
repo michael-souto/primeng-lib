@@ -5,9 +5,7 @@
   >{{ label | translate }}{{ required ? "*" : "" }}</label
 >
 <div class="p-inputgroup">
-  <span class="p-inputgroup-addon" *ngIf="!readonly && !disabled">
-    <i class="fas fa-keyboard"></i>
-  </span>
+
   <p-autoComplete
     [id]="'auto-complete-' + fieldDescription"
     [(ngModel)]="value"
@@ -22,6 +20,8 @@
     [showClear]="dropdown && (!readonly || !disabled)"
     [completeOnFocus]="dropdown"
     (onSelect)="selectEntity($event)"
+    (onDropdownClick)="search({ query: '' })"
+    (onFocus)="search({ query: '' })"
     (onUnselect)="updateValue()"
     (onClear)="clearValue()"
     (onBlur)="updateValue()"
@@ -30,16 +30,21 @@
     appendTo="body"
     [inputStyle]="{
       height: multiple ? '1.9rem' : '3.5rem',
-      width: 'calc(100% - 45px)'
+      minWidth: '150px'
     }"
     class="{{ invalidCondition ? 'ng-invalid ng-dirty' : '' }} ' search"
   >
-
-
     <ng-template let-group pTemplate="group" *ngIf="group">
       <div class="flex align-items-center">
         <i [class]="groupIcon" style="margin-right: 5px" *ngIf="groupIcon"></i>
         <span>{{ group.label }}</span>
+      </div>
+    </ng-template>
+
+    <ng-template let-item pTemplate="item">
+      <div class="flex align-items-center">
+        <i [class]="itemIcon" style="margin-right: 5px" *ngIf="itemIcon"></i>
+        <span>{{ item[getFieldDescription()] }}</span>
       </div>
     </ng-template>
   </p-autoComplete>
@@ -52,6 +57,10 @@
     class="p-button-warning"
     [disabled]="disabled || readonly"
     (click)="goToSearchScreen()"
+    [style]="{
+  height: '3.5rem',
+  width: '100px',
+}"
   ></button>
 </div>
 <small class="ng-invalid ng-dirty" *ngIf="invalidCondition">

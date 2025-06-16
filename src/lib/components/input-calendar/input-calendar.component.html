@@ -2,8 +2,6 @@
   label
 }}</label
 >{{ required || invalidMessage ? "*" : "" }}
-<span class="p-input-icon-left w-full" style="height: 3.5rem">
-  <i class="pi pi-clock z-1" style="left: 1.5rem"></i>
   <p-calendar
     [name]="id"
     appendTo="body"
@@ -12,9 +10,9 @@
     [showIcon]="true"
     [showOnFocus]="false"
     [inputId]="id"
-    inputStyleClass="w-full pl-6 text-900 font-semibold"
+    inputStyleClass="w-full"
     styleClass="w-full"
-    [inputStyle]="{ height: '3.5rem' }"
+    [inputStyle]="{ height: '3.5rem', minWidth: '100px' }"
     [(ngModel)]="value"
     [placeholder]="placeholder ?? ''"
     [required]="required"
@@ -26,7 +24,6 @@
     }}"
     (ngModelChange)="onValueChange($event)"
   ></p-calendar>
-</span>
 <small
   class="ng-invalid ng-dirty"
   *ngIf="

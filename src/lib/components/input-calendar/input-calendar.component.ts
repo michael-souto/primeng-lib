@@ -7,7 +7,7 @@ import { UtilsService } from 'projects/design-lib/src/lib/services/utils/utils.s
   templateUrl: './input-calendar.component.html',
   styleUrls: ['./input-calendar.component.scss'],
 })
-export class InputCalendarComponent  {
+export class InputCalendarComponent implements OnInit {
 
   constructor(private utilsService: UtilsService, private framework: FrameworkService) {
     this.utilsService.getTextTranslated('THIS_FIELD_REQUIRED').then(text => {
@@ -28,8 +28,13 @@ export class InputCalendarComponent  {
   @Input() submitted?: boolean = null;
   messageRequired: string;
 
+  ngOnInit(): void {
+    if (this.value) {
+      this.value = new Date(this.value);
+    }
+  }
+
   onValueChange(newValue: any) {
-    console.log('teste');
     this.value = newValue;
     this.valueChange.emit(newValue);
   }
