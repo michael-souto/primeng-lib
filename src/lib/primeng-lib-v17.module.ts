@@ -90,7 +90,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { SpeedDialModule } from 'primeng/speeddial';
-
+import { InputOtpModule } from 'primeng/inputotp';
+import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 
 // Serviços do PrimeNG
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -211,7 +212,9 @@ import { InputCalendarComponent } from './components/input-calendar/input-calend
     TreeTableModule,
     VirtualScrollerModule,
     SpeedDialModule,
-    DesignLibModule
+    DesignLibModule,
+    InputOtpModule,
+    AnimateOnScrollModule
   ],
   exports: [
     ResponsiveButtonComponent,
@@ -312,7 +315,9 @@ import { InputCalendarComponent } from './components/input-calendar/input-calend
     TreeSelectModule,
     TreeTableModule,
     VirtualScrollerModule,
-    SpeedDialModule
+    SpeedDialModule,
+    InputOtpModule,
+    AnimateOnScrollModule
   ],
   providers: [
     // Serviços do PrimeNG
