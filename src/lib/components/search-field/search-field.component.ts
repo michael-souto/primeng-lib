@@ -137,7 +137,6 @@ export class SearchFieldComponent implements OnInit {
         : event.value[this.fieldDescription],
     };
 
-    console.log(this.advancedReturnObject);
     if (this.advancedReturnObject.length > 0) {
       if (this.group) {
         let resultValue = {};
@@ -184,7 +183,11 @@ export class SearchFieldComponent implements OnInit {
       this.value.push(value);
       this.valueChange.emit(this.value);
     } else {
-      this.valueChange.emit(value);
+      if (this.group) {
+        this.valueChange.emit(event.value);
+      } else {
+        this.valueChange.emit(value);
+      }
     }
 
     if (this.onSelectEntity.observers.length > 0) {

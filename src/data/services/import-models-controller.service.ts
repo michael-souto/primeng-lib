@@ -23,7 +23,7 @@ export class ImportModelsControllerService extends ControllerService<ImportModel
     super(framework, ImportModel);
   }
 
-  public mappingDetail: DetailCrudHelper<Mapping> = new DetailCrudHelper<Mapping>(() => new Mapping());
+  public mappingDetail: DetailCrudHelper<Mapping> = new DetailCrudHelper<Mapping>(this.framework, () => new Mapping());
 
   public newMapping() {
     this.loadProperties(this.object.entity);

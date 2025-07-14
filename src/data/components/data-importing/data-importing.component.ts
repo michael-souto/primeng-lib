@@ -37,7 +37,6 @@ export class DataImportingComponent implements OnInit {
     const id: number = this.route.snapshot.params["id"];
     if (id != null) {
       this.service.findById(id.toString()).subscribe((x: ImportModel) => {
-        console.log(x);
         this.importModel = x;
         this._properties = x.mappings.map((x) => x.property);
       });

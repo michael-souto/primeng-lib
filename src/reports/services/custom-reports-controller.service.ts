@@ -23,7 +23,7 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
   filterSelected: any;
 
   public filterDetail: DetailCrudHelper<ReportFilter> =
-    new DetailCrudHelper<ReportFilter>(() => new ReportFilter());
+    new DetailCrudHelper<ReportFilter>(this.framework, () => new ReportFilter());
 
   addFilter() {
     if (
@@ -50,12 +50,12 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
 
   public sessionDetail: DetailCrudHelper<ReportSession> =
     new DetailCrudHelper<ReportSession>(
+      this.framework,
       () => new ReportSession(),
       (session: ReportSession) => this.afterAddSession(session)
     );
 
   afterAddSession(session: ReportSession) {
-    console.log("afterAddSession", this.selectedFields);
     if (!session.ordering) {
       session.ordering = this.object.sessions.length + 1;
     }
@@ -177,7 +177,6 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
   }
 
   loaadSelectedFields(session: ReportSession) {
-    console.log("session", this.chartFields);
     this.chartFieldSelected = session.fields[0].field;
     this.chartFieldSelected['tableView'] = session.fields[0].tableView;
 

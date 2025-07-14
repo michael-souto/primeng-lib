@@ -228,7 +228,6 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
     } else if (this.mode == 'search') {
       this.onConfirm.emit(this.value);
     }
-    console.log("callEventBus");
     this.callEventBus();
   }
 
