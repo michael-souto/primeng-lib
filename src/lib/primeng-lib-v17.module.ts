@@ -92,6 +92,8 @@ import { InputIconModule } from 'primeng/inputicon';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { InputOtpModule } from 'primeng/inputotp';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
+import { StepperModule } from 'primeng/stepper';
+
 
 // Serviços do PrimeNG
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -214,7 +216,8 @@ import { InputCalendarComponent } from './components/input-calendar/input-calend
     SpeedDialModule,
     DesignLibModule,
     InputOtpModule,
-    AnimateOnScrollModule
+    AnimateOnScrollModule,
+    StepperModule
   ],
   exports: [
     ResponsiveButtonComponent,
@@ -317,7 +320,8 @@ import { InputCalendarComponent } from './components/input-calendar/input-calend
     VirtualScrollerModule,
     SpeedDialModule,
     InputOtpModule,
-    AnimateOnScrollModule
+    AnimateOnScrollModule,
+    StepperModule
   ],
   providers: [
     // Serviços do PrimeNG

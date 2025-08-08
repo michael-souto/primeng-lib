@@ -10,11 +10,13 @@ import { DesignLibModule } from 'projects/design-lib/src/public-api';
 import { PrimengLibV17Module } from '../public-api';
 import { TranslateModule } from '@ngx-translate/core';
 import { DataViewerComponent } from './components/data-importing/data-viewer/data-viewer.component';
+import { MappingFunctionsComponent } from './components/import-model-register/mapping-functions/mapping-functions.component';
 @NgModule({
   declarations: [
     ImportModelListingComponent,
     ImportModelRegisterComponent,
     MappingImportModelRegisterComponent,
+    MappingFunctionsComponent,
     DataImportingComponent,
     DataViewerComponent
   ],
@@ -24,6 +26,10 @@ import { DataViewerComponent } from './components/data-importing/data-viewer/dat
     DesignLibModule,
     PrimengLibV17Module,
     TranslateModule,
+  ],
+  exports: [
+    MappingFunctionsComponent,
+    DataViewerComponent
   ]
 })
 export class DataModule { }

@@ -8,6 +8,16 @@ export class ImportModel {
   entity: Entity;
   mappings: Mapping[] = [];
   operation: Operation = Operation.CREATE;
+  lineStart: number = 2;
+  lineEnd: number;
+  lineHeader: number = 1;
+  skipBlankRows: boolean = true;
+  groupFieldDefinitionId: string;
+  complementFieldValue?: Map<string, any> = new Map<string, any>();
+  complementFieldId?: string;
+  complementFieldText?: string;
+  complementFieldLabel?: string;
+  complementFieldName?: string;
 }
 
 export enum Operation {

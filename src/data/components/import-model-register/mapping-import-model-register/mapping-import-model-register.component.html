@@ -6,8 +6,8 @@
         id="columnIndex"
         [(ngModel)]="controller.mappingDetail.currentItem.columnIndex"
         [dropdown]="true"
-        [suggestions]="filteredLetters"
-        (completeMethod)="filterLetter($event)"
+        [suggestions]="controller.filteredLetters"
+        (completeMethod)="controller.filterLetter($event)"
       />
     </div>
 
@@ -47,7 +47,7 @@
     <div class="field col-12">
       <label for="tipo" class="font-medium text-900 font-semibold text-0" translate>MAPPING.FUNCTIONS</label>
       <p-multiSelect
-        [options]="functionsOptions"
+        [options]="controller.functionsOptions"
         [(ngModel)]="controller.mappingDetail.currentItem.functions"
         placeholder="Marque as opções desejadas"
         display="chip"

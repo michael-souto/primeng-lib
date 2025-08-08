@@ -1,6 +1,9 @@
 {
   "IMPORT": "Importar",
+  "IMPORTATION": "Importação",
   "TITLE_IMPORT": "Importação de dados",
+  "PROCESS": "Processar",
+  "PROCESSING": "Processando",
   "IMPORT_MODELS": {
     "IMPORT_MODEL": "Modelo",
     "TITLE": "Modelo de importação",
@@ -20,7 +23,13 @@
     "FUNCTIONS": "Funções",
     "FORMATTING_EXPRESSION": "Expressão de formatação",
     "CONFIGURATION": "Configuração",
-    "ENTITY_RELATIONSHIPS": "Relacionamentos de entidade"
+    "ENTITY_RELATIONSHIPS": "Relacionamentos de entidade",
+    "DESTINATION": "Destino da informação",
+    "USE_CURRENT_FIELD": "Usar algum campo da tarefa",
+    "NEW_CUSTOM_FIELD": "Criar novo campo personalizado",
+    "DO_NOTHING_WITH_COLUMN": "Não fazer nada com a coluna",
+    "NEW_CUSTOM_FIELD_NAME": "Nome do novo campo personalizado",
+    "DEFINITION": "Definição de mapeamento"
   },
 
   "ENTITY_RELATIONSHIPS": {
@@ -39,18 +48,41 @@
   },
 
   "FUNCTIONS": {
-    "REMOVE_FORMATTING": "Remover formatação",
+    "REMOVE_SPECIAL_CHARACTERS": "Remover caracteres especiais",
+    "CONFIGURATION_RSC": "Caracteres a serem removidos",
+    "CONFIGURATION_RSC_INFORMATION": "Separe por vírgula quais caracteres especiais devem ser removidos (Exemplo: #,%,&). Use * para todos os caracteres especiais",
+
+    "REMOVE_LETTERS": "Remover letras",
+    "CONFIGURATION_RL": "Letras a serem removidas",
+    "CONFIGURATION_RL_INFORMATION": "Separe por vírgula quais letras devem ser removidas (Exemplo: a,e,i,o,u). Use * para todas as letras",
+
+    "REMOVE_DIGITS": "Remover dígitos",
+    "CONFIGURATION_RD": "Dígitos a serem removidos",
+    "CONFIGURATION_RD_INFORMATION": "Separe por vírgula quais dígitos devem ser removidos (Exemplo: 0,1,2,3,4,5,6,7,8,9). Use * para todos os dígitos",
+
     "REMOVE_LEFT_CHARACTERS": "Remover caracteres à esquerda",
+    "CONFIGURATION_RLC": "Quantos caracteres devem ser removidos à esquerda",
+    "CONFIGURATION_RLC_INFORMATION": "Informe a quantidade de caracteres a serem removidos à esquerda (Exemplo: 3).",
+
     "REMOVE_RIGHT_CHARACTERS": "Remover caracteres à direita",
-    "TRIM_SIDE_WHITESPACE": "Remover espaços em branco à esquerda e à direita",
+    "CONFIGURATION_RRC": "Quantos caracteres devem ser removidos à direita",
+    "CONFIGURATION_RRC_INFORMATION": "Informe a quantidade de caracteres a serem removidos à direita (Exemplo: 3).",
+
+    "APPLY_FORMATTING": "Aplicar formatação",
+    "CONFIGURATION_FMT": "Qual formato deve ser aplicado? (Exemplo: ##/##/####)",
+
+    "TRIM_SIDE_WHITESPACE": "Remover espaços em branco nas laterais",
     "REMOVE_ALL_WHITESPACE": "Remover todos os espaços em branco",
+
+    "COPY_PART_OF_TEXT": "Copiar parte do texto",
+    "CONFIGURATION_CPT": "Informe o início e o fim da parte do texto a ser copiada",
+    "CONFIGURATION_CPT_INFORMATION": "(Exemplo: 1..15) <- Que é da primeira posição até a 15ª posição",
+
+    "FIRST_INFORMATION_EXISTS": "Buscar informação de outra coluna se estiver vazia",
+    "CONFIGURATION_FIE": "Informe o nome da coluna que será usada para buscar a informação",
+
     "TO_UPPERCASE": "Converter para maiúsculas",
     "TO_LOWERCASE": "Converter para minúsculas",
-    "CAPITALIZE_EACH_WORD": "Capitalizar cada palavra",
-    "APPLY_FORMATTING": "Aplicar formatação",
-    "DYNAMIC_INFORMATION": "Informação dinâmica",
-    "FETCH_INFORMATION_FROM_ANOTHER_COLUMN_IF_EMPTY": "Buscar informação de outra coluna se estiver vazia",
-    "COPY_PART_OF_TEXT": "Copiar parte do texto",
-    "COPY_PART_OF_TEXT_FROM_MULTIPLE_COLUMNS": "Copiar parte do texto de múltiplas colunas"
+    "TITLE_EACH_WORD": "Capitalizar cada palavra"
   }
 }

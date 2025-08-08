@@ -1,20 +1,22 @@
-import { Injectable } from '@angular/core';
-import { ControllerService } from 'projects/design-lib/src/lib/services/controller.service';
-import { ImportModel } from '../models/import-model.model';
-import { FrameworkService } from 'projects/design-lib/src/lib/services/framework.service';
-import { ActivatedRoute } from '@angular/router';
-import { DetailCrudHelper } from 'projects/design-lib/src/lib/services/detail-crud-helper';
-import { Mapping } from '../models/mapping.model';
-import { Entity } from '../models/entity.model';
-import { Property } from '../models/property.model';
-import { environment } from 'src/environments/environment';
-import { EntityCrudApiService } from 'projects/primeng-lib/src/data/services/entity-crud-api.service';
+import { Injectable } from "@angular/core";
+import { ControllerService } from "projects/design-lib/src/lib/services/controller.service";
+import { ImportModel } from "../models/import-model.model";
+import { FrameworkService } from "projects/design-lib/src/lib/services/framework.service";
+import { ActivatedRoute } from "@angular/router";
+import { DetailCrudHelper } from "projects/design-lib/src/lib/services/detail-crud-helper";
+import { Mapping } from "../models/mapping.model";
+import { FunctionText } from "../models/mapping-function.model";
+import { Entity } from "../models/entity.model";
+import { Property } from "../models/property.model";
+import { environment } from "src/environments/environment";
+import { EntityCrudApiService } from "projects/primeng-lib/src/data/services/entity-crud-api.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-export class ImportModelsControllerService extends ControllerService<ImportModel> {
-
+export class ImportModelsControllerService
+  extends ControllerService<ImportModel>
+{
   constructor(
     protected override framework: FrameworkService,
     public activateRoute: ActivatedRoute,
@@ -23,20 +25,32 @@ export class ImportModelsControllerService extends ControllerService<ImportModel
     super(framework, ImportModel);
   }
 
-  public mappingDetail: DetailCrudHelper<Mapping> = new DetailCrudHelper<Mapping>(this.framework, () => new Mapping());
+  public mappingDetail: DetailCrudHelper<Mapping> =
+    new DetailCrudHelper<Mapping>(this.framework, () => new Mapping());
 
   public newMapping() {
     this.loadProperties(this.object.entity);
-    this.mappingDetail.newItem(this.object.mappings, 'mappings', this.framework.router, this.activateRoute);
+    this.mappingDetail.newItem(
+      this.object.mappings,
+      "mappings",
+      this.framework.router,
+      this.activateRoute
+    );
   }
 
   public deleteMapping(mapping: Mapping) {
     this.mappingDetail.removeItem(mapping, this.object.mappings);
   }
 
-  public editMapping(mapping: Mapping) {
+  public async editMapping(mapping: Mapping, dialogMode: boolean = false) {
     this.loadProperties(this.object.entity);
-    this.mappingDetail.editItem(mapping, 'mappings', this.framework.router, this.activateRoute);
+    await this.loadFunctionsOptions();
+    this.mappingDetail.editItem(
+      mapping,
+      dialogMode ? null : "mappings",
+      dialogMode ? null : this.framework.router,
+      dialogMode ? null : this.activateRoute
+    );
   }
 
   entitySelected: Entity;
@@ -44,23 +58,24 @@ export class ImportModelsControllerService extends ControllerService<ImportModel
   filteredPropertiesOfEntitySelected: Array<Property> = [];
   loadProperties(entitySelected: Entity) {
     if (!environment.production) {
-      console.log('loadProperties', entitySelected);
+      console.log("loadProperties", entitySelected);
     }
 
     this.entityCrudService.findById(entitySelected.id).subscribe((entity) => {
       if (entity) {
-        entity['name'] = entity.entityName[this.framework.language];
+        entity["name"] = entity.entityName[this.framework.language];
         this.propertiesOfEntitySelected = [];
-        this.alimentarPropriedades(
-          entity,
-          this.propertiesOfEntitySelected
-        );
+        this.alimentarPropriedades(entity, this.propertiesOfEntitySelected);
         const uniqueMap = new Map<string, Property>();
-        this.propertiesOfEntitySelected.forEach(prop => {
+        this.propertiesOfEntitySelected.forEach((prop) => {
           uniqueMap.set(prop.id!, prop);
         });
-        this.propertiesOfEntitySelected = Array.from(uniqueMap.values())
-          .sort((a, b) => a.entityType?.internalName!.localeCompare(b.entityType?.internalName!));
+        this.propertiesOfEntitySelected = Array.from(uniqueMap.values()).sort(
+          (a, b) =>
+            a.entityType?.internalName!.localeCompare(
+              b.entityType?.internalName!
+            )
+        );
       }
     });
   }
@@ -77,8 +92,14 @@ export class ImportModelsControllerService extends ControllerService<ImportModel
             ["SUBORDINATE_ENTITY", "RELATED_ENTITY", "LIST"].indexOf(x.type) < 0
         )
       );
-      for (const propriedade of entidade.properties.filter(x => ["SUBORDINATE_ENTITY", "RELATED_ENTITY", "LIST"].indexOf(x.type) >= 0)) {
-        if ( propriedade.entityType && ["SUBORDINATE_ENTITY", "LIST"].indexOf(propriedade.type) >= 0 ) {
+      for (const propriedade of entidade.properties.filter(
+        (x) =>
+          ["SUBORDINATE_ENTITY", "RELATED_ENTITY", "LIST"].indexOf(x.type) >= 0
+      )) {
+        if (
+          propriedade.entityType &&
+          ["SUBORDINATE_ENTITY", "LIST"].indexOf(propriedade.type) >= 0
+        ) {
           this.alimentarPropriedades(propriedade.entityType, propriedadesArray);
         } else if (
           propriedade.entityType &&
@@ -98,5 +119,46 @@ export class ImportModelsControllerService extends ControllerService<ImportModel
             .toLowerCase()
             .indexOf(event.query) >= 0
       );
+  }
+
+  functionsOptions: any[] = [];
+
+  async loadFunctionsOptions() {
+    this.functionsOptions = await this.framework.utils.getOptionsFromEnum(
+      FunctionText,
+      "FUNCTIONS"
+    );
+  }
+
+  filteredLetters: string[] = [];
+
+  filterLetter(event: { query: string }) {
+    const maxExcelColumns = 16384; // máximo de colunas no Excel (XFD)
+    this.filteredLetters = [];
+
+    for (let i = 1; i <= maxExcelColumns; i++) {
+      const letter = this.numberToExcelColumn(i);
+
+      if (letter.toLowerCase().startsWith(event.query.toLowerCase())) {
+        this.filteredLetters.push(letter);
+      }
+
+      if (this.filteredLetters.length >= 50) {
+        // limita sugestões para melhor performance
+        break;
+      }
+    }
+  }
+
+  numberToExcelColumn(num: number): string {
+    let column = "";
+
+    while (num > 0) {
+      const remainder = (num - 1) % 26;
+      column = String.fromCharCode(65 + remainder) + column;
+      num = Math.floor((num - 1) / 26);
+    }
+
+    return column;
   }
 }

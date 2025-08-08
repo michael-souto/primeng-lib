@@ -13,6 +13,7 @@
   pSize="large"
   style="height: 3.5rem"
   [placeholder]="placeholder ?? ''"
+  [disabled]="disabled"
   class="{{
     (isNullRequired() && invalidCondition) ||
     (isRequired() && (isSubmitted() || isNullSubmitted()) && isEmpty())

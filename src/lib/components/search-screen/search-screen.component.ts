@@ -67,6 +67,7 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
   @Input() showConfirmButton: boolean = true;
   @Input() showNewButton: boolean = true;
   @Input() showBackButton: boolean = true;
+  @Input() showFilter: boolean = true;
   @Input() rowHeight: number = 50;
   // Mode Search
   @Output() onNewClick = new EventEmitter<any>();

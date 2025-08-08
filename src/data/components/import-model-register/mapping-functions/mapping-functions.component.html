@@ -1,0 +1,324 @@
+<div class="field col-12 mt-2" *ngIf="isInitialized && mapping.destination !== 'DO_NOTHING_WITH_COLUMN'">
+  <p-fieldset
+    appendTo="mappingDialog"
+    [collapsed]="!mapping.advanced ?? true"
+  >
+  <ng-template pTemplate="header">
+    <div class="flex align-items-center gap-2 px-2">
+      <p-checkbox
+        id="advanced"
+        [(ngModel)]="mapping.advanced"
+        [binary]="true"
+      ></p-checkbox>
+      <label class="font-bold" for="advanced" translate>ADVANCED</label>
+    </div>
+  </ng-template>
+
+    <div class="grid formgrid p-fluid align-content-end" *ngIf="mapping.advanced">
+      <!-- REMOVE SPECIAL CHARACTERS -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRSC">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionRSC.active"
+          [binary]="true"
+          [inputId]="mappingFunctionRSC.function"
+          (onChange)="onActiveChange('mappingFunctionRSC')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionRSC.function" class="ml-2">
+          {{ "FUNCTIONS.REMOVE_SPECIAL_CHARACTERS" | translate }}
+        </label>
+      </div>
+      <d-input-text
+        [(value)]="mappingFunctionRSC.configuration"
+        label="FUNCTIONS.CONFIGURATION_RSC"
+        class="field col-12 md:col-4"
+        *ngIf="mappingFunctionRSC?.active"
+        (valueChange)="onConfigurationChange('mappingFunctionRSC')"
+        (input)="onConfigurationChange('mappingFunctionRSC')"
+        [disabled]="disabled"
+      ></d-input-text>
+      <p-messages
+        *ngIf="mappingFunctionRSC?.active && mappingFunctionRSC?.textInformation"
+        class="col-12 md:col-8"
+        [value]="mappingFunctionRSC.textInformation"
+        [enableService]="false"
+        [closable]="false"
+      />
+
+      <!-- REMOVE LETTERS -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRL">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionRL.active"
+          [binary]="true"
+          [inputId]="mappingFunctionRL.function"
+          (onChange)="onActiveChange('mappingFunctionRL')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionRL.function" class="ml-2">
+          {{ "FUNCTIONS.REMOVE_LETTERS" | translate }}
+        </label>
+      </div>
+      <d-input-text
+        [(value)]="mappingFunctionRL.configuration"
+        label="FUNCTIONS.CONFIGURATION_RL"
+        class="field col-12 md:col-4"
+        *ngIf="mappingFunctionRL?.active"
+        (valueChange)="onConfigurationChange('mappingFunctionRL')"
+        (input)="onConfigurationChange('mappingFunctionRL')"
+        [disabled]="disabled"
+      ></d-input-text>
+      <p-messages
+        *ngIf="mappingFunctionRL?.active && mappingFunctionRL?.textInformation"
+        class="col-12 md:col-8"
+        [value]="mappingFunctionRL.textInformation"
+        [enableService]="false"
+        [closable]="false"
+      />
+
+      <!-- REMOVE DIGITS -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRD">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionRD.active"
+          [binary]="true"
+          [inputId]="mappingFunctionRD.function"
+          (onChange)="onActiveChange('mappingFunctionRD')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionRD.function" class="ml-2">
+          {{ "FUNCTIONS.REMOVE_DIGITS" | translate }}
+        </label>
+      </div>
+      <d-input-text
+        [(value)]="mappingFunctionRD.configuration"
+        label="FUNCTIONS.CONFIGURATION_RD"
+        class="field col-12 md:col-4"
+        *ngIf="mappingFunctionRD?.active"
+        (valueChange)="onConfigurationChange('mappingFunctionRD')"
+        (input)="onConfigurationChange('mappingFunctionRD')"
+        [disabled]="disabled"
+      ></d-input-text>
+      <p-messages
+        *ngIf="mappingFunctionRD?.active && mappingFunctionRD?.textInformation"
+        class="col-12 md:col-8"
+        [value]="mappingFunctionRD.textInformation"
+        [enableService]="false"
+        [closable]="false"
+      />
+
+      <!-- REMOVE LEFT CHARACTERS -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRLC">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionRLC.active"
+          [binary]="true"
+          [inputId]="mappingFunctionRLC.function"
+          (onChange)="onActiveChange('mappingFunctionRLC')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionRLC.function" class="ml-2">
+          {{ "FUNCTIONS.REMOVE_LEFT_CHARACTERS" | translate }}
+        </label>
+      </div>
+      <d-input-text
+        [(value)]="mappingFunctionRLC.configuration"
+        label="FUNCTIONS.CONFIGURATION_RLC"
+        class="field col-12 md:col-4"
+        *ngIf="mappingFunctionRLC?.active"
+        (valueChange)="onConfigurationChange('mappingFunctionRLC')"
+        (input)="onConfigurationChange('mappingFunctionRLC')"
+        [disabled]="disabled"
+      ></d-input-text>
+      <p-messages
+        *ngIf="mappingFunctionRLC?.active && mappingFunctionRLC?.textInformation"
+        class="col-12 md:col-8"
+        [value]="mappingFunctionRLC.textInformation"
+        [enableService]="false"
+        [closable]="false"
+      />
+
+      <!-- REMOVE RIGHT CHARACTERS -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRRC">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionRRC.active"
+          [binary]="true"
+          [inputId]="mappingFunctionRRC.function"
+          (onChange)="onActiveChange('mappingFunctionRRC')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionRRC.function" class="ml-2">
+          {{ "FUNCTIONS.REMOVE_RIGHT_CHARACTERS" | translate }}
+        </label>
+      </div>
+      <d-input-text
+        [(value)]="mappingFunctionRRC.configuration"
+        label="FUNCTIONS.CONFIGURATION_RRC"
+        class="field col-12 md:col-4"
+        *ngIf="mappingFunctionRRC?.active"
+        (valueChange)="onConfigurationChange('mappingFunctionRRC')"
+        (input)="onConfigurationChange('mappingFunctionRRC')"
+        [disabled]="disabled"
+      ></d-input-text>
+      <p-messages
+        *ngIf="mappingFunctionRRC?.active && mappingFunctionRRC?.textInformation"
+        class="col-12 md:col-8"
+        [value]="mappingFunctionRRC.textInformation"
+        [enableService]="false"
+        [closable]="false"
+      />
+
+      <!-- TRIM SIDE WHITESPACE -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionTSW">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionTSW.active"
+          [binary]="true"
+          [inputId]="mappingFunctionTSW.function"
+          (onChange)="onActiveChange('mappingFunctionTSW')"
+          [disabled]="disabled"
+          ></p-checkbox>
+        <label [for]="mappingFunctionTSW.function" class="ml-2">
+          {{ "FUNCTIONS.TRIM_SIDE_WHITESPACE" | translate }}
+        </label>
+      </div>
+      <d-input-text
+        [(value)]="mappingFunctionTSW.configuration"
+        label="FUNCTIONS.CONFIGURATION_TSW"
+        class="field col-12 md:col-4"
+        *ngIf="mappingFunctionTSW?.active"
+        (valueChange)="onConfigurationChange('mappingFunctionTSW')"
+        (input)="onConfigurationChange('mappingFunctionTSW')"
+        [disabled]="disabled"
+      ></d-input-text>
+
+      <!-- REMOVE ALL WHITESPACE -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRAW">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionRAW.active"
+          [binary]="true"
+          [inputId]="mappingFunctionRAW.function"
+          (onChange)="onActiveChange('mappingFunctionRAW')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionRAW.function" class="ml-2">
+          {{ "FUNCTIONS.REMOVE_ALL_WHITESPACE" | translate }}
+        </label>
+      </div>
+      <d-input-text
+        [(value)]="mappingFunctionRAW.configuration"
+        label="FUNCTIONS.CONFIGURATION_RAW"
+        class="field col-12 md:col-4"
+        *ngIf="mappingFunctionRAW?.active"
+        (valueChange)="onConfigurationChange('mappingFunctionRAW')"
+        (input)="onConfigurationChange('mappingFunctionRAW')"
+        [disabled]="disabled"
+      ></d-input-text>
+      <p-messages
+        *ngIf="mappingFunctionRAW?.active && mappingFunctionRAW?.textInformation"
+        class="col-12 md:col-8"
+        [value]="mappingFunctionRAW.textInformation"
+        [enableService]="false"
+        [closable]="false"
+      />
+
+      <!-- APPLY FORMATTING -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionFMT">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionFMT.active"
+          [binary]="true"
+          [inputId]="mappingFunctionFMT.function"
+          (onChange)="onActiveChange('mappingFunctionFMT')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionFMT.function" class="ml-2">
+          {{ "FUNCTIONS.APPLY_FORMATTING" | translate }}
+        </label>
+      </div>
+      <d-input-text
+        [(value)]="mappingFunctionFMT.configuration"
+        label="FUNCTIONS.CONFIGURATION_FMT"
+        class="field col-12 md:col-4"
+        *ngIf="mappingFunctionFMT?.active"
+        (valueChange)="onConfigurationChange('mappingFunctionFMT')"
+        (input)="onConfigurationChange('mappingFunctionFMT')"
+        [disabled]="disabled"
+      ></d-input-text>
+      <p-messages
+        *ngIf="mappingFunctionFMT?.active && mappingFunctionFMT?.textInformation"
+        class="col-12 md:col-8"
+        [value]="mappingFunctionFMT.textInformation"
+        [enableService]="false"
+        [closable]="false"
+      />
+
+      <!-- TO UPPERCASE -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionTUP">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionTUP.active"
+          [binary]="true"
+          [inputId]="mappingFunctionTUP.function"
+          (onChange)="onActiveChange('mappingFunctionTUP')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionTUP.function" class="ml-2">
+          {{ "FUNCTIONS.TO_UPPERCASE" | translate }}
+        </label>
+      </div>
+
+      <!-- TO LOWERCASE -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionTLW">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionTLW.active"
+          [binary]="true"
+          [inputId]="mappingFunctionTLW.function"
+          (onChange)="onActiveChange('mappingFunctionTLW')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionTLW.function" class="ml-2">
+          {{ "FUNCTIONS.TO_LOWERCASE" | translate }}
+        </label>
+      </div>
+
+      <!-- TITLE EACH WORD -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionTEW">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionTEW.active"
+          [binary]="true"
+          [inputId]="mappingFunctionTEW.function"
+          (onChange)="onActiveChange('mappingFunctionTEW')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionTEW.function" class="ml-2">
+          {{ "FUNCTIONS.TITLE_EACH_WORD" | translate }}
+        </label>
+      </div>
+
+      <!-- COPY PART OF TEXT -->
+      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionCPT">
+        <p-checkbox
+          [(ngModel)]="mappingFunctionCPT.active"
+          [binary]="true"
+          [inputId]="mappingFunctionCPT.function"
+          (onChange)="onActiveChange('mappingFunctionCPT')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionCPT.function" class="ml-2">
+          {{ "FUNCTIONS.COPY_PART_OF_TEXT" | translate }}
+        </label>
+      </div>
+      <d-input-text
+        [(value)]="mappingFunctionCPT.configuration"
+        label="FUNCTIONS.CONFIGURATION_CPT"
+        class="field col-12 md:col-4"
+        *ngIf="mappingFunctionCPT?.active"
+        (valueChange)="onConfigurationChange('mappingFunctionCPT')"
+        (input)="onConfigurationChange('mappingFunctionCPT')"
+        [disabled]="disabled"
+        ></d-input-text>
+      <p-messages
+        *ngIf="mappingFunctionCPT?.active && mappingFunctionCPT?.textInformation"
+        class="col-12 md:col-8"
+        [value]="mappingFunctionCPT.textInformation"
+        [enableService]="false"
+        [closable]="false"
+      />
+    </div>
+  </p-fieldset>
+</div>

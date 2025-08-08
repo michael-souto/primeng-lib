@@ -3,6 +3,7 @@
   [toggleable]="true"
   [collapsed]="true"
   styleClass="p-1 m-0"
+  *ngIf="showFilter"
 >
   <div class="field" *ngFor="let filter of filters">
     <div class="p-inputgroup">
