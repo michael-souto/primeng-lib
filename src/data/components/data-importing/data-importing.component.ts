@@ -35,9 +35,9 @@ export class DataImportingComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const id: number = this.route.snapshot.params["id"];
-    console.log(id);
     if (id != null) {
-      this.service.findById(id.toString()).subscribe((x: ImportModel) => {
+      this.service.findById(id.toString()).subscribe(
+        (x: ImportModel) => {
         this.importModel = x;
         this._properties = x.mappings.map((x) => x.property);
         if (this.importModelControllerService.complementFieldId != null) {
@@ -46,6 +46,11 @@ export class DataImportingComponent implements OnInit, OnDestroy {
           this.importModel.complementFieldLabel = this.importModelControllerService.complementFieldLabel;
           this.importModel.complementFieldName = this.importModelControllerService.complementFieldName;
           this.importModel.complementFieldValue = this.importModelControllerService.complementFieldValue;
+        }
+      },
+      (error) => {
+        if (error.status === 404) {
+          this.router.navigate(['/import-models/']);
         }
       });
     }
