@@ -11,23 +11,32 @@
         </div>
       </ng-template>
 
-      <div class="p-fluid formgrid grid">
+      <div class="p-fluid formgrid grid p-4">
         <div
-          class="field col-12"
+          class="col-12"
           *ngFor="let filtroRelatorio of controller.customReport?.filters"
         >
           <label>{{ filtroRelatorio.filter?.filterDescription.pt }}</label>
-
-          <div class="w-full" *ngIf="filtroRelatorio.filter?.type === 'TEXT' && controller.getSearchId(filtroRelatorio.filter) == ''">
+          <div
+            class="w-full mb-3"
+            *ngIf="
+              filtroRelatorio.filter?.type === 'TEXT' &&
+              controller.getSearchId(filtroRelatorio.filter) == ''
+            "
+          >
             <input
               class="w-full"
+              style="height: 3.5rem"
               pInputText
               type="text"
               [(ngModel)]="filtroRelatorio.value"
             />
           </div>
 
-          <div class="flex justify-content-between align-items-center" *ngIf="controller.getSearchId(filtroRelatorio.filter) == ''">
+          <div
+            class="flex justify-content-between align-items-center"
+            *ngIf="controller.getSearchId(filtroRelatorio.filter) == ''"
+          >
             <div class="w-full">
               <p-calendar
                 *ngIf="filtroRelatorio.filter?.type === 'DATE'"
@@ -66,20 +75,23 @@
             </div>
           </div>
 
-          <d-search-field *ngIf="controller.getSearchId(filtroRelatorio.filter) != ''"
+          <d-search-field
+            *ngIf="controller.getSearchId(filtroRelatorio.filter) != ''"
             class="col-12"
             [searchId]="controller.getSearchId(filtroRelatorio.filter)"
             [apiName]="controller.getApiName(filtroRelatorio.filter)"
-            [fieldDescription]="controller.getSearchDescriptionField(filtroRelatorio.filter)"
+            [fieldDescription]="
+              controller.getSearchDescriptionField(filtroRelatorio.filter)
+            "
             [searchRoute]="controller.getSearchId(filtroRelatorio.filter)"
             [activateRoute]="activatedRoute"
             [(value)]="filtroRelatorio.value"
             [multiple]="true"
-            (onBeforeGoToSearchScreen)="controller.setFilterSelected(filtroRelatorio)"
+            (onBeforeGoToSearchScreen)="
+              controller.setFilterSelected(filtroRelatorio)
+            "
           ></d-search-field>
         </div>
-
-
       </div>
 
       <ng-template pTemplate="footer">
@@ -94,7 +106,7 @@
               icon="fas fa-chevron-left"
               [raised]="true"
               label="Voltar"
-              class="w-auto mr-4 mt-4"
+              class="w-auto"
               (click)="goList()"
             ></button>
           </div>
@@ -198,8 +210,6 @@
       ></button>
     </div>
     <div class="p-toolbar-group-center"></div>
-    <div class="p-toolbar-group-end">
-
-    </div>
+    <div class="p-toolbar-group-end"></div>
   </p-toolbar>
 </div>
