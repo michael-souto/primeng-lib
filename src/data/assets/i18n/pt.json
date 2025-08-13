@@ -83,6 +83,30 @@
 
     "TO_UPPERCASE": "Converter para maiúsculas",
     "TO_LOWERCASE": "Converter para minúsculas",
-    "TITLE_EACH_WORD": "Capitalizar cada palavra"
+    "TITLE_EACH_WORD": "Titularizar cada palavra",
+
+    "SECTION_REMOVALS": "Remoção de caracteres",
+    "SECTION_CASING": "Alteração de caixa",
+    "SECTION_WHITESPACE": "Tratamento de espaços em branco",
+    "SECTION_OTHERS": "Outras funções",
+
+    "DO_NOTHING_WITH_COLUMN": "Não fazer nada com a coluna",
+    "USE_CURRENT_FIELD": "Usar campo da tarefa",
+    "NEW_CUSTOM_FIELD": "Criar novo campo personalizado",
+
+    "RSC": "Remover caracteres especiais",
+    "RL": "Remover letras",
+    "RD": "Remover dígitos",
+    "RLC": "Remover caracteres à esquerda",
+    "RRC": "Remover caracteres à direita",
+    "TSW": "Remover espaços em branco nas laterais",
+    "RAW": "Remover todos os espaços em branco",
+    "FMT": "Aplicar formatação",
+    "TUP": "Converter para maiúsculas",
+    "TLW": "Converter para minúsculas",
+    "TEW": "Titularizar cada palavra",
+    "FIE": "Buscar informação de outra coluna se estiver vazia",
+    "CPT": "Copiar parte do texto"
+
   }
 }

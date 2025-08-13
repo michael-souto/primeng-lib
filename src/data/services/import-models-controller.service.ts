@@ -27,6 +27,7 @@ export class ImportModelsControllerService
 
   public mappingDetail: DetailCrudHelper<Mapping> =
     new DetailCrudHelper<Mapping>(this.framework, () => new Mapping());
+  private originalMappingForEdit: Mapping;
 
   public newMapping() {
     this.loadProperties(this.object.entity);
@@ -45,12 +46,27 @@ export class ImportModelsControllerService
   public async editMapping(mapping: Mapping, dialogMode: boolean = false) {
     this.loadProperties(this.object.entity);
     await this.loadFunctionsOptions();
+    this.originalMappingForEdit = mapping;
     this.mappingDetail.editItem(
-      mapping,
+      { ...mapping },
       dialogMode ? null : "mappings",
       dialogMode ? null : this.framework.router,
       dialogMode ? null : this.activateRoute
     );
+  }
+
+  public saveMapping() {
+    if (this.originalMappingForEdit) {
+      Object.assign(this.originalMappingForEdit, this.mappingDetail.currentItem);
+      this.mappingDetail.currentItem = this.originalMappingForEdit;
+      this.mappingDetail.saveItem();
+      this.originalMappingForEdit = null;
+    }
+  }
+
+  public cancelMapping() {
+    this.originalMappingForEdit = null;
+    this.mappingDetail.showDialog(false);
   }
 
   entitySelected: Entity;

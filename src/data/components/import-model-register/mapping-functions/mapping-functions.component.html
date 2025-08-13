@@ -1,22 +1,34 @@
-<div class="field col-12 mt-2" *ngIf="isInitialized && mapping.destination !== 'DO_NOTHING_WITH_COLUMN'">
-  <p-fieldset
-    appendTo="mappingDialog"
-    [collapsed]="!mapping.advanced ?? true"
-  >
-  <ng-template pTemplate="header">
-    <div class="flex align-items-center gap-2 px-2">
-      <p-checkbox
-        id="advanced"
-        [(ngModel)]="mapping.advanced"
-        [binary]="true"
-      ></p-checkbox>
-      <label class="font-bold" for="advanced" translate>ADVANCED</label>
-    </div>
-  </ng-template>
+<div
+  class="field col-12 mt-2"
+  *ngIf="isInitialized && mapping.destination !== 'DO_NOTHING_WITH_COLUMN'"
+>
+  <p-fieldset appendTo="mappingDialog" [collapsed]="!mapping.advanced ?? true">
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2 px-2">
+        <p-checkbox
+          id="advanced"
+          [(ngModel)]="mapping.advanced"
+          [binary]="true"
+        ></p-checkbox>
+        <label class="font-bold" for="advanced" translate>ADVANCED</label>
+      </div>
+    </ng-template>
 
-    <div class="grid formgrid p-fluid align-content-end" *ngIf="mapping.advanced">
+    <div
+      class="grid formgrid p-fluid align-content-end"
+      *ngIf="mapping.advanced"
+    >
+      <div class="col-12">
+        <p class="font-bold text-primary" translate>
+          FUNCTIONS.SECTION_REMOVALS
+        </p>
+      </div>
+
       <!-- REMOVE SPECIAL CHARACTERS -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRSC">
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionRSC"
+      >
         <p-checkbox
           [(ngModel)]="mappingFunctionRSC.active"
           [binary]="true"
@@ -37,16 +49,22 @@
         (input)="onConfigurationChange('mappingFunctionRSC')"
         [disabled]="disabled"
       ></d-input-text>
-      <p-messages
-        *ngIf="mappingFunctionRSC?.active && mappingFunctionRSC?.textInformation"
-        class="col-12 md:col-8"
-        [value]="mappingFunctionRSC.textInformation"
-        [enableService]="false"
-        [closable]="false"
-      />
+      <div class="col-12 md:col-8 flex align-content-end">
+        <p-messages
+          *ngIf="
+            mappingFunctionRSC?.active && mappingFunctionRSC?.textInformation
+          "
+          [value]="mappingFunctionRSC.textInformation"
+          [enableService]="false"
+          [closable]="false"
+        />
+      </div>
 
       <!-- REMOVE LETTERS -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRL">
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionRL"
+      >
         <p-checkbox
           [(ngModel)]="mappingFunctionRL.active"
           [binary]="true"
@@ -76,7 +94,10 @@
       />
 
       <!-- REMOVE DIGITS -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRD">
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionRD"
+      >
         <p-checkbox
           [(ngModel)]="mappingFunctionRD.active"
           [binary]="true"
@@ -106,7 +127,10 @@
       />
 
       <!-- REMOVE LEFT CHARACTERS -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRLC">
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionRLC"
+      >
         <p-checkbox
           [(ngModel)]="mappingFunctionRLC.active"
           [binary]="true"
@@ -128,7 +152,9 @@
         [disabled]="disabled"
       ></d-input-text>
       <p-messages
-        *ngIf="mappingFunctionRLC?.active && mappingFunctionRLC?.textInformation"
+        *ngIf="
+          mappingFunctionRLC?.active && mappingFunctionRLC?.textInformation
+        "
         class="col-12 md:col-8"
         [value]="mappingFunctionRLC.textInformation"
         [enableService]="false"
@@ -136,7 +162,10 @@
       />
 
       <!-- REMOVE RIGHT CHARACTERS -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRRC">
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionRRC"
+      >
         <p-checkbox
           [(ngModel)]="mappingFunctionRRC.active"
           [binary]="true"
@@ -158,38 +187,43 @@
         [disabled]="disabled"
       ></d-input-text>
       <p-messages
-        *ngIf="mappingFunctionRRC?.active && mappingFunctionRRC?.textInformation"
+        *ngIf="
+          mappingFunctionRRC?.active && mappingFunctionRRC?.textInformation
+        "
         class="col-12 md:col-8"
         [value]="mappingFunctionRRC.textInformation"
         [enableService]="false"
         [closable]="false"
       />
 
+      <div class="col-12 mt-1"><hr /></div>
+      <div class="col-12">
+        <p class="font-bold text-primary" translate>
+          FUNCTIONS.SECTION_WHITESPACE
+        </p>
+      </div>
       <!-- TRIM SIDE WHITESPACE -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionTSW">
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionTSW"
+      >
         <p-checkbox
           [(ngModel)]="mappingFunctionTSW.active"
           [binary]="true"
           [inputId]="mappingFunctionTSW.function"
           (onChange)="onActiveChange('mappingFunctionTSW')"
           [disabled]="disabled"
-          ></p-checkbox>
+        ></p-checkbox>
         <label [for]="mappingFunctionTSW.function" class="ml-2">
           {{ "FUNCTIONS.TRIM_SIDE_WHITESPACE" | translate }}
         </label>
       </div>
-      <d-input-text
-        [(value)]="mappingFunctionTSW.configuration"
-        label="FUNCTIONS.CONFIGURATION_TSW"
-        class="field col-12 md:col-4"
-        *ngIf="mappingFunctionTSW?.active"
-        (valueChange)="onConfigurationChange('mappingFunctionTSW')"
-        (input)="onConfigurationChange('mappingFunctionTSW')"
-        [disabled]="disabled"
-      ></d-input-text>
 
       <!-- REMOVE ALL WHITESPACE -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionRAW">
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionRAW"
+      >
         <p-checkbox
           [(ngModel)]="mappingFunctionRAW.active"
           [binary]="true"
@@ -201,25 +235,73 @@
           {{ "FUNCTIONS.REMOVE_ALL_WHITESPACE" | translate }}
         </label>
       </div>
-      <d-input-text
-        [(value)]="mappingFunctionRAW.configuration"
-        label="FUNCTIONS.CONFIGURATION_RAW"
-        class="field col-12 md:col-4"
-        *ngIf="mappingFunctionRAW?.active"
-        (valueChange)="onConfigurationChange('mappingFunctionRAW')"
-        (input)="onConfigurationChange('mappingFunctionRAW')"
-        [disabled]="disabled"
-      ></d-input-text>
-      <p-messages
-        *ngIf="mappingFunctionRAW?.active && mappingFunctionRAW?.textInformation"
-        class="col-12 md:col-8"
-        [value]="mappingFunctionRAW.textInformation"
-        [enableService]="false"
-        [closable]="false"
-      />
+
+      <div class="col-12 mt-1"><hr /></div>
+      <div class="col-12">
+        <p class="font-bold text-primary" translate>FUNCTIONS.SECTION_CASING</p>
+      </div>
+
+      <!-- TO UPPERCASE -->
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionTUP"
+      >
+        <p-checkbox
+          [(ngModel)]="mappingFunctionTUP.active"
+          [binary]="true"
+          [inputId]="mappingFunctionTUP.function"
+          (onChange)="onActiveChange('mappingFunctionTUP')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionTUP.function" class="ml-2">
+          {{ "FUNCTIONS.TO_UPPERCASE" | translate }}
+        </label>
+      </div>
+
+      <!-- TO LOWERCASE -->
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionTLW"
+      >
+        <p-checkbox
+          [(ngModel)]="mappingFunctionTLW.active"
+          [binary]="true"
+          [inputId]="mappingFunctionTLW.function"
+          (onChange)="onActiveChange('mappingFunctionTLW')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionTLW.function" class="ml-2">
+          {{ "FUNCTIONS.TO_LOWERCASE" | translate }}
+        </label>
+      </div>
+
+      <!-- TITLE EACH WORD -->
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionTEW"
+      >
+        <p-checkbox
+          [(ngModel)]="mappingFunctionTEW.active"
+          [binary]="true"
+          [inputId]="mappingFunctionTEW.function"
+          (onChange)="onActiveChange('mappingFunctionTEW')"
+          [disabled]="disabled"
+        ></p-checkbox>
+        <label [for]="mappingFunctionTEW.function" class="ml-2">
+          {{ "FUNCTIONS.TITLE_EACH_WORD" | translate }}
+        </label>
+      </div>
+
+      <div class="col-12 mt-1"><hr /></div>
+      <div class="col-12">
+        <p class="font-bold text-primary" translate>FUNCTIONS.SECTION_OTHERS</p>
+      </div>
 
       <!-- APPLY FORMATTING -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionFMT">
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionFMT"
+      >
         <p-checkbox
           [(ngModel)]="mappingFunctionFMT.active"
           [binary]="true"
@@ -241,57 +323,19 @@
         [disabled]="disabled"
       ></d-input-text>
       <p-messages
-        *ngIf="mappingFunctionFMT?.active && mappingFunctionFMT?.textInformation"
+        *ngIf="
+          mappingFunctionFMT?.active && mappingFunctionFMT?.textInformation
+        "
         class="col-12 md:col-8"
         [value]="mappingFunctionFMT.textInformation"
         [enableService]="false"
         [closable]="false"
       />
-
-      <!-- TO UPPERCASE -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionTUP">
-        <p-checkbox
-          [(ngModel)]="mappingFunctionTUP.active"
-          [binary]="true"
-          [inputId]="mappingFunctionTUP.function"
-          (onChange)="onActiveChange('mappingFunctionTUP')"
-          [disabled]="disabled"
-        ></p-checkbox>
-        <label [for]="mappingFunctionTUP.function" class="ml-2">
-          {{ "FUNCTIONS.TO_UPPERCASE" | translate }}
-        </label>
-      </div>
-
-      <!-- TO LOWERCASE -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionTLW">
-        <p-checkbox
-          [(ngModel)]="mappingFunctionTLW.active"
-          [binary]="true"
-          [inputId]="mappingFunctionTLW.function"
-          (onChange)="onActiveChange('mappingFunctionTLW')"
-          [disabled]="disabled"
-        ></p-checkbox>
-        <label [for]="mappingFunctionTLW.function" class="ml-2">
-          {{ "FUNCTIONS.TO_LOWERCASE" | translate }}
-        </label>
-      </div>
-
-      <!-- TITLE EACH WORD -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionTEW">
-        <p-checkbox
-          [(ngModel)]="mappingFunctionTEW.active"
-          [binary]="true"
-          [inputId]="mappingFunctionTEW.function"
-          (onChange)="onActiveChange('mappingFunctionTEW')"
-          [disabled]="disabled"
-        ></p-checkbox>
-        <label [for]="mappingFunctionTEW.function" class="ml-2">
-          {{ "FUNCTIONS.TITLE_EACH_WORD" | translate }}
-        </label>
-      </div>
-
       <!-- COPY PART OF TEXT -->
-      <div class="col-12 flex align-items-center mb-2" *ngIf="mappingFunctionCPT">
+      <div
+        class="col-12 flex align-items-center mb-2"
+        *ngIf="mappingFunctionCPT"
+      >
         <p-checkbox
           [(ngModel)]="mappingFunctionCPT.active"
           [binary]="true"
@@ -311,9 +355,11 @@
         (valueChange)="onConfigurationChange('mappingFunctionCPT')"
         (input)="onConfigurationChange('mappingFunctionCPT')"
         [disabled]="disabled"
-        ></d-input-text>
+      ></d-input-text>
       <p-messages
-        *ngIf="mappingFunctionCPT?.active && mappingFunctionCPT?.textInformation"
+        *ngIf="
+          mappingFunctionCPT?.active && mappingFunctionCPT?.textInformation
+        "
         class="col-12 md:col-8"
         [value]="mappingFunctionCPT.textInformation"
         [enableService]="false"
