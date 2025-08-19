@@ -8,39 +8,55 @@
   [showConfirmButton]="false"
   [showNewButton]="false"
   [showBackButton]="false"
+  [showFilter]="false"
 >
   <ng-template #contentGridTemplate let-object>
     <td>
       <div class="flex align-items-center justify-content-between w-full">
-        <div class="text-center mr-4 border-circle">
-          <i class="fa-solid fa-chart-pie text-6xl"></i>
+        <div class="flex">
+          <div
+            class="text-center mr-4 border-circle cursor-pointer"
+            (click)="print(object.id)"
+          >
+            <i class="fa-solid fa-chart-pie text-6xl"></i>
+          </div>
+
+          <div class="text-left">
+            <span
+              class="block font-medium text-900 mb-2 cursor-pointer"
+              (click)="print(object.id)"
+            >
+              {{ object.name }}
+            </span>
+            <span class="block font-medium text-900 mb-2">
+              <button
+                pButton
+                type="button"
+                icon="fa-solid fa-screwdriver-wrench"
+                class="p-button-primary"
+                [label]="'EDIT' | translate"
+                (click)="edit(object)"
+                size="small"
+                [raised]="true"
+                [text]="true"
+              ></button>
+              <p-button
+                icon="pi pi-star"
+                size="small"
+                [raised]="true"
+                [text]="true"
+                class="ml-1"
+                [label]="'FAVORITE' | translate"
+                [severity]="
+                  favoriteService.existsFavorite(object.id) ? 'warning' : 'info'
+                "
+                (click)="favorite(object)"
+              />
+            </span>
+          </div>
         </div>
 
-        <div class="text-left w-full">
-          <span class="block font-medium text-900 mb-2">
-            {{ object.name }}
-          </span>
-        </div>
-
-        <div
-          class="flex align-items-center justify-content-between"
-        >
-          <button
-            pButton
-            type="button"
-            icon="fa-solid fa-screwdriver-wrench"
-            class="p-button-primary"
-            (click)="edit(object)"
-          ></button>
-
-          <p-button
-            icon="pi pi-star"
-            iconPos="right"
-            class="ml-1"
-            [severity]="favoriteService.existsFavorite(object.id) ? 'warning' : 'info'"
-            (click)="favorite(object)"
-          />
-
+        <div class="flex align-items-center justify-content-between">
           <button
             pButton
             type="button"

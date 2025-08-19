@@ -1,0 +1,152 @@
+<p-panel>
+  <ng-template pTemplate="header">
+    <div class="flex align-items-center gap-2">
+      <i class="fa-solid fa-chart-pie text-6xl"></i>
+      <span class="font-bold">
+        {{ controller.customReport?.name }}
+      </span>
+    </div>
+  </ng-template>
+
+  <div class="p-fluid formgrid grid p-4">
+    <div
+      class="col-12 mb-3"
+      *ngFor="let filtroRelatorio of controller.customReport?.view?.filters"
+    >
+      <div
+        *ngIf="filtroRelatorio?.type === 'DATE'"
+        class="flex justify-content-between align-items-end mb-2"
+      >
+        <label class="font-medium text-900 font-semibold text-0">{{
+          filtroRelatorio?.filterDescription.pt
+        }}</label>
+        <div class="flex gap-2">
+          <button
+          pButton
+          pRipple
+          type="button"
+          icon="fas fa-eraser"
+          class="p-button-text p-button-sm"
+          (click)="setDateRange(filtroRelatorio, 'clear')"
+        ></button>
+          <button
+            pButton
+            pRipple
+            type="button"
+            [label]="'TODAY' | translate"
+            class="p-button-text p-button-secondary p-button-sm"
+            (click)="setDateRange(filtroRelatorio, 'day')"
+          ></button>
+          <button
+            pButton
+            pRipple
+            type="button"
+            [label]="'WEEK' | translate"
+            class="p-button-text p-button-secondary p-button-sm"
+            (click)="setDateRange(filtroRelatorio, 'week')"
+          ></button>
+          <button
+            pButton
+            pRipple
+            type="button"
+            [label]="'MONTH' | translate"
+            class="p-button-text p-button-secondary p-button-sm"
+            (click)="setDateRange(filtroRelatorio, 'month')"
+          ></button>
+        </div>
+      </div>
+      <div
+        class="w-full"
+        *ngIf="
+          filtroRelatorio?.type === 'TEXT' &&
+          controller.getSearchId(filtroRelatorio) == ''
+        "
+      >
+        <d-input-text
+          *ngIf="filtroRelatorio?.type === 'TEXT'"
+          [(value)]="filtroRelatorio.value"
+          [label]="filtroRelatorio?.filterDescription.pt"
+        ></d-input-text>
+      </div>
+
+      <div
+        class="flex justify-content-between align-items-center"
+        *ngIf="controller.getSearchId(filtroRelatorio) == ''"
+      >
+        <div class="w-full">
+          <d-input-calendar
+            *ngIf="filtroRelatorio?.type === 'DATE'"
+            [(value)]="filtroRelatorio.valueFrom"
+          ></d-input-calendar>
+          <p-inputNumber
+            *ngIf="filtroRelatorio?.type === 'INTEGER'"
+            [(ngModel)]="filtroRelatorio.valueFrom"
+          >
+          </p-inputNumber>
+        </div>
+        <span
+          *ngIf="['INTEGER', 'DATE'].includes(filtroRelatorio?.type)"
+          class="ml-3 mr-3"
+        >
+          Até
+        </span>
+        <div class="w-full">
+          <d-input-calendar
+            *ngIf="filtroRelatorio?.type === 'DATE'"
+            [(value)]="filtroRelatorio.valueTo"
+          ></d-input-calendar>
+
+          <p-inputNumber
+            *ngIf="filtroRelatorio?.type === 'INTEGER'"
+            [(ngModel)]="filtroRelatorio.valueTo"
+          >
+          </p-inputNumber>
+        </div>
+      </div>
+
+      <d-search-field
+        *ngIf="controller.getSearchId(filtroRelatorio) != ''"
+        [label]="filtroRelatorio?.filterDescription.pt"
+        [searchId]="controller.getSearchId(filtroRelatorio)"
+        [apiName]="controller.getApiName(filtroRelatorio)"
+        [fieldDescription]="
+          controller.getSearchDescriptionField(filtroRelatorio)
+        "
+        [searchRoute]="controller.getSearchId(filtroRelatorio)"
+        [activateRoute]="activatedRoute"
+        [(value)]="filtroRelatorio.value"
+        [multiple]="true"
+        (onBeforeGoToSearchScreen)="
+          controller.setFilterSelected(filtroRelatorio)
+        "
+      ></d-search-field>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex flex-wrap align-items-center justify-content-between">
+      <div class="flex align-items-center">
+        <button
+          *ngIf="framework.utils.isDesktop()"
+          pButton
+          pRipple
+          icon="fas fa-chevron-left"
+          [raised]="true"
+          label="Voltar"
+          class="w-auto"
+          (click)="controller.goToReport()"
+        ></button>
+      </div>
+      <span class="p-text-secondary">
+        <p-button
+          [label]="'PRINT' | translate"
+          styleClass="p-button-success"
+          (onClick)="controller.emit()"
+          icon="fas fa-print"
+          iconPos="left"
+        >
+        </p-button>
+      </span>
+    </div>
+  </ng-template>
+</p-panel>

@@ -14,6 +14,7 @@ import { ChartColumnComponent } from './components/report-printing/chart-column/
 import { ChartTreemapComponent } from './components/report-printing/chart-treemap/chart-treemap.component';
 import { ChartRadialBarComponent } from './components/report-printing/chart-radial-bar/chart-radial-bar.component';
 import { ReportPrintingSearchComponent } from './components/report-printing/report-printing-search/report-printing-search.component';
+import { ReportPrintingFilterComponent } from './components/report-printing/report-printing-filter/report-printing-filter.component';
 
 @NgModule({
   declarations: [
@@ -25,8 +26,8 @@ import { ReportPrintingSearchComponent } from './components/report-printing/repo
     ChartBarComponent,
     ChartColumnComponent,
     ChartRadialBarComponent,
-    ChartTreemapComponent
-
+    ChartTreemapComponent,
+    ReportPrintingFilterComponent
   ],
   imports: [
     CommonModule,

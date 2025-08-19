@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ReportPrintingControllerService } from '../report-printing-controller.service';
+import { FrameworkService } from 'projects/design-lib/src/lib/services/framework.service';
+import { EventBusService } from 'projects/design-lib/src/lib/services/event-bus.service';
 
 @Component({
   selector: 'lib-report-printing-search',
@@ -10,19 +11,18 @@ import { ReportPrintingControllerService } from '../report-printing-controller.s
 export class ReportPrintingSearchComponent  implements OnInit {
 
   constructor(
-    private activateRoute: ActivatedRoute,
-    private router: Router,
-    public controller: ReportPrintingControllerService) { }
+    public controller: ReportPrintingControllerService,
+    public framework: FrameworkService,
+    public eventBusService: EventBusService
+  ) { }
 
 
   ngOnInit() {
-
-
+    this.eventBusService.emit({ type: 'report:search' });
   }
 
   onSelect(event: any) {
     this.controller.filterSelected['value'] = event;
-    this.router.navigate(['../'], { relativeTo: this.activateRoute, queryParams: { load: 'false' } });
+    this.framework.location.back();
   }
-
 }

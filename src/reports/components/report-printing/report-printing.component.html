@@ -1,133 +1,31 @@
 <div class="card">
-  <div class="mb-3">
-    <p-panel [toggleable]="true">
-      <ng-template pTemplate="header">
-        <div class="flex align-items-center gap-2">
-          <i class="fa-solid fa-chart-pie text-6xl"></i>
-
-          <span class="font-bold">
-            {{ controller.customReport?.name }}
-          </span>
-        </div>
-      </ng-template>
-
-      <div class="p-fluid formgrid grid p-4">
-        <div
-          class="col-12"
-          *ngFor="let filtroRelatorio of controller.customReport?.filters"
-        >
-          <label>{{ filtroRelatorio.filter?.filterDescription.pt }}</label>
-          <div
-            class="w-full mb-3"
-            *ngIf="
-              filtroRelatorio.filter?.type === 'TEXT' &&
-              controller.getSearchId(filtroRelatorio.filter) == ''
-            "
-          >
-            <input
-              class="w-full"
-              style="height: 3.5rem"
-              pInputText
-              type="text"
-              [(ngModel)]="filtroRelatorio.value"
-            />
-          </div>
-
-          <div
-            class="flex justify-content-between align-items-center"
-            *ngIf="controller.getSearchId(filtroRelatorio.filter) == ''"
-          >
-            <div class="w-full">
-              <p-calendar
-                *ngIf="filtroRelatorio.filter?.type === 'DATE'"
-                [(ngModel)]="filtroRelatorio.valueFrom"
-                [showIcon]="true"
-                [showButtonBar]="true"
-                dateFormat="dd/mm/yy"
-                appendTo="body"
-              ></p-calendar>
-              <p-inputNumber
-                *ngIf="filtroRelatorio.filter?.type === 'INTEGER'"
-                [(ngModel)]="filtroRelatorio.valueFrom"
-              >
-              </p-inputNumber>
-            </div>
-            <span
-              *ngIf="['INTEGER', 'DATE'].includes(filtroRelatorio.filter?.type)"
-              class="ml-3 mr-3"
-            >
-              Até
-            </span>
-            <div class="w-full">
-              <p-calendar
-                *ngIf="filtroRelatorio.filter?.type === 'DATE'"
-                [(ngModel)]="filtroRelatorio.valueTo"
-                [showIcon]="true"
-                [showButtonBar]="true"
-                dateFormat="dd/mm/yy"
-                appendTo="body"
-              ></p-calendar>
-              <p-inputNumber
-                *ngIf="filtroRelatorio.filter?.type === 'INTEGER'"
-                [(ngModel)]="filtroRelatorio.valueTo"
-              >
-              </p-inputNumber>
-            </div>
-          </div>
-
-          <d-search-field
-            *ngIf="controller.getSearchId(filtroRelatorio.filter) != ''"
-            class="col-12"
-            [searchId]="controller.getSearchId(filtroRelatorio.filter)"
-            [apiName]="controller.getApiName(filtroRelatorio.filter)"
-            [fieldDescription]="
-              controller.getSearchDescriptionField(filtroRelatorio.filter)
-            "
-            [searchRoute]="controller.getSearchId(filtroRelatorio.filter)"
-            [activateRoute]="activatedRoute"
-            [(value)]="filtroRelatorio.value"
-            [multiple]="true"
-            (onBeforeGoToSearchScreen)="
-              controller.setFilterSelected(filtroRelatorio)
-            "
-          ></d-search-field>
-        </div>
-      </div>
-
-      <ng-template pTemplate="footer">
-        <div
-          class="flex flex-wrap align-items-center justify-content-between gap-3"
-        >
-          <div class="flex align-items-center gap-2">
-            <button
-              *ngIf="framework.utils.isDesktop()"
-              pButton
-              pRipple
-              icon="fas fa-chevron-left"
-              [raised]="true"
-              label="Voltar"
-              class="w-auto"
-              (click)="goList()"
-            ></button>
-          </div>
-          <span class="p-text-secondary">
-            <p-button
-              label="Emitir relatório"
-              styleClass="p-button-success"
-              (onClick)="emit()"
-              icon="fas fa-print"
-              iconPos="left"
-            >
-            </p-button>
-          </span>
-        </div>
-      </ng-template>
-    </p-panel>
-  </div>
-
-  <div class="grid" #pdfContent id="">
+  <div class="w-full" *ngIf="!controller.hasData">
     <div
-      *ngFor="let session of report?.sessions"
+      class="surface-ground flex align-items-center justify-content-center m-5"
+    >
+      <div
+        class="surface-card py-7 px-5 sm:px-7 shadow-2 flex flex-column w-full"
+        style="border-radius: 14px"
+      >
+        <h1 class="font-bold text-2xl mt-0 mb-2">
+          {{ "NOT_FOUND_REPORT.TITLE" | translate }}
+        </h1>
+        <p class="text-color-secondary mb-4">
+          {{ "NOT_FOUND_REPORT.DESCRIPTION" | translate }}
+        </p>
+        <button
+          pButton
+          pRipple
+          label="{{ 'NOT_FOUND_REPORT.CHANGE_FILTER' | translate }}"
+          class="mt-4"
+          (click)="controller.goToFilters()"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <div class="grid" #pdfConten *ngIf="controller.hasData">
+    <div
+      *ngFor="let session of controller.report?.sessions"
       class="{{ getNumberCols(session) }}"
     >
       <p-table
@@ -138,17 +36,41 @@
         styleClass="p-datatable-gridlines"
         columnResizeMode="expand"
         [tableStyle]="{ width: '100%' }"
+        [paginator]="true"
+        [rows]="20"
+        [rowsPerPageOptions]="[5, 10, 20, 50, 100]"
       >
         <ng-template pTemplate="caption">
-          <div class="flex justify-content-between align-content-center">
+          <div class="flex justify-content-between align-items-center">
             <h4 class="m-0">{{ session.title }}</h4>
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-file-excel"
+              (click)="exportToExcel(session)"
+              class="p-button-success p-button-sm"
+              pTooltip="Exportar para Excel"
+              tooltipPosition="top"
+            ></button>
           </div>
         </ng-template>
-
         <ng-template pTemplate="header" let-columns>
           <tr>
-            <th *ngFor="let col of columns">
+            <th *ngFor="let col of columns" style="min-width: 300px">
               {{ col.header }}
+              <p-tag *ngIf="col.dataSet" [value]="col.dataSet" />
+            </th>
+          </tr>
+          <tr>
+            <th *ngFor="let col of columns">
+              <p-columnFilter
+                type="text"
+                [matchMode]="'contains'"
+                [field]="col.field"
+                [placeholder]="col.header"
+                [ariaLabel]="col.header"
+              />
             </th>
           </tr>
         </ng-template>
@@ -194,19 +116,25 @@
       >
       </d-chart-treemap>
     </div>
+    <p-scrollTop
+      target="parent"
+      styleClass="custom-scrolltop"
+      [threshold]="100"
+      icon="pi pi-arrow-up"
+    />
   </div>
 
-  <p-toolbar *ngIf="report?.sessions.length > 0">
+  <p-toolbar *ngIf="controller.report?.sessions.length > 0">
     <div class="p-toolbar-group-start">
       <button
-        *ngIf="framework.utils.isDesktop()"
+        *ngIf="controller.framework.utils.isDesktop()"
         pButton
         pRipple
         icon="fas fa-chevron-left"
         [raised]="true"
         label="Voltar"
         class="w-auto mr-4 mt-4"
-        (click)="goList()"
+        (click)="controller.goToReport()"
       ></button>
     </div>
     <div class="p-toolbar-group-center"></div>

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CustomReport } from '../models/custom-report.model';
 import { ReportFilter } from '../models/report-filter.model';
+import { Filter } from '../models/filter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,23 +18,23 @@ export class CustomReportCrudApiService  extends CrudApiService<CustomReport> {
     return 'http://localhost:32003/custom-report';
   }
 
-  printReport(identificadorRelatorio: string, filtros: ReportFilter []): Observable<any> {
+  printReport(identificadorRelatorio: string, filtros: Filter []): Observable<any> {
     let params = new HttpParams();
     filtros.forEach(f => {
 
       if (Array.isArray(f['value'])) {
-        params = params.append(f.filter?.externalSearchId, f['value'].map(x => '\'' + x[f.filter?.externalSearchReturnField] + '\'').join(','));
+        params = params.append(f.alias.toLowerCase() + '_' + f.externalSearchId, f['value'].map(x => '\'' + x[f.externalSearchReturnField] + '\'').join(','));
       } else {
-        if (['INTEGER', 'DATE'].includes(f.filter?.type)) {
+        if (['INTEGER', 'DATE'].includes(f.type)) {
           if (f['valueFrom']) {
-            params = params.append(f.filter?.identifierName+'-from', (f.filter?.type as string) === 'DATE' ? f['valueFrom'].toISOString() : f['valueFrom']);
+            params = params.append(f.identifierName+'-from', (f.type as string) === 'DATE' ? f['valueFrom'].toISOString() : f['valueFrom']);
           }
           if (f['valueTo']) {
-            params = params.append(f.filter?.identifierName+'-to', (f.filter?.type as string) === 'DATE' ? f['valueTo'].toISOString() : f['valueFrom']);
+            params = params.append(f.identifierName+'-to', (f.type as string) === 'DATE' ? f['valueTo'].toISOString() : f['valueFrom']);
           }
         } else {
           if (f['value']) {
-            params = params.append(f.filter?.identifierName, f['value']);
+            params = params.append(f.identifierName, f['value']);
           }
         }
       }

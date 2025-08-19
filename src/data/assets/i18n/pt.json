@@ -1,4 +1,16 @@
 {
+  "NOT_FOUND_REPORT": {
+    "TITLE": "Nenhuma informação disponível",
+    "DESCRIPTION": "Nenhuma informação disponível para o relatório com a filtragem informada. Altere a filtragem para visualizar os dados.",
+    "CHANGE_FILTER": "Alterar a filtragem"
+  },
+
+  "FILTERS": "Filtrar",
+  "PRINT": "Imprimir",
+  "TODAY": "Hoje",
+  "WEEK": "Semana",
+  "MONTH": "Mês",
+
   "IMPORT": "Importar",
   "IMPORTATION": "Importação",
   "TITLE_IMPORT": "Importação de dados",
