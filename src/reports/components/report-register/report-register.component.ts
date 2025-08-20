@@ -32,6 +32,10 @@ export class ReportRegisterComponent implements AfterViewInit {
     this.controller.activateRoute = this.activateRoute;
   }
 
+  visibles = {
+    toolbar: true,
+  }
+
   @ViewChild("crudScreen") crudScreen: CrudScreenComponent<CustomReport>;
 
   ngAfterViewInit(): void {
@@ -39,10 +43,11 @@ export class ReportRegisterComponent implements AfterViewInit {
       this.controller.getInitialObjectState();
 
       this.eventBusService.emit({
-        type: "report:register:after-view-init",
+        type: "report:register",
         payload: {
           object: this.controller.object,
           crudScreen: this.crudScreen,
+          visibles: this.visibles,
           callbackSave: () => {
             this.crudScreen.save();
           },

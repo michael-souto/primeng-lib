@@ -10,9 +10,7 @@ import { environment } from 'src/environments/environment';
 export class CustomReportValidatorModelService extends ValidatorModelService<CustomReport> {
   protected override _fields = {
     name: new FieldValidator(),
-    reportType: new FieldValidator(),
     view: new FieldValidator(),
-    filters: new FieldValidator(),
     sessions: new FieldValidator(),
     restricted: new FieldValidator(),
     restrictedAccessProfiles: new FieldValidator(),
@@ -28,25 +26,9 @@ export class CustomReportValidatorModelService extends ValidatorModelService<Cus
       });
 
     fieldMessage = await this.utilsService.getTextTranslated(
-      'CUSTOM_REPORTS.REPORT_TYPE'
-    );
-    this._fields.reportType.invalidMessage =
-      await this.utilsService.getTextTranslated('FIELD_REQUIRED', {
-        field: fieldMessage,
-      });
-
-    fieldMessage = await this.utilsService.getTextTranslated(
       'CUSTOM_REPORTS.VIEW'
     );
     this._fields.view.invalidMessage =
-      await this.utilsService.getTextTranslated('FIELD_REQUIRED', {
-        field: fieldMessage,
-      });
-
-    fieldMessage = await this.utilsService.getTextTranslated(
-      'CUSTOM_REPORTS.FILTERS'
-    );
-    this._fields.filters.invalidMessage =
       await this.utilsService.getTextTranslated('FIELD_REQUIRED', {
         field: fieldMessage,
       });
@@ -78,9 +60,7 @@ export class CustomReportValidatorModelService extends ValidatorModelService<Cus
 
   override validate() {
     this.validateName();
-    this.validateReportType();
     this.validateView();
-    this.validateFilters();
     this.validateSessions();
     this.validateRestricted();
     this._valid = this.areAllFieldsValid();
@@ -92,16 +72,8 @@ export class CustomReportValidatorModelService extends ValidatorModelService<Cus
 
   protected override validateForDelete() {}
 
-  private validateReportType() {
-    this._fields.reportType.isValid = !UtilsService.isEmpty(this.object.reportType);
-  }
-
   private validateView() {
     this._fields.view.isValid = !UtilsService.isEmpty(this.object.view?.id);
-  }
-
-  private validateFilters() {
-    this._fields.filters.isValid = this.object.filters?.length > 0;
   }
 
   private validateSessions() {

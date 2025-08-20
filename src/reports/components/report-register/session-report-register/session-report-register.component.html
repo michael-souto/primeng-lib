@@ -129,9 +129,9 @@
       </p-orderList>
     </div>
 
-    <div footer class="col-12 flex justify-content-between">
+    <div footer class="col-12 flex justify-content-between" *ngIf="visibles.footer">
       <button
-        *ngIf="framework.utils.isDesktop()"
+        *ngIf="framework.utils.isDesktop() && visibles.backButton"
         pButton
         type="button"
         icon="fas fa-chevron-left"
@@ -140,6 +140,7 @@
         (click)="framework.utils.backMyBaseRoute()"
       ></button>
       <button
+        *ngIf="visibles.saveButton"
         pButton
         type="button"
         [label]="'SAVE' | translate"

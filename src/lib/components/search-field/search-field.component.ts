@@ -24,7 +24,9 @@ export class SearchFieldComponent implements OnInit {
     private service: SearchService,
     public framework: FrameworkService
   ) {}
-  ngOnInit() {}
+  ngOnInit() {
+    this.search({ query: '' });
+  }
 
   @Input() label: string;
   @Input() required: boolean;
@@ -90,6 +92,9 @@ export class SearchFieldComponent implements OnInit {
 
         if (!this.group) {
           this.listSearch = dataContent;
+          if (dataContent.length === 1) {
+            this.selectEntity({value: dataContent[0]});
+          }
         } else {
           const groupedData = {};
           dataContent.forEach((item) => {
@@ -122,7 +127,7 @@ export class SearchFieldComponent implements OnInit {
   }
 
   selectEntity(event) {
-    this.columnsGrid.forEach((column) => {
+    this.columnsGrid?.forEach((column) => {
       if (column.type == "list") {
         this.value[column.field] = [];
       }
