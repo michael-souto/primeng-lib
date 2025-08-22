@@ -16,7 +16,7 @@ export class ReportPrintingControllerService {
 
   customReport: CustomReport;
 
-  filterSelected: ReportFilter;
+  filterSelected: Filter;
   report: any;
   hasData: boolean = false;
 
@@ -57,7 +57,7 @@ export class ReportPrintingControllerService {
       });
   }
 
-  setFilterSelected(filter: ReportFilter) {
+  setFilterSelected(filter: Filter) {
     this.filterSelected = filter;
   }
 
