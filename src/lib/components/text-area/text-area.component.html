@@ -1,4 +1,6 @@
-<label [for]="id" class="font-medium text-900 font-semibold text-0" translate>{{ label }}</label
+<label [for]="id" class="font-medium text-900 font-semibold text-0" translate>{{
+  label
+}}</label
 >{{ required ? "*" : "" }}
 <textarea
   [id]="id"
@@ -11,6 +13,7 @@
   [ngClass]="{
     'ng-invalid ng-dirty': invalidCondition
   }"
+  class="w-full"
 >
 </textarea>
 
