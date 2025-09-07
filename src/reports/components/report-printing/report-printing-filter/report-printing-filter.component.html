@@ -107,6 +107,7 @@
       <d-search-field
         *ngIf="controller.getSearchId(filtroRelatorio) != ''"
         [label]="filtroRelatorio?.filterDescription.pt"
+        [fieldId]="controller.getSearchReturnField(filtroRelatorio)"
         [searchId]="controller.getSearchId(filtroRelatorio)"
         [apiName]="controller.getApiName(filtroRelatorio)"
         [fieldDescription]="

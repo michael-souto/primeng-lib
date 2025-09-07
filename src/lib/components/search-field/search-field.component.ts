@@ -184,8 +184,8 @@ export class SearchFieldComponent implements OnInit {
     }
 
     if (this.multiple) {
-      this.value = this.value.filter(item => item[this.fieldId] !== value[this.fieldId]);
-      this.value.push(value);
+      this.value = this.value?.filter(item => item[this.fieldId] !== value[this.fieldId]);
+      this.value?.push(value);
       this.valueChange.emit(this.value);
     } else {
       if (this.group) {

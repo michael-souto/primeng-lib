@@ -23,7 +23,10 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
   filterSelected: any;
 
   public filterDetail: DetailCrudHelper<ReportFilter> =
-    new DetailCrudHelper<ReportFilter>(this.framework, () => new ReportFilter());
+    new DetailCrudHelper<ReportFilter>(
+      this.framework,
+      () => new ReportFilter()
+    );
 
   addFilter() {
     if (
@@ -59,7 +62,7 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
     if (!session.ordering) {
       session.ordering = this.object.sessions.length + 1;
     }
-    if (session.type === "TABLE_COLUMN") {
+
     session.fields = this.selectedFields
       .filter((selectedField) => selectedField.data?.id)
       .map((selectedField) => ({
@@ -68,24 +71,10 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
         tableView: selectedField.data.tableView,
         columnNumber: selectedField.data.columnNumber,
       }));
-      if (!session.ordering) {
-        session.ordering = this.object.sessions.length + 1;
-      }
-    } else {
-      if (this.chartFieldSelected) {
-        session.fields = [
-          {
-            id: null,
-            field: { ...this.chartFieldSelected }, // Garante que pegamos os dados corretamente
-            tableView: this.chartFieldSelected.tableView, // Mantém a referência ao TableView
-            columnNumber: this.selectedFields.findIndex((f) => f.data.id === this.chartFieldSelected.id) + 1,
-          }
-        ];
-      } else {
-        console.warn("Nenhum campo selecionado para adicionar à sessão.");
-        session.fields = [];
-      }
+    if (!session.ordering) {
+      session.ordering = this.object.sessions.length + 1;
     }
+
     this.framework.router.navigate(["./"], { relativeTo: this.activateRoute });
   }
 
@@ -117,38 +106,10 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
   fields!: TreeNode<any>[];
   selectedFields = [];
   viewSelected: any;
-  chartFields: any[] = [];
-  chartFieldSelected: any;
-  filteredChartFields: any[] = [];
 
   loadFields(view: View) {
     this.selectedFields = [];
     this.object.view = view;
-
-    this.filteredChartFields = this.chartFields = view.tableViews
-    .flatMap((tv) =>
-      tv.dataTable.fields
-        .filter((f) => !f.hidden)
-        .map((field) => ({
-          tableView: tv,
-          ...field
-        }))
-    );
-    // Criar a estrutura agrupada para AutoComplete
-    this.chartFields = view.tableViews.map((tv) => ({
-      label: tv.dataTable.description, // Nome do grupo (TableView)
-      value: tv, // Referência ao tableView
-      items: tv.dataTable.fields
-        .filter((f) => !f.hidden)
-        .map((field) => ({
-          tableView: tv,
-          ...field
-        }))
-    }));
-
-    // Inicialmente, todos os grupos estão disponíveis
-    this.filteredChartFields = [...this.chartFields];
-
 
     this.fields = view.tableViews.map((tv) => {
       const treeNodeRaiz: TreeNode<any> = {
@@ -177,9 +138,6 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
   }
 
   loaadSelectedFields(session: ReportSession) {
-    this.chartFieldSelected = session.fields[0].field;
-    this.chartFieldSelected['tableView'] = session.fields[0].tableView;
-
     this.selectedFields = session.fields.map((f) => {
       const treeNodeField: TreeNode<any> = {
         label: f.field?.fieldHeader[this.framework.language],
@@ -191,28 +149,9 @@ export class CustomReportsControllerService extends ControllerService<CustomRepo
       treeNodeField.data.tableView = f.tableView;
       return treeNodeField;
     });
-    this.selectedFields.sort((a, b) => a.data.columnNumber - b.data.columnNumber);
-  }
-
-  filterChartFields(event: any) {
-    let query = event.query.toLowerCase();
-    let filteredGroups = [];
-
-    for (let group of this.chartFields) {
-      let filteredItems = group.items.filter((f) =>
-        f.fieldHeader.pt?.toLowerCase().includes(query)
-      );
-
-      if (filteredItems.length > 0) {
-        filteredGroups.push({
-          label: group.label,
-          value: group.value,
-          items: filteredItems
-        });
-      }
-    }
-
-    this.filteredChartFields = filteredGroups;
+    this.selectedFields.sort(
+      (a, b) => a.data.columnNumber - b.data.columnNumber
+    );
   }
 
   orderingSelecterFields() {

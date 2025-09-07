@@ -98,6 +98,7 @@
       <d-chart-column
         *ngIf="session.type === 'CHART_VERTICAL_BAR'"
         [title]="session.title"
+        [subtitle]="session.description"
         [data]="getItemDashboardBySession(session.data)"
       >
       </d-chart-column>
@@ -109,12 +110,29 @@
       >
       </d-chart-bar>
 
+      <d-chart-line
+        *ngIf="session.type === 'CHART_LINE'"
+        [title]="session.title"
+        [subtitle]="session.description"
+        [showSum]="false"
+        [data]="getItemDashboardBySession(session.data)"
+      >
+      </d-chart-line>
+
       <d-chart-treemap
         *ngIf="session.type === 'CHART_TREEMAP'"
         [title]="session.title"
         [data]="getItemDashboardBySession(session.data)"
       >
       </d-chart-treemap>
+
+      <d-indicator-card
+        *ngIf="session.type === 'INDICATOR_CARD'"
+        [title]="session.title"
+        [data]="getItemDashboardBySession(session.data)"
+        [showSum]="false"
+      >
+      </d-indicator-card>
     </div>
     <p-scrollTop
       target="parent"

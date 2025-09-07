@@ -24,7 +24,9 @@
             value: 'CHART_HORIZONTAL_BAR'
           },
           { label: 'Gráfico - Barra Vertical', value: 'CHART_VERTICAL_BAR' },
-          { label: 'Gráfico - Treemap', value: 'CHART_TREEMAP' }
+          { label: 'Gráfico - Linha', value: 'CHART_LINE' },
+          { label: 'Gráfico - Treemap', value: 'CHART_TREEMAP' },
+          { label: 'Indicador - Card', value: 'INDICATOR_CARD' }
         ]"
         [(ngModel)]="controller.sessionDetail.currentItem.type"
         placeholder="Selecione o tipo"
@@ -60,7 +62,6 @@
       >
 
       <p-tree
-        *ngIf="controller.sessionDetail.currentItem.type === 'TABLE_COLUMN'"
         [(value)]="controller.fields"
         selectionMode="checkbox"
         [(selection)]="controller.selectedFields"
@@ -68,38 +69,10 @@
         (onNodeSelect)="controller.onNodeSelect($event)"
         (onNodeUnselect)="controller.onNodeUnselect($event)"
       ></p-tree>
-
-      <p-autoComplete
-        *ngIf="controller.sessionDetail.currentItem.type !== 'TABLE_COLUMN'"
-        [(ngModel)]="controller.chartFieldSelected"
-        [suggestions]="controller.filteredChartFields"
-        [group]="true"
-        optionLabel="fieldHeader.pt"
-        (completeMethod)="controller.filterChartFields($event)"
-        dropdown="true"
-        forceSelection="true"
-        placeholder="Digite para buscar..."
-      >
-        <!-- Template para exibir os nomes dos TableViews como grupos -->
-        <ng-template let-group pTemplate="group">
-          <div class="flex align-items-center">
-            <span>{{ group.label }}</span>
-          </div>
-        </ng-template>
-        <ng-template let-field pTemplate="item">
-          <div class="flex align-items-center gap-2">
-            <div>
-              <i class="fa-solid fa-ellipsis"></i> {{ field.fieldHeader.pt }}
-            </div>
-          </div>
-        </ng-template>
-      </p-autoComplete>
     </div>
 
     <div
-      class="col-12 md:col-6 field"
-      *ngIf="controller.sessionDetail.currentItem.type === 'TABLE_COLUMN'"
-    >
+      class="col-12 md:col-6 field">
       <label class="font-medium text-900 font-semibold text-0">Ordenação</label>
       <p-orderList
         [value]="controller.selectedFields"
