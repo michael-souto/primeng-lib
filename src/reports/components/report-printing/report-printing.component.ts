@@ -3,15 +3,14 @@ import { ActivatedRoute } from "@angular/router";
 import { ReportPrintingControllerService } from "./report-printing-controller.service";
 import { EventBusService } from "projects/design-lib/src/lib/services/event-bus.service";
 import { FrameworkService } from "projects/design-lib/src/lib/services/framework.service";
-import * as XLSX from 'xlsx';
+import * as XLSX from "xlsx";
 import { DatePipe } from "@angular/common";
-
 
 @Component({
   selector: "d-report-printing",
   templateUrl: "./report-printing.component.html",
   styleUrls: ["./report-printing.component.scss"],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class ReportPrintingComponent implements OnInit {
   constructor(
@@ -22,14 +21,15 @@ export class ReportPrintingComponent implements OnInit {
     private datePipe: DatePipe
   ) {
     const navigation = this.framework.router.getCurrentNavigation();
-    this.previousUrl = navigation?.previousNavigation?.finalUrl?.toString() || '';
+    this.previousUrl =
+      navigation?.previousNavigation?.finalUrl?.toString() || "";
   }
 
-  private previousUrl: string = '';
+  private previousUrl: string = "";
 
   ngOnInit(): void {
     const id: string = this.activatedRoute.snapshot.params["id"];
-    if (!this.previousUrl.includes('/print/')) {
+    if (!this.previousUrl.includes("/print/")) {
       this.controller.loadReport(id);
     }
     this.eventBusService.emit({
@@ -40,21 +40,46 @@ export class ReportPrintingComponent implements OnInit {
 
   ngOnDestroy(): void {
     const destinationUrl = this.framework.router.url;
-    if (!destinationUrl.includes('/print/')) {
+    if (!destinationUrl.includes("/print/")) {
       this.controller.clearReport();
     }
   }
 
-  getItemDashboardBySession(dataSession: []): any[] {
-    return dataSession.map((x) => {
-      const property = Object.keys(x);
-      const propertyValue = property.filter((x) => x.indexOf("_total") > 0)[0];
-      const propertyLabel = property.filter((x) => x.indexOf("_total") < 0)[0];
-      return {
-        label: x[propertyLabel] ?? "N/ Informado(a)",
-        value: x[propertyValue] ?? 0,
-      };
-    });
+  getItemDashboardBySession(session: any): any[] {
+
+    if (session.headers.length > 2 && this.isSessionChart(session)) {
+      const lastDataRecord = session.data[session.data.length - 1];
+
+      return session.headers.map((header) => {
+        const fieldValue = lastDataRecord[header.field];
+        return {
+          label: header.header,
+          value: fieldValue ?? 0
+        }
+      });
+    } else {
+      return session.data.map((x) => {
+        const property = Object.keys(x);
+        const propertyValue = property.filter(
+          (x) => x.indexOf("_total") > 0
+        )[0];
+        const propertyLabel = property.filter(
+          (x) => x.indexOf("_total") < 0
+        )[0];
+
+        return {
+          label: x[propertyLabel] ?? "N/ Informado(a)",
+          value: x[propertyValue] ?? 0,
+        };
+      });
+    }
+  }
+
+
+  isSessionChart(session: any): boolean {
+    return (
+      session.type !== "TABLE_COLUMN" && session.type !== "TABLE_ROW"
+    );
   }
 
   getNumberCols(session: any): string {
@@ -69,13 +94,13 @@ export class ReportPrintingComponent implements OnInit {
       return;
     }
 
-    const headerRow = session.headers.map(col => col.header);
+    const headerRow = session.headers.map((col) => col.header);
 
-    const dataRows = session.data.map(rowData => {
-      return session.headers.map(col => {
+    const dataRows = session.data.map((rowData) => {
+      return session.headers.map((col) => {
         const cellValue = rowData[col.field];
-        if (col.type === 'DATE' && cellValue) {
-          return this.datePipe.transform(cellValue, 'dd/MM/yyyy');
+        if (col.type === "DATE" && cellValue) {
+          return this.datePipe.transform(cellValue, "dd/MM/yyyy");
         }
         return cellValue;
       });
@@ -86,9 +111,9 @@ export class ReportPrintingComponent implements OnInit {
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(dataToExport);
 
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Dados');
+    XLSX.utils.book_append_sheet(wb, ws, "Dados");
 
-    const fileName = `${session.title.replace(/ /g, '_') || 'relatorio'}.xlsx`;
+    const fileName = `${session.title.replace(/ /g, "_") || "relatorio"}.xlsx`;
     XLSX.writeFile(wb, fileName);
   }
 }

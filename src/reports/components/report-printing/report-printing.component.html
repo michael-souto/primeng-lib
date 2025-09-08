@@ -92,21 +92,21 @@
       <d-chart-radial-bar
         *ngIf="session.type === 'CHART_DONUT'"
         [title]="session.title"
-        [data]="getItemDashboardBySession(session.data)"
+        [data]="getItemDashboardBySession(session)"
       ></d-chart-radial-bar>
 
       <d-chart-column
         *ngIf="session.type === 'CHART_VERTICAL_BAR'"
         [title]="session.title"
         [subtitle]="session.description"
-        [data]="getItemDashboardBySession(session.data)"
+        [data]="getItemDashboardBySession(session)"
       >
       </d-chart-column>
 
       <d-chart-bar
         *ngIf="session.type === 'CHART_HORIZONTAL_BAR'"
         [title]="session.title"
-        [data]="getItemDashboardBySession(session.data)"
+        [data]="getItemDashboardBySession(session)"
       >
       </d-chart-bar>
 
@@ -115,24 +115,32 @@
         [title]="session.title"
         [subtitle]="session.description"
         [showSum]="false"
-        [data]="getItemDashboardBySession(session.data)"
+        [data]="getItemDashboardBySession(session)"
       >
       </d-chart-line>
 
       <d-chart-treemap
         *ngIf="session.type === 'CHART_TREEMAP'"
         [title]="session.title"
-        [data]="getItemDashboardBySession(session.data)"
+        [data]="getItemDashboardBySession(session)"
       >
       </d-chart-treemap>
 
       <d-indicator-card
         *ngIf="session.type === 'INDICATOR_CARD'"
         [title]="session.title"
-        [data]="getItemDashboardBySession(session.data)"
+        [data]="getItemDashboardBySession(session)"
         [showSum]="false"
       >
       </d-indicator-card>
+
+      <d-multi-indicator-card
+        *ngIf="session.type === 'INDICATOR_CARD_MULTIPLE'"
+        [title]="session.title"
+        [data]="getItemDashboardBySession(session)"
+        [showSum]="false"
+      >
+      </d-multi-indicator-card>
     </div>
     <p-scrollTop
       target="parent"

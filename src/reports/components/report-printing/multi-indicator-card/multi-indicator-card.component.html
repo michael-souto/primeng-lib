@@ -1,0 +1,26 @@
+<p-card styleClass="card multi-indicator-card">
+  <ng-template pTemplate="header">
+    <div class="pt-1 pb-1 pl-3 pr-3 flex justify-content-between align-items-start">
+      <div class="flex align-items-center">
+        <h3 class="header-title">{{ title }}</h3>
+      </div>
+
+      <div class="flex flex-column align-items-end">
+        <h3 class="header-title">{{ mainValue }}</h3>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="grid px-3 pb-3">
+      <div *ngFor="let item of data" class="col-12 md:col-6 lg:col-4 xl:col-2 p-1">
+        <div class="indicator-item">
+          <span class="indicator-value">
+            {{ item.value }}
+          </span>
+          <span class="indicator-label">{{ item.label }}</span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-card>

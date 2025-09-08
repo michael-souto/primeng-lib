@@ -1,0 +1,39 @@
+
+:host ::ng-deep {
+  .multi-indicator-card {
+
+    .p-card-body {
+      padding: 0;
+    }
+
+    .header-title {
+      font-weight: bold;
+      margin: 0;
+      margin-bottom: 0.5rem;
+      fill: rgb(55, 61, 63);
+    }
+  }
+}
+
+.indicator-item {
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  border: 1px solid #e5e7eb;
+}
+
+.indicator-value {
+  font-size: 2rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.indicator-label {
+  font-size: 0.875rem;
+}

@@ -4,6 +4,7 @@ import { View } from './view.mode';
 import { ReportFilter } from './report-filter.model';
 import { ReportSession } from './report-session.model';
 import { AccessProfile } from './access-profile.model';
+import { AccessUser } from './access-user.model';
 
 export class CustomReport extends GenericEntity {
   name: string;
@@ -14,4 +15,5 @@ export class CustomReport extends GenericEntity {
   detrasoftId: number;
   restricted: boolean;
   restrictedAccessProfiles: AccessProfile[] = [];
+  restrictedAccessUsers: AccessUser[] = [];
 }

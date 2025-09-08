@@ -17,6 +17,7 @@ import { ReportPrintingSearchComponent } from './components/report-printing/repo
 import { ReportPrintingFilterComponent } from './components/report-printing/report-printing-filter/report-printing-filter.component';
 import { ChartLineComponent } from './components/report-printing/chart-line/chart-line.component';
 import { IndicatorCardComponent } from './components/report-printing/indicator-card/indicator-card.component';
+import { MultiIndicatorCardComponent } from './components/report-printing/multi-indicator-card/multi-indicator-card.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { IndicatorCardComponent } from './components/report-printing/indicator-c
     ChartTreemapComponent,
     ReportPrintingFilterComponent,
     ChartLineComponent,
-    IndicatorCardComponent
+    IndicatorCardComponent,
+    MultiIndicatorCardComponent
   ],
   imports: [
     CommonModule,

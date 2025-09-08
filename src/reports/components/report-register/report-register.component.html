@@ -56,9 +56,24 @@
       multiple="true"
       fieldDescription="name"
       [(value)]="entity.restrictedAccessProfiles"
-      [invalidCondition]="submitted && !validator.fields.restrictedAccessProfiles.isValid"
-      [invalidMessage]="validator.fields.restrictedAccessProfiles.invalidMessage"
+      [invalidCondition]="submitted && !validator.fields.restrictedAccess.isValid"
+      [invalidMessage]="validator.fields.restrictedAccess.invalidMessage"
       [dropdown]="true"
+    >
+    </d-search-field>
+
+    <d-search-field
+      *ngIf="entity.restricted"
+      class="field col-12"
+      label="USERS.TITLE"
+      searchId="user"
+      apiName="authorization-server"
+      multiple="true"
+      fieldDescription="firstName"
+      [(value)]="entity.restrictedAccessUsers"
+      [invalidCondition]="submitted && !validator.fields.restrictedAccess.isValid"
+      [invalidMessage]="validator.fields.restrictedAccess.invalidMessage"
+      dropdown="true"
     >
     </d-search-field>
 

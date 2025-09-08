@@ -1,11 +1,14 @@
-import { Injectable } from '@angular/core';
-import { UtilsService } from 'projects/design-lib/src/lib/services/utils/utils.service';
-import { FieldValidator, ValidatorModelService } from 'projects/design-lib/src/lib/services/validator-model.service';
-import { CustomReport } from '../models/custom-report.model';
-import { environment } from 'src/environments/environment';
+import { Injectable } from "@angular/core";
+import { UtilsService } from "projects/design-lib/src/lib/services/utils/utils.service";
+import {
+  FieldValidator,
+  ValidatorModelService,
+} from "projects/design-lib/src/lib/services/validator-model.service";
+import { CustomReport } from "../models/custom-report.model";
+import { environment } from "src/environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class CustomReportValidatorModelService extends ValidatorModelService<CustomReport> {
   protected override _fields = {
@@ -13,47 +16,47 @@ export class CustomReportValidatorModelService extends ValidatorModelService<Cus
     view: new FieldValidator(),
     sessions: new FieldValidator(),
     restricted: new FieldValidator(),
-    restrictedAccessProfiles: new FieldValidator(),
+    restrictedAccess: new FieldValidator(),
   };
 
   override async loadTextMessages() {
     let fieldMessage = await this.utilsService.getTextTranslated(
-      'CUSTOM_REPORTS.NAME'
+      "CUSTOM_REPORTS.NAME"
     );
     this._fields.name.invalidMessage =
-      await this.utilsService.getTextTranslated('FIELD_REQUIRED', {
+      await this.utilsService.getTextTranslated("FIELD_REQUIRED", {
         field: fieldMessage,
       });
 
     fieldMessage = await this.utilsService.getTextTranslated(
-      'CUSTOM_REPORTS.VIEW'
+      "CUSTOM_REPORTS.VIEW"
     );
     this._fields.view.invalidMessage =
-      await this.utilsService.getTextTranslated('FIELD_REQUIRED', {
+      await this.utilsService.getTextTranslated("FIELD_REQUIRED", {
         field: fieldMessage,
       });
 
     fieldMessage = await this.utilsService.getTextTranslated(
-      'CUSTOM_REPORTS.SESSIONS'
+      "CUSTOM_REPORTS.SESSIONS"
     );
     this._fields.sessions.invalidMessage =
-      await this.utilsService.getTextTranslated('FIELD_REQUIRED', {
+      await this.utilsService.getTextTranslated("FIELD_REQUIRED", {
         field: fieldMessage,
       });
 
     fieldMessage = await this.utilsService.getTextTranslated(
-      'CUSTOM_REPORTS.RESTRICTED'
+      "CUSTOM_REPORTS.RESTRICTED"
     );
     this._fields.restricted.invalidMessage =
-      await this.utilsService.getTextTranslated('FIELD_REQUIRED', {
+      await this.utilsService.getTextTranslated("FIELD_REQUIRED", {
         field: fieldMessage,
       });
 
     fieldMessage = await this.utilsService.getTextTranslated(
-      'CUSTOM_REPORTS.RESTRICTED_ACCESS_PROFILES'
+      "CUSTOM_REPORTS.RESTRICTED_ACCESS_PROFILES"
     );
-    this._fields.restrictedAccessProfiles.invalidMessage =
-      await this.utilsService.getTextTranslated('FIELD_REQUIRED', {
+    this._fields.restrictedAccess.invalidMessage =
+      await this.utilsService.getTextTranslated("FIELD_REQUIRED", {
         field: fieldMessage,
       });
   }
@@ -82,11 +85,12 @@ export class CustomReportValidatorModelService extends ValidatorModelService<Cus
 
   private validateRestricted() {
     if (this.object.restricted != null && this.object.restricted == true) {
-      this._fields.restricted.isValid = this._fields.restrictedAccessProfiles.isValid = this.object.restrictedAccessProfiles?.length > 0;
+      this._fields.restricted.isValid = this._fields.restrictedAccess.isValid =
+        this.object.restrictedAccessProfiles?.length > 0 ||
+        this.object.restrictedAccessUsers?.length > 0;
     } else {
-      this._fields.restrictedAccessProfiles.isValid = true;
+      this._fields.restrictedAccess.isValid = true;
       this._fields.restricted.isValid = true;
     }
   }
-
 }
