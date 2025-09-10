@@ -69,6 +69,8 @@ export class SearchFieldComponent implements OnInit {
   @Input() columnsGrid: SearchField[];
   @Input() paramsSearch: SearchFilter[];
 
+  @Input() aditionalFields: string[];
+
   search(event) {
     if (this.readonly || this.disabled) {
       return;

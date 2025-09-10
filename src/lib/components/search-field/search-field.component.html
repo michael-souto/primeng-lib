@@ -44,7 +44,8 @@
     <ng-template let-item pTemplate="item">
       <div class="flex align-items-center">
         <i [class]="itemIcon" style="margin-right: 5px" *ngIf="itemIcon"></i>
-        <span>{{ item[getFieldDescription()] }}</span>
+        <span class="mr-2">{{ item[getFieldDescription()] }}</span>
+        <p-tag [value]="item[field]" *ngFor="let field of aditionalFields" class="mr-2"></p-tag>
       </div>
     </ng-template>
   </p-autoComplete>
