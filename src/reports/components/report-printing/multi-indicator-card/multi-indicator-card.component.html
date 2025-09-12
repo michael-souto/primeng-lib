@@ -13,9 +13,12 @@
 
   <ng-template pTemplate="content">
     <div class="grid px-3 pb-3">
-      <div *ngFor="let item of data" class="col-12 md:col-6 lg:col-4 xl:col-2 p-1">
+      <div
+        *ngFor="let item of data; let i = index"
+        [ngClass]="getColumnClass()"
+        class="p-1">
         <div class="indicator-item">
-          <span class="indicator-value">
+          <span class="indicator-value" [ngClass]="getItemValueClass(item.color)">
             {{ item.value }}
           </span>
           <span class="indicator-label">{{ item.label }}</span>
