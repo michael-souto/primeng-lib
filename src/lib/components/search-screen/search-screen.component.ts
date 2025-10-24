@@ -69,6 +69,7 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
   @Input() showBackButton: boolean = true;
   @Input() showFilter: boolean = true;
   @Input() rowHeight: number = 50;
+  @Output() afterSearch = new EventEmitter<SearchResponseApi>();
   // Mode Search
   @Output() onNewClick = new EventEmitter<any>();
   labelNew: string = 'Novo'
@@ -197,7 +198,14 @@ export class SearchScreenComponent implements OnInit, OnDestroy {
         } else {
           this.listSearch = [];
         }
+        if (this.afterSearch) {
+          this.afterSearch.emit(searchResponseApi);
+        }
+        this.onAfterSearch(searchResponseApi);
       });
+  }
+
+  onAfterSearch(searchResponseApi: SearchResponseApi): void {
   }
 
   get hasCustomBody(): boolean {

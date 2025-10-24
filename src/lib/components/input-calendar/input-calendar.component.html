@@ -16,6 +16,7 @@
     [(ngModel)]="value"
     [placeholder]="placeholder ?? ''"
     [required]="required"
+    [disabled]="disabled"
     class="{{
       (isNullRequired() && invalidCondition) ||
       (isRequired() && (isSubmitted() || isNullSubmitted()) && isEmpty())
