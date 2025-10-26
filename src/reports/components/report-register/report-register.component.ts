@@ -8,7 +8,6 @@ import { ResponseNotification } from "projects/design-lib/src/lib/models/respons
 import { ViewCrudApiService } from "projects/primeng-lib/src/reports/services/view-crud-api.service";
 
 import { View } from "projects/primeng-lib/src/reports/models/view.mode";
-import { environment } from "src/environments/environment";
 import { FunctionsService } from "projects/design-lib/src/lib/services/functions.service";
 import { EventBusService } from "projects/design-lib/src/lib/services/event-bus.service";
 import { CrudScreenComponent } from "projects/primeng-lib/src/lib/components/crud-screen/crud-screen.component";
@@ -59,11 +58,15 @@ export class ReportRegisterComponent implements AfterViewInit {
   }
 
   onAfterInitRegister() {
-    this.controller.viewSelected = {
-      id: this.controller.object.view?.id,
-      name: this.controller.object.view?.viewName["pt"],
-    };
-    this.onSelectView(this.controller.object.view);
+    if (this.controller.object.view) {
+      this.controller.viewSelected = {
+        id: this.controller.object.view?.id,
+        name: this.controller.object.view?.viewName["pt"],
+      };
+      this.onSelectView(this.controller.object.view);
+    } else {
+      this.controller.viewSelected = null;
+    }
   }
 
   beforeSave() {
